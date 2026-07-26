@@ -1,0 +1,104 @@
+// IME Service — schema dati
+//
+// In sviluppo gira su SQLite (nessun servizio esterno da avviare).
+// Per andare in produzione su Postgres bastano due mosse:
+//   1. `provider = "postgresql"` qui sotto
+//   2. DATABASE_URL che punta al database
+// Nessun tipo usato qui è specifico di SQLite: le liste (tag, blocchi del
+// corpo, allegati) sono serializzate in JSON dentro colonne String, quindi lo
+// schema è portabile senza modifiche.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Articolo delle news. Gestito dall'area riservata (/admin/news).
+model Article {
+  id     String @id @default(cuid())
+  slug   String @unique
+  title  String
+  /// Sommario mostrato in lista e in apertura di articolo.
+  excerpt String @default("")
+  /// JSON: BodyBlock[] — vedi src/lib/articles/body.ts
+  body   String @default("[]")
+  /// Slug della categoria — vedi src/data/news-categories.ts
+  category String
+  /// Percorso o URL della foto di copertina. Null = si usa il PhotoSlot.
+  coverImage String?
+  /// Testo alternativo della copertina (accessibilità + brief fotografico).
+  coverAlt   String  @default("")
+  /// JSON: string[]
+  tags   String @default("[]")
+  /// "draft" | "published"
+  status String @default("draft")
+  /// Articolo in evidenza nella pagina /news.
+  featured    Boolean   @default(false)
+  publishedAt DateTime?
+
+  seoTitle       String @default("")
+  seoDescription String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([category])
+}
+
+/// Richiesta di preventivo: soggetti personalizzati, catalogo, sopralluogo impianti.
+model QuoteRequest {
+  id      String  @id @default(cuid())
+  name    String
+  company String?
+  email   String
+  phone   String?
+
+  /// Tipo di soggetto richiesto (2D a parete, 3D a terra, …)
+  subjectType String?
+  quantity    String?
+  /// Misure indicative dichiarate dal richiedente.
+  dimensions String?
+  /// "Serve per": Natale 2026, evento, altro…
+  usage String?
+  notes String?
+
+  /// JSON: string[] — slug dei soggetti a catalogo aggiunti alla richiesta.
+  subjects String @default("[]")
+  /// JSON: StoredFile[] — vedi src/lib/storage/types.ts
+  attachments String @default("[]")
+
+  /// Da quale form è arrivata: "soggetti-personalizzati" | "catalogo" | "impianti"
+  source  String  @default("soggetti-personalizzati")
+  locale  String  @default("it")
+  handled Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// Candidatura inviata da /lavora-con-noi.
+model JobApplication {
+  id    String  @id @default(cuid())
+  name  String
+  phone String
+  email String
+  /// Slug della posizione — vedi src/data/job-postings.ts. Null = spontanea.
+  role  String?
+  about String?
+
+  /// JSON: StoredFile | null — il curriculum.
+  cv String?
+
+  locale  String  @default("it")
+  handled Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

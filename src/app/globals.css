@@ -1,0 +1,387 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   IME Service — design token
+   Fonte unica di verità: design/README.md, sezione "Design Tokens".
+   Le scale native di Tailwind sono azzerate di proposito: nel progetto esistono
+   SOLO i valori del design system. Se un valore non è qui dentro, non va usato.
+   ========================================================================== */
+
+@theme {
+  /* --- Reset delle scale native ------------------------------------------ */
+  --color-*: initial;
+  --text-*: initial;
+  --tracking-*: initial;
+  --leading-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --drop-shadow-*: initial;
+  --blur-*: initial;
+
+  /* --- Base spaziature ---------------------------------------------------
+     1 unità = 1px, così le misure del design (90, 76, 46, 13, 5…) si scrivono
+     tali e quali: px-90, pt-76, gap-13. Nessuna conversione mentale. */
+  --spacing: 1px;
+
+  /* --- Colori: fondi ----------------------------------------------------- */
+  --color-night: #0a0e1c; /* fondo di tutte le pagine pubbliche */
+  --color-panel-ime: #10162a; /* card e blocchi "anima impianti" */
+  --color-panel-fabbrica: #141326; /* card e blocchi "anima Natale" */
+  --color-admin-bg: #080b16; /* sidebar e topbar area riservata */
+
+  /* --- Colori: testo (README: text / text-2 / text-3 / text-4) ----------- */
+  --color-ink: #e9ecf6; /* testo primario */
+  --color-ink-2: #c3cade; /* paragrafi, valori form */
+  --color-ink-3: #8f9ab5; /* didascalie, testo secondario */
+  --color-ink-4: #5f6a86; /* placeholder input, meta admin */
+  --color-nav: #c9d0e4; /* voci di navigazione a riposo */
+  --color-logo-label: #aeb6cf; /* la scritta "SERVICE" accanto alla pill */
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+
+  /* --- Colori: azione (l'oro è l'UNICO colore d'azione) ------------------ */
+  --color-gold: #f2c66d;
+  --color-gold-hover: #ffd98a; /* hover dei link oro + colore del twinkle */
+  --color-gold-ink: #1a1405; /* testo sopra fondo oro */
+  --color-gold-veil: rgba(242, 198, 109, 0.05); /* fondo dropzone */
+  --color-gold-dash: rgba(242, 198, 109, 0.55); /* bordo tratteggiato dropzone */
+  --color-gold-dash-soft: rgba(242, 198, 109, 0.5);
+  --color-gold-rail: rgba(242, 198, 109, 0.08); /* voce attiva sidebar admin */
+
+  /* --- Colori: mondo impianti (blu) ------------------------------------- */
+  --color-blue: #233d92; /* brand IME: pill logo, filetto timeline */
+  --color-blue-lt: #7d9bff; /* etichette categoria, numerazione IME */
+  --color-blue-chip-bg: rgba(125, 155, 255, 0.14); /* badge PUBBLICATO */
+  --color-blue-chip-tx: #9db2ff;
+  --color-blue-dot: #3b5bd6; /* bullet elenchi IME */
+
+  /* --- Colori: mondo Natale (rosso) ------------------------------------- */
+  --color-red: #d31f2e; /* brand Fabbrica: bullet, filetto timeline, errori */
+  --color-rose: #e08a8a; /* occhielli Fabbrica */
+  --color-rose-lt: #ffd9d9; /* wordmark "La Fabbrica di Babbo Natale" */
+  --color-logo-yellow: #ffd200; /* la "E" nel logo IME */
+
+  /* --- Colori: filetti e bordi ------------------------------------------ */
+  --color-hairline-soft: rgba(255, 255, 255, 0.06); /* righe tabella admin */
+  --color-panel-line: rgba(255, 255, 255, 0.07); /* bordo pannelli "due anime" */
+  --color-hairline: rgba(255, 255, 255, 0.08); /* separatori, bordi card */
+  --color-cta-line: rgba(255, 255, 255, 0.09); /* bordo fascia CTA */
+  --color-hairline-strong: rgba(255, 255, 255, 0.1);
+  --color-rule-toolbar: rgba(255, 255, 255, 0.12);
+  --color-rule-step: rgba(255, 255, 255, 0.14); /* border-top degli step */
+  --color-field-border: rgba(255, 255, 255, 0.16); /* input, chip non attive */
+  --color-ghost-soft: rgba(255, 255, 255, 0.2); /* bottoni ghost topbar admin */
+  --color-ghost: rgba(255, 255, 255, 0.25); /* bottoni ghost pubblici */
+  --color-check: rgba(255, 255, 255, 0.3); /* checkbox */
+  --color-arrow: rgba(255, 255, 255, 0.35); /* frecce carosello */
+  --color-field-bg: rgba(255, 255, 255, 0.03); /* fondo input */
+  --color-toolbar-bg: rgba(255, 255, 255, 0.05); /* toolbar editor */
+  --color-track: rgba(255, 255, 255, 0.1); /* barra contatori SEO */
+
+  /* --- Colori: segnaposto foto ------------------------------------------ */
+  --color-photo-bg: #131a30;
+  --color-photo-label: #93a0c2;
+  --color-photo-label-bg: rgba(8, 12, 24, 0.72);
+
+  /* --- Scala tipografica (px, esattamente quella del README) ------------- */
+  --text-8: 8px;
+  --text-9: 9px;
+  --text-10: 10px;
+  --text-10-5: 10.5px;
+  --text-11: 11px;
+  --text-11-5: 11.5px;
+  --text-12: 12px;
+  --text-12-5: 12.5px;
+  --text-13: 13px;
+  --text-13-5: 13.5px;
+  --text-14: 14px;
+  --text-14-5: 14.5px;
+  --text-15: 15px;
+  --text-15-5: 15.5px;
+  --text-16: 16px;
+  --text-16-5: 16.5px;
+  --text-17: 17px;
+  --text-18: 18px;
+  --text-19: 19px;
+  --text-20: 20px;
+  --text-21: 21px;
+  --text-22: 22px;
+  --text-23: 23px;
+  --text-24: 24px;
+  --text-28: 28px;
+  --text-30: 30px;
+  --text-32: 32px;
+  --text-34: 34px;
+  --text-40: 40px;
+  --text-42: 42px;
+  --text-44: 44px;
+  --text-46: 46px;
+  --text-58: 58px;
+
+  /* --- Interlinea (centesimi: leading-185 = 1.85) ------------------------ */
+  --leading-100: 1;
+  --leading-110: 1.1;
+  --leading-112: 1.12;
+  --leading-114: 1.14;
+  --leading-115: 1.15;
+  --leading-118: 1.18;
+  --leading-122: 1.22;
+  --leading-128: 1.28;
+  --leading-130: 1.3;
+  --leading-132: 1.32;
+  --leading-135: 1.35;
+  --leading-140: 1.4;
+  --leading-150: 1.5;
+  --leading-160: 1.6;
+  --leading-165: 1.65;
+  --leading-170: 1.7;
+  --leading-175: 1.75;
+  --leading-180: 1.8;
+  --leading-185: 1.85;
+
+  /* --- Letter-spacing: la firma dello stile (centesimi di em) ------------
+     tracking-34 = .34em. Non ometterli mai sulle maiuscole. */
+  --tracking-0: 0em;
+  --tracking-04: 0.04em;
+  --tracking-06: 0.06em;
+  --tracking-08: 0.08em;
+  --tracking-10: 0.1em;
+  --tracking-12: 0.12em;
+  --tracking-14: 0.14em;
+  --tracking-16: 0.16em;
+  --tracking-18: 0.18em;
+  --tracking-20: 0.2em;
+  --tracking-22: 0.22em;
+  --tracking-24: 0.24em;
+  --tracking-26: 0.26em;
+  --tracking-28: 0.28em;
+  --tracking-30: 0.3em;
+  --tracking-34: 0.34em;
+  /* unico letter-spacing in px del design: dentro la pill del logo */
+  --tracking-logo: 0.5px;
+
+  /* --- Geometria: raggio 0 ovunque, tondo solo su pill e bullet ---------- */
+  --radius-none: 0px;
+  --radius-pill: 999px;
+
+  /* --- Filetti "inset" (non sono ombre: sono righe) ---------------------- */
+  --shadow-tab-active: inset 0 -2px 0 var(--color-gold);
+  --shadow-rail-active: inset 2px 0 0 var(--color-gold);
+  --shadow-thumb-active: inset 0 0 0 1px var(--color-gold);
+
+  /* --- Breakpoint (README: 1200 / 900 / 640) ---------------------------- */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1200px;
+}
+
+/* Le famiglie tipografiche arrivano da next/font (self-hosted, non dal CDN).
+   `inline` perché il valore rimanda a una variabile definita a runtime. */
+@theme inline {
+  --font-display: var(--font-archivo), 'Archivo', system-ui, sans-serif;
+  --font-body: var(--font-work-sans), 'Work Sans', system-ui, sans-serif;
+  --font-script: var(--font-satisfy), 'Satisfy', cursive;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-night);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Titoli: display Archivo 500, mai maiuscolo forzato, a capo "pretty". */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    text-wrap: pretty;
+  }
+
+  /* Nessun raggio su card, bottoni, input e foto: la geometria è netta. */
+  button,
+  input,
+  select,
+  textarea {
+    border-radius: 0;
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Focus visibile obbligatorio: oro 2px, offset 2px, su tutto l'interattivo. */
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  /* Nasconde la freccia nativa delle select: nel design è un "▼" tipografico. */
+  select {
+    appearance: none;
+  }
+
+  ::placeholder {
+    color: var(--color-ink-4);
+    opacity: 1;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-gold-ink);
+  }
+}
+
+/* ==========================================================================
+   Componenti ricorrenti del design system
+   ========================================================================== */
+
+@layer components {
+  /* --- Segnaposto foto ---------------------------------------------------
+     Fondo notte + righe diagonali a 45°. Quando arriva la foto vera il
+     componente <PhotoSlot> la mette dentro senza cambiare il layout. */
+  .photo-slot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--color-photo-bg);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.045) 0 10px,
+      transparent 10px 20px
+    );
+  }
+
+  .photo-slot-label {
+    position: relative;
+    z-index: 1;
+    max-width: 82%;
+    padding: 4px 9px;
+    border-radius: 4px;
+    background: var(--color-photo-label-bg);
+    color: var(--color-photo-label);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  /* --- Veli sulle foto ---------------------------------------------------- */
+  .veil-page {
+    background: linear-gradient(180deg, rgba(10, 14, 28, 0.35), rgba(10, 14, 28, 0.92));
+  }
+
+  .veil-article {
+    background: linear-gradient(180deg, rgba(10, 14, 28, 0.3), rgba(10, 14, 28, 0.94));
+  }
+
+  .veil-home {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 14, 28, 0.25) 0%,
+      rgba(10, 14, 28, 0.05) 40%,
+      rgba(10, 14, 28, 0.88) 100%
+    );
+  }
+
+  /* --- Fascia CTA --------------------------------------------------------- */
+  .cta-band {
+    background: linear-gradient(135deg, #141b36 0%, #1b1430 100%);
+    border: 1px solid var(--color-cta-line);
+  }
+
+  /* --- Twinkle: l'unica animazione decorativa ----------------------------- */
+  .twinkle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--color-gold-hover);
+    box-shadow: 0 0 6px 1px rgba(255, 217, 138, 0.8);
+    animation: twk 3.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes twk {
+    0%,
+    100% {
+      opacity: 0.15;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+
+  /* --- Hover delle card: la foto respira, il titolo passa in oro ---------- */
+  .card-media {
+    overflow: hidden;
+  }
+
+  .card-media > * {
+    transition: transform 400ms ease-out;
+  }
+
+  .group\/card:hover .card-media > * {
+    transform: scale(1.03);
+  }
+
+  /* --- Corpo dell'articolo: stili condivisi fra pagina pubblica e anteprima */
+  .prose-article a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 200ms ease;
+  }
+
+  .prose-article a:hover {
+    color: var(--color-gold-hover);
+  }
+
+  .prose-article strong {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+}
+
+/* ==========================================================================
+   prefers-reduced-motion: niente twinkle, niente crossfade, niente scale
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .twinkle {
+    animation: none;
+    opacity: 0.45;
+  }
+
+  .card-media > *,
+  .group\/card:hover .card-media > * {
+    transition: none;
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
