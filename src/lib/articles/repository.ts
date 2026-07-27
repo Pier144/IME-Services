@@ -195,8 +195,11 @@ export async function listForAdmin(options: AdminListOptions = {}): Promise<Arti
   const rows = await prisma.article.findMany({
     where: {
       ...(options.status && options.status !== 'all' ? { status: options.status } : {}),
+      // `mode: 'insensitive'` è indispensabile su Postgres: a differenza di
+      // SQLite, `contains` distingue maiuscole e minuscole, e senza questo
+      // cercare "natale" non troverebbe "Natale".
       ...(options.query
-        ? { title: { contains: options.query } }
+        ? { title: { contains: options.query, mode: 'insensitive' as const } }
         : {}),
     },
     orderBy: [{ status: 'asc' }, { publishedAt: 'desc' }, { updatedAt: 'desc' }],

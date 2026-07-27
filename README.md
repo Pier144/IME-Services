@@ -12,13 +12,19 @@ Implementazione in React del design approvato nel turno 2 dell'handoff
 
 ```bash
 npm install
-cp .env.example .env
+cp .env.example .env      # poi incolla DATABASE_URL e DIRECT_URL
 npm run setup
 npm run dev
 ```
 
-`npm run setup` genera il client Prisma, crea il database SQLite e lo riempie con i 14 articoli
-del mockup. Non serve nessun servizio esterno: il sito parte così com'è su <http://localhost:3000>.
+Il database è **Postgres su Supabase**, quindi prima di `npm run setup` vanno incollate in `.env`
+le due stringhe di connessione (Supabase → Project Settings → Database → Connection string).
+`npm run setup` genera il client Prisma, applica le migrazioni e inserisce i 14 articoli del mockup.
+
+> **Attenzione:** in sviluppo si punta allo stesso database della produzione, perché il branching
+> di Supabase richiede un piano a pagamento. Finché è così, `npm run db:seed` scrive sui dati veri.
+> Per lavorare tranquilli conviene un secondo progetto Supabase gratuito da usare come sviluppo, e
+> tenere quello di produzione solo nelle variabili di Vercel.
 
 Area riservata: <http://localhost:3000/admin> · credenziali in `.env`
 (`redazione@ime-service.it` / `cambiami-subito` — **da cambiare** prima di qualunque uso reale).
@@ -31,8 +37,10 @@ Area riservata: <http://localhost:3000/admin> · credenziali in `.env`
 | `npm run build` / `npm start` | build e avvio di produzione |
 | `npm run typecheck` | TypeScript, nessun `any` implicito |
 | `npm run lint` | ESLint (regole Next + TypeScript) |
-| `npm run db:seed` | aggiunge gli articoli mancanti |
-| `npm run db:reset` | azzera il database e riparte dal seed |
+| `npm run db:migrate` | crea una nuova migrazione (sviluppo) |
+| `npm run db:deploy` | applica le migrazioni pendenti (produzione) |
+| `npm run db:seed` | aggiunge gli articoli mancanti — non sovrascrive quelli esistenti |
+| `npm run db:studio` | apre Prisma Studio sul database |
 
 ---
 
@@ -40,7 +48,7 @@ Area riservata: <http://localhost:3000/admin> · credenziali in `.env`
 
 - **Next.js 16 (App Router) + React 19 + TypeScript** — SEO, i18n e rendering statico.
 - **Tailwind CSS v4** con i token del design in `src/app/globals.css`.
-- **Prisma + SQLite** in sviluppo, **pronto per Postgres** in produzione.
+- **Prisma + Postgres** su Supabase (progetto `IME-Services`, regione `eu-west-1`).
 - **react-hook-form + zod** per i form, con gli stessi schemi lato client e lato server.
 - **next/font** per Archivo, Work Sans e Satisfy, self-hostati (nessuna chiamata al CDN di Google).
 
@@ -129,20 +137,32 @@ Tutto passa da `.env` (vedi `.env.example`).
 
 ### Database
 
-Sviluppo su SQLite, zero servizi da avviare. Per la produzione:
+Postgres gestito da Supabase. Servono **due** stringhe di connessione, e non vanno scambiate:
 
-1. `provider = "postgresql"` in `prisma/schema.prisma`
-2. `DATABASE_URL` che punta al database
-3. `npx prisma migrate deploy`
+- `DATABASE_URL` → *Transaction pooler*, porta **6543**. La usa l'applicazione: su serverless ogni
+  istanza aprirebbe connessioni proprie e senza pooler il database esaurisce i posti.
+- `DIRECT_URL` → *Direct connection*, porta **5432**. La usano le migrazioni, che hanno bisogno di
+  una sessione vera per prendere i lock sullo schema.
 
-Nessun tipo usato nello schema è specifico di SQLite: liste e blocchi sono serializzati in JSON
-dentro colonne `String`, quindi lo schema è portabile senza modifiche.
+Le tabelle stanno nello schema `public`, che Supabase espone anche via Data API con la chiave
+`anon` — che è pubblica. La migrazione iniziale quindi **attiva RLS senza policy** e **revoca i
+privilegi** ai ruoli `anon` e `authenticated`: da lì non si legge niente. L'applicazione non è
+toccata perché Prisma si collega con il ruolo `postgres`, che ha `BYPASSRLS`.
+
+Liste e blocchi restano serializzati in JSON dentro colonne testuali: non li interroghiamo mai
+dall'interno, quindi il tipo `Json` nativo non aggiungerebbe nulla.
 
 ### Allegati
 
-`STORAGE_DRIVER=local` (default) scrive in `./storage/uploads`, fuori da `public/`, e i file
-vengono restituiti da `/api/media/…`. `STORAGE_DRIVER=s3` usa un bucket S3-compatibile
-(MinIO, R2, Backblaze…) con le variabili `S3_*`. L'applicazione non sa quale dei due è attivo.
+`STORAGE_DRIVER=local` (default in sviluppo) scrive in `./storage/uploads`, fuori da `public/`.
+`STORAGE_DRIVER=s3` usa Supabase Storage tramite il suo endpoint S3-compatibile — e funziona
+identico con R2, Scaleway, MinIO o S3 vero.
+
+**Il bucket va creato privato.** Nessun allegato ha mai un indirizzo pubblico: si passa sempre da
+`/api/media/<chiave>`, che controlla chi sta chiedendo e poi rimanda a un link firmato valido
+cinque minuti. Disegni allegati alle richieste (`preventivi/`) e curriculum (`candidature/`)
+richiedono una sessione dell'area riservata; a chi non ce l'ha si risponde 404, senza nemmeno
+confermare che il file esista.
 
 Limiti come da design: **20 MB** per gli allegati di progetto, **10 MB** per i curriculum,
 con controllo di dimensione e formato ripetuto lato server.
@@ -152,6 +172,36 @@ con controllo di dimensione e formato ripetuto lato server.
 `MAIL_DRIVER=console` (default) stampa la notifica nei log — comodo in sviluppo, nessuna
 configurazione. In produzione `smtp` (nodemailer) o `resend`. Se l'invio fallisce la richiesta
 **non va persa**: è già salvata a database e l'errore finisce nei log.
+
+---
+
+## Deploy su Vercel
+
+1. **Supabase** — crea il bucket `allegati` **privato** e genera le chiavi in *Storage → S3 Access
+   Keys*. Il progetto è già in `eu-west-1`.
+2. **Vercel** — importa il repository. `vercel.json` fissa la regione `dub1` (Dublino, accanto al
+   database) e il comando di build `prisma generate && prisma migrate deploy && next build`, così
+   ogni deploy applica da sé le migrazioni pendenti.
+3. **Variabili d'ambiente**, da impostare su *tutti* gli ambienti — non solo Production, perché
+   sitemap e pagine articolo interrogano il database **durante la build**:
+
+   `DATABASE_URL` · `DIRECT_URL` · `AUTH_SECRET` · `ADMIN_EMAIL` · `ADMIN_PASSWORD` ·
+   `NEXT_PUBLIC_SITE_URL` · `STORAGE_DRIVER=s3` · `S3_ENDPOINT` · `S3_REGION` · `S3_BUCKET` ·
+   `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` · `MAIL_DRIVER=smtp` e le `SMTP_*`
+4. **Primo popolamento** — una volta sola, da locale con le variabili di produzione:
+   `npm run db:seed`
+5. **Dominio** — collega `ime-service.it` e allinea `NEXT_PUBLIC_SITE_URL`, che alimenta URL
+   canonici, Open Graph e sitemap.
+
+### Cosa resta da sistemare prima del go-live
+
+- **Piano Supabase**: sul gratuito i progetti vengono messi in pausa dopo 7 giorni di inattività.
+  Su un sito con traffico stagionale succede fuori stagione. Serve il piano Pro.
+- **Limite di frequenza dei form**: il contatore è in memoria, quindi vale per singola istanza
+  serverless. I form restano protetti dal campo esca, ma per un limite vero serve un contatore
+  condiviso (Upstash Redis o simile).
+- **DPA e informativa**: Vercel e Supabase sono responsabili del trattamento e vanno elencati
+  nell'informativa privacy, che è ancora una traccia.
 
 ---
 

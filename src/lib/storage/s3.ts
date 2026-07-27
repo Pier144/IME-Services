@@ -3,11 +3,19 @@ import { createHash, createHmac } from 'node:crypto';
 import type { StorageDriver } from './types';
 
 /**
- * Driver S3 (o qualsiasi servizio S3-compatibile: MinIO, R2, Backblaze…).
+ * Driver S3 — usato con lo Storage di Supabase, che espone un endpoint
+ * S3-compatibile con firma SigV4. Funziona identico con R2, MinIO, Scaleway o
+ * S3 vero.
  *
- * Firma le richieste con SigV4 a mano invece di trascinarsi dietro l'SDK AWS:
- * serve una sola operazione, PutObject, e questo evita ~15 MB di dipendenze.
- * Per usarlo basta STORAGE_DRIVER="s3" e le variabili S3_*.
+ * Firma le richieste a mano invece di trascinarsi dietro l'SDK AWS: servono
+ * due sole operazioni, PutObject e la firma di un GET, e questo evita ~15 MB
+ * di dipendenze in un progetto che non ne ha bisogno.
+ *
+ * **Il bucket va tenuto privato.** Nessun file viene mai restituito con un URL
+ * pubblico: `put` registra la chiave, e chi la richiede passa da
+ * `/api/media/<chiave>`, che controlla i permessi e poi rimanda a un link
+ * firmato che scade. Vale soprattutto per curriculum e disegni allegati, che
+ * sono dati personali e non devono stare su indirizzi indovinabili.
  */
 
 type S3Config = {
@@ -16,8 +24,10 @@ type S3Config = {
   bucket: string;
   accessKeyId: string;
   secretAccessKey: string;
-  publicBaseUrl: string;
 };
+
+/** Quanto vive un link firmato. Corto: serve solo a scaricare il file. */
+const SIGNED_URL_TTL_SECONDS = 300;
 
 function readConfig(): S3Config {
   const missing: string[] = [];
@@ -33,7 +43,6 @@ function readConfig(): S3Config {
     bucket: read('S3_BUCKET'),
     accessKeyId: read('S3_ACCESS_KEY_ID'),
     secretAccessKey: read('S3_SECRET_ACCESS_KEY'),
-    publicBaseUrl: (process.env.S3_PUBLIC_BASE_URL ?? '').replace(/\/$/, ''),
   };
 
   if (missing.length > 0) {
@@ -54,30 +63,37 @@ function hmac(key: Buffer | string, data: string): Buffer {
   return createHmac('sha256', key).update(data, 'utf8').digest();
 }
 
-function signingKey(secret: string, date: string, region: string, service: string): Buffer {
+function signingKey(secret: string, date: string, region: string): Buffer {
   const kDate = hmac(`AWS4${secret}`, date);
   const kRegion = hmac(kDate, region);
-  const kService = hmac(kRegion, service);
+  const kService = hmac(kRegion, 's3');
   return hmac(kService, 'aws4_request');
 }
 
+/** Codifica secondo RFC 3986, come pretende SigV4. */
+function rfc3986(value: string): string {
+  return encodeURIComponent(value).replace(
+    /[!'()*]/g,
+    (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
+  );
+}
+
 function encodeKey(key: string): string {
-  return key
-    .split('/')
-    .map((segment) => encodeURIComponent(segment))
-    .join('/');
+  return key.split('/').map(rfc3986).join('/');
+}
+
+/** "20260727T084500Z" e "20260727" */
+function stamps() {
+  const amzDate = new Date().toISOString().replace(/[:-]|\.\d{3}/g, '');
+  return { amzDate, dateStamp: amzDate.slice(0, 8) };
 }
 
 export const s3Driver: StorageDriver = {
   async put({ folder, fileName, mimeType, data }) {
     const config = readConfig();
     const key = `${folder}/${fileName}`;
-    const encoded = encodeKey(key);
-
-    const url = new URL(`${config.endpoint}/${config.bucket}/${encoded}`);
-    const now = new Date();
-    const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, '');
-    const dateStamp = amzDate.slice(0, 8);
+    const url = new URL(`${config.endpoint}/${config.bucket}/${encodeKey(key)}`);
+    const { amzDate, dateStamp } = stamps();
     const payloadHash = sha256(data);
 
     const canonicalHeaders =
@@ -97,25 +113,18 @@ export const s3Driver: StorageDriver = {
     ].join('\n');
 
     const scope = `${dateStamp}/${config.region}/s3/aws4_request`;
-    const stringToSign = [
-      'AWS4-HMAC-SHA256',
-      amzDate,
-      scope,
-      sha256(canonicalRequest),
-    ].join('\n');
+    const stringToSign = ['AWS4-HMAC-SHA256', amzDate, scope, sha256(canonicalRequest)].join('\n');
 
-    const signature = createHmac('sha256', signingKey(config.secretAccessKey, dateStamp, config.region, 's3'))
+    const signature = createHmac('sha256', signingKey(config.secretAccessKey, dateStamp, config.region))
       .update(stringToSign, 'utf8')
       .digest('hex');
-
-    const authorization =
-      `AWS4-HMAC-SHA256 Credential=${config.accessKeyId}/${scope}, ` +
-      `SignedHeaders=${signedHeaders}, Signature=${signature}`;
 
     const response = await fetch(url, {
       method: 'PUT',
       headers: {
-        Authorization: authorization,
+        Authorization:
+          `AWS4-HMAC-SHA256 Credential=${config.accessKeyId}/${scope}, ` +
+          `SignedHeaders=${signedHeaders}, Signature=${signature}`,
         'Content-Type': mimeType,
         'x-amz-content-sha256': payloadHash,
         'x-amz-date': amzDate,
@@ -124,10 +133,51 @@ export const s3Driver: StorageDriver = {
     });
 
     if (!response.ok) {
-      throw new Error(`Upload su S3 non riuscito (${response.status}).`);
+      throw new Error(`Upload sullo storage non riuscito (${response.status}).`);
     }
 
-    const base = config.publicBaseUrl || `${config.endpoint}/${config.bucket}`;
-    return { key, url: `${base}/${encoded}` };
+    // Mai un URL pubblico: si passa sempre dal nostro controllo accessi.
+    return { key, url: `/api/media/${key}` };
+  },
+
+  /**
+   * Link temporaneo per scaricare un oggetto: firma SigV4 messa in
+   * querystring, valida cinque minuti. Il bucket resta privato.
+   */
+  async signedUrl(key) {
+    const config = readConfig();
+    const url = new URL(`${config.endpoint}/${config.bucket}/${encodeKey(key)}`);
+    const { amzDate, dateStamp } = stamps();
+    const scope = `${dateStamp}/${config.region}/s3/aws4_request`;
+
+    const params: Record<string, string> = {
+      'X-Amz-Algorithm': 'AWS4-HMAC-SHA256',
+      'X-Amz-Credential': `${config.accessKeyId}/${scope}`,
+      'X-Amz-Date': amzDate,
+      'X-Amz-Expires': String(SIGNED_URL_TTL_SECONDS),
+      'X-Amz-SignedHeaders': 'host',
+    };
+
+    const canonicalQuery = Object.keys(params)
+      .sort()
+      .map((name) => `${rfc3986(name)}=${rfc3986(params[name])}`)
+      .join('&');
+
+    const canonicalRequest = [
+      'GET',
+      url.pathname,
+      canonicalQuery,
+      `host:${url.host}\n`,
+      'host',
+      'UNSIGNED-PAYLOAD',
+    ].join('\n');
+
+    const stringToSign = ['AWS4-HMAC-SHA256', amzDate, scope, sha256(canonicalRequest)].join('\n');
+
+    const signature = createHmac('sha256', signingKey(config.secretAccessKey, dateStamp, config.region))
+      .update(stringToSign, 'utf8')
+      .digest('hex');
+
+    return `${url.origin}${url.pathname}?${canonicalQuery}&X-Amz-Signature=${signature}`;
   },
 };

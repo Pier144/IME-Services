@@ -22,6 +22,12 @@ export function readLocalFile(key: string) {
   return localDriver.read?.(key) ?? Promise.resolve(null);
 }
 
+/** Link temporaneo verso il bucket privato. `null` con lo storage locale. */
+export function signedUrlFor(key: string): Promise<string> | null {
+  const active = driver();
+  return active.signedUrl ? active.signedUrl(key) : null;
+}
+
 /** Nome di file prevedibile e sicuro: `slug-del-nome-<uuid>.ext`. */
 function safeFileName(original: string): string {
   const lastDot = original.lastIndexOf('.');

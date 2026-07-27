@@ -1,20 +1,27 @@
 // IME Service — schema dati
 //
-// In sviluppo gira su SQLite (nessun servizio esterno da avviare).
-// Per andare in produzione su Postgres bastano due mosse:
-//   1. `provider = "postgresql"` qui sotto
-//   2. DATABASE_URL che punta al database
-// Nessun tipo usato qui è specifico di SQLite: le liste (tag, blocchi del
-// corpo, allegati) sono serializzate in JSON dentro colonne String, quindi lo
-// schema è portabile senza modifiche.
+// Postgres gestito da Supabase (progetto IME-Services, regione eu-west-1).
+//
+// Servono due stringhe di connessione, ed è importante non scambiarle:
+//   DATABASE_URL → il pooler (Supavisor, porta 6543). Lo usa l'applicazione:
+//                  su serverless le connessioni si moltiplicano e senza pooler
+//                  il database finisce i posti disponibili.
+//   DIRECT_URL   → la connessione diretta (porta 5432). La usano le migrazioni,
+//                  che hanno bisogno di una sessione vera e di poter prendere
+//                  i lock sullo schema.
+//
+// Le liste (tag, blocchi del corpo, allegati) restano serializzate in JSON
+// dentro colonne testuali: non le interroghiamo mai dall'interno, quindi il
+// tipo `Json` nativo non aggiungerebbe niente e toglierebbe portabilità.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 /// Articolo delle news. Gestito dall'area riservata (/admin/news).

@@ -22,6 +22,20 @@ export interface StorageDriver {
   }): Promise<{ key: string; url: string }>;
   /** Solo il driver locale: serve al route handler che restituisce il file. */
   read?(key: string): Promise<{ data: Buffer; mimeType: string } | null>;
+  /** Solo il driver S3: link temporaneo verso un bucket privato. */
+  signedUrl?(key: string): Promise<string>;
+}
+
+/**
+ * Cartelle che contengono dati personali: allegati alle richieste di preventivo
+ * (disegni, planimetrie) e curriculum. Chi le chiede deve avere una sessione
+ * dell'area riservata — sul sito pubblico non compaiono mai.
+ */
+const PROTECTED_FOLDERS: readonly string[] = ['preventivi', 'candidature'];
+
+export function isProtectedKey(key: string): boolean {
+  const folder = key.split('/')[0];
+  return PROTECTED_FOLDERS.includes(folder);
 }
 
 export function parseStoredFiles(raw: string | null | undefined): StoredFile[] {
