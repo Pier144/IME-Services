@@ -143,7 +143,7 @@ export default async function ArticlePage({
       <Container size="article" className="pt-40 lg:pt-56">
         <article>
           {article.excerpt && (
-            <p className="font-body text-17 leading-165 font-light text-ink md:text-20">
+            <p className="font-body text-17 leading-170 text-ink md:text-20">
               {article.excerpt}
             </p>
           )}

@@ -95,12 +95,12 @@ export function Field({
  * ----------------------------------------------------------------------- */
 
 const controlBase =
-  'w-full border bg-field-bg font-body font-light text-ink-2 rounded-none ' +
+  'w-full border bg-field-bg font-body font-medium text-ink-2 rounded-none ' +
   'transition-colors duration-200 ease-out placeholder:text-ink-4 ' +
   'focus:border-gold focus:outline-none focus-visible:outline-none';
 
-const controlPublic = 'px-14 py-12 text-13';
-const controlAdmin = 'px-14 py-11 text-13-5';
+const controlPublic = 'px-14 py-12 text-14';
+const controlAdmin = 'px-14 py-11 text-14';
 
 function stateBorder(invalid?: boolean) {
   return invalid ? 'border-red' : 'border-field-border';
@@ -145,7 +145,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       aria-invalid={invalid || undefined}
       className={cn(
         controlBase,
-        'resize-y leading-160',
+        'resize-y leading-170',
         tone === 'admin' ? controlAdmin : controlPublic,
         stateBorder(invalid),
         className,
@@ -205,7 +205,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
     <label
       htmlFor={id}
       className={cn(
-        'flex cursor-pointer items-start gap-10 font-body text-12-5 font-light text-ink-3',
+        'flex cursor-pointer items-start gap-10 font-body text-13-5 font-medium text-ink-3',
         className,
       )}
     >
@@ -264,7 +264,7 @@ export function Toggle({
           )}
         />
       </button>
-      <span className="font-body text-13-5 font-light text-ink-2">
+      <span className="font-body text-13-5 font-medium text-ink-2">
         {checked ? labelOn : labelOff}
       </span>
     </div>

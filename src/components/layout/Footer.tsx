@@ -25,7 +25,7 @@ export function Footer({ locale }: { locale: Locale }) {
 
   return (
     <footer className="mt-80 border-t border-hairline px-24 pt-44 pb-40 lg:px-90">
-      <div className="flex flex-col gap-40 font-body text-13-5 leading-180 font-light text-ink-3 md:flex-row md:gap-60">
+      <div className="flex flex-col gap-40 font-body text-14 leading-180 font-medium text-ink-3 md:flex-row md:gap-60">
         <div className="flex-1">
           <div className="mb-12">
             <LogoIme size="footer" />

@@ -75,10 +75,10 @@ export function DeleteArticleButton({ id, title }: { id: string; title: string }
             <Display as="h2" id={`delete-${id}`} className="text-21 md:text-24">
               {t.admin.news.deleteTitle}
             </Display>
-            <p className="mt-10 font-body text-14 leading-170 font-light text-ink-3">
+            <p className="mt-10 font-body text-15 leading-170 font-medium text-ink-3">
               {t.admin.news.deleteText}
             </p>
-            <p className="mt-14 border-l-2 border-field-border pl-14 font-body text-14 text-ink-2">
+            <p className="mt-14 border-l-2 border-field-border pl-14 font-body text-15 text-ink-2">
               {title}
             </p>
 

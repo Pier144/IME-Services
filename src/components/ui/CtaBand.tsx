@@ -38,7 +38,7 @@ export function CtaBand({
       <Display as="h2" className={home ? 'text-34' : 'text-30'}>
         {title}
       </Display>
-      <p className="mt-10 font-body text-15 font-light text-ink-3">{subtitle}</p>
+      <p className="mt-10 font-body text-16 text-ink-3">{subtitle}</p>
       <ButtonLink
         href={href}
         variant="gold"

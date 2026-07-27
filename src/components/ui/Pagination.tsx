@@ -28,7 +28,7 @@ export function Pagination({
 
   const box =
     size === 'admin'
-      ? 'size-32 text-13 font-light'
+      ? 'size-32 text-13 font-medium'
       : 'size-38 text-13 font-normal';
 
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);

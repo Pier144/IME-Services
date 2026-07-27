@@ -57,10 +57,10 @@ export default async function CustomSubjectsPage({
           <Display as="h1" className="mt-18 max-w-420 text-32 leading-114 md:text-46">
             {t.custom.hero.title}
           </Display>
-          <p className="mt-16 max-w-440 font-body text-16 leading-170 font-light text-ink-2">
+          <p className="mt-16 max-w-440 font-body text-16 leading-170 text-ink-2">
             {t.custom.hero.text}
           </p>
-          <dl className="mt-34 flex flex-wrap gap-24 font-body text-13-5 leading-150 font-light text-ink-3 md:gap-34">
+          <dl className="mt-34 flex flex-wrap gap-24 font-body text-14 leading-150 font-medium text-ink-3 md:gap-34">
             {t.custom.hero.numbers.map((number) => (
               <div key={number.label}>
                 <dt className="sr-only">{number.label}</dt>
@@ -107,7 +107,9 @@ export default async function CustomSubjectsPage({
                 {step.number}
               </p>
               <h3 className="mt-10 font-display text-21 font-medium">{step.title}</h3>
-              <p className="mt-8 font-body text-14 leading-165 font-light text-ink-3">{step.text}</p>
+              <p className="mt-8 font-body text-15 leading-165 font-medium text-ink-3">
+                {step.text}
+              </p>
             </li>
           ))}
         </ol>
@@ -126,13 +128,13 @@ export default async function CustomSubjectsPage({
             sizes="(max-width: 1200px) 100vw, 330px"
           />
           <div className="border border-hairline bg-panel-fabbrica px-24 py-26 md:px-28">
-            <Eyebrow tone="rose" size="sm" tracking="24">
+            <Eyebrow tone="rose" size="sm" tracking="18">
               {t.custom.aside.eyebrow}
             </Eyebrow>
             <Display as="h2" className="mt-12 text-22 leading-135">
               {t.custom.aside.title}
             </Display>
-            <p className="mt-12 font-body text-14 leading-180 font-light text-ink-2">
+            <p className="mt-12 font-body text-15 leading-180 font-medium text-ink-2">
               <a href={`tel:${site.phoneHref}`} className="hover:text-gold">
                 Tel. {site.phone}
               </a>
@@ -145,7 +147,7 @@ export default async function CustomSubjectsPage({
                 {site.email}
               </a>
             </p>
-            <p className="mt-14 border-t border-hairline-strong pt-14 font-body text-13 leading-160 font-light text-ink-3">
+            <p className="mt-14 border-t border-hairline-strong pt-14 font-body text-14 leading-170 font-medium text-ink-3">
               {addressLine}
               <br />
               {site.openingHours}

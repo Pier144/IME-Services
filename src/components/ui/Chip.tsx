@@ -34,7 +34,7 @@ export function ChipLink({
 
 export function chipClasses(active?: boolean) {
   return cn(
-    'inline-flex items-center rounded-pill px-16 py-8 font-body text-12-5 font-normal',
+    'inline-flex items-center rounded-pill px-16 py-8 font-body text-12-5 font-medium',
     'transition-colors duration-200 ease-out',
     active
       ? 'bg-gold text-gold-ink'
@@ -58,7 +58,7 @@ export function Tag({
     <span
       className={cn(
         'inline-flex items-center gap-8 rounded-pill border border-field-border px-14 py-7',
-        'font-body text-11-5 font-normal tracking-10 text-ink-2',
+        'font-body text-11-5 font-medium tracking-10 text-ink-2',
         className,
       )}
     >

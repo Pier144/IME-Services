@@ -23,7 +23,10 @@ export const site = {
   email: 'info@ime-service.it',
   editorialEmail: 'redazione@ime-service.it',
   openingHours: 'Lun-Ven 8:00-12:30 · 14:00-18:00',
-  foundedYear: 1968,
+  // Anno di costituzione della società (srls). Verificato: la P.IVA 04236040236
+  // risulta a registro dal 2014 — la forma "srls" non esisteva prima del 2012,
+  // quindi il 1968 che compariva qui non poteva riferirsi a questa società.
+  foundedYear: 2014,
   url: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'http://localhost:3000',
 } as const;
 

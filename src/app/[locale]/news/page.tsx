@@ -80,13 +80,13 @@ export default async function NewsPage({
       {/* --- Intestazione + filtri ---------------------------------------- */}
       <Container className="flex flex-col gap-24 pt-44 lg:flex-row lg:items-end lg:justify-between lg:pt-64">
         <div>
-          <Eyebrow tone="gold" size="md" tracking="34">
+          <Eyebrow tone="gold" size="md" tracking="16">
             {t.news.eyebrow}
           </Eyebrow>
           <Display as="h1" className="mt-14 text-32 leading-110 md:text-46">
             {t.news.title}
           </Display>
-          <p className="mt-10 max-w-520 font-body text-16 leading-160 font-light text-ink-2">
+          <p className="mt-10 max-w-520 font-body text-16 leading-170 text-ink-2">
             {t.news.intro}
           </p>
         </div>
@@ -121,7 +121,7 @@ export default async function NewsPage({
       {/* --- Griglia ------------------------------------------------------- */}
       <Container className="pt-34 pb-20">
         {page.items.length === 0 && !featured ? (
-          <p className="border border-hairline bg-panel-ime px-24 py-40 text-center font-body text-15 font-light text-ink-3">
+          <p className="border border-hairline bg-panel-ime px-24 py-40 text-center font-body text-16 text-ink-3">
             {t.news.empty}
           </p>
         ) : (

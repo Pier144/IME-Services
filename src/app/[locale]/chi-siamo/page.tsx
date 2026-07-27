@@ -60,7 +60,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <Display as="h2" className="flex-1 text-24 leading-140 md:text-30">
           {t.about.statement}
         </Display>
-        <div className="flex-1 font-body text-16 leading-185 font-light text-ink-2">
+        <div className="flex-1 font-body text-16 leading-185 text-ink-2">
           <p>
             {t.about.body1} <LogoFabbrica className="text-18" />.
           </p>
@@ -88,7 +88,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                   {phase.year}
                 </p>
                 <h3 className="mt-10 font-display text-20 font-medium">{phase.title}</h3>
-                <p className="mt-8 font-body text-14-5 leading-170 font-light text-ink-3">
+                <p className="mt-8 font-body text-15 leading-170 font-medium text-ink-3">
                   {phase.text}
                 </p>
               </li>
@@ -111,7 +111,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 <span className="block font-display text-34 font-medium text-gold md:text-44">
                   {number.value}
                 </span>
-                <span className="mt-8 block font-body text-11-5 tracking-18 text-ink-3">
+                <span className="mt-8 block font-body text-11-5 font-medium tracking-18 text-ink-3">
                   {number.label}
                 </span>
               </dd>
@@ -134,7 +134,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                 sizes="(max-width: 900px) 100vw, 340px"
               />
               <h3 className="mt-12 font-display text-18 font-medium">{place.title}</h3>
-              <p className="mt-5 font-body text-13-5 leading-160 font-light text-ink-3">
+              <p className="mt-5 font-body text-14 leading-170 font-medium text-ink-3">
                 {place.text}
               </p>
             </div>

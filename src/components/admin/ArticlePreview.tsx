@@ -62,7 +62,7 @@ export function ArticlePreview({
           {title || placeholderTitle}
         </Display>
         {excerpt && (
-          <p className="mt-10 font-body text-13-5 leading-170 font-light text-ink-2">{excerpt}</p>
+          <p className="mt-10 font-body text-14 leading-170 font-medium text-ink-2">{excerpt}</p>
         )}
         <ArticleBody blocks={blocks} scale="preview" className="mt-12" />
       </div>

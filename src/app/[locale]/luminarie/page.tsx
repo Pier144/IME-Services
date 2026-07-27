@@ -144,7 +144,7 @@ export default async function LuminariePage({
       <Container className="pt-34 pb-60 lg:pb-80">
         {filtered.length === 0 ? (
           <div className="border border-hairline bg-panel-ime px-24 py-40 text-center">
-            <p className="font-body text-15 font-light text-ink-2">{t.luminarie.empty}</p>
+            <p className="font-body text-16 text-ink-2">{t.luminarie.empty}</p>
             <Link
               href={hrefFor(season)}
               className="mt-14 inline-block font-body text-12-5 font-medium tracking-14 text-gold hover:text-gold-hover"

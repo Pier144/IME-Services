@@ -4,24 +4,24 @@ import { cn } from '@/lib/utils';
 export type Crumb = { label: string; href?: string };
 
 /**
- * Briciole di pane in maiuscoletto spaziato: .3em negli hero, .26em sulla
+ * Briciole di pane in maiuscoletto spaziato: .16em negli hero, .18em sulla
  * scheda soggetto. Il separatore è una barra, come nel mockup.
  */
 export function Breadcrumb({
   items,
-  tracking = '30',
+  tracking = '16',
   className,
 }: {
   items: Crumb[];
-  tracking?: '26' | '30';
+  tracking?: '16' | '18';
   className?: string;
 }) {
   return (
     <nav
       aria-label="Breadcrumb"
       className={cn(
-        'font-body text-11 font-normal text-ink-3',
-        tracking === '26' ? 'tracking-26' : 'tracking-30',
+        'font-body text-11-5 font-medium text-ink-3',
+        tracking === '18' ? 'tracking-18' : 'tracking-16',
         className,
       )}
     >

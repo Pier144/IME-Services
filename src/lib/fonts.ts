@@ -1,27 +1,26 @@
-import { Archivo, Work_Sans, Satisfy } from 'next/font/google';
+import { Archivo, Satisfy } from 'next/font/google';
 
 /**
  * Font self-hostati da next/font: i file vengono scaricati a build time e serviti
  * dal nostro dominio, senza chiamate al CDN di Google (requisito del README).
  *
- * Archivo  → display (titoli, nomi soggetto, numeri). Peso 500; 800 italic solo
- *            dentro la pill del logo IME.
- * Work Sans→ testo: 300 paragrafi lunghi, 400 UI, 500 link/CTA, 600 bottone pieno.
- * Satisfy  → solo il wordmark "La Fabbrica di Babbo Natale".
+ * Una sola famiglia per tutto il sito, titoli e testo:
+ *
+ * Archivo → 400 il corpo dei paragrafi, 500 il testo sotto i 16px e i titoli,
+ *           600 i bottoni pieni, 800 italic dentro la pill del logo IME.
+ * Satisfy → solo il wordmark "La Fabbrica di Babbo Natale".
+ *
+ * Archivo è caricato come font variabile — nessun `weight` dichiarato — quindi
+ * arrivano due soli file (tondo e corsivo) invece di otto tagli statici, e tutti
+ * i pesi restano disponibili. Prima di questo cambio il testo era in Work Sans
+ * peso 300, e quel peso è la ragione per cui il sito risultava esile: chiaro su
+ * fondo scuro i tratti sottili si sfilacciano. Non va reintrodotto.
  */
 
 export const archivo = Archivo({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '800'],
   style: ['normal', 'italic'],
   variable: '--font-archivo',
-  display: 'swap',
-});
-
-export const workSans = Work_Sans({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['300', '400', '500', '600'],
-  variable: '--font-work-sans',
   display: 'swap',
 });
 
@@ -33,4 +32,4 @@ export const satisfy = Satisfy({
   display: 'swap',
 });
 
-export const fontVariables = `${archivo.variable} ${workSans.variable} ${satisfy.variable}`;
+export const fontVariables = `${archivo.variable} ${satisfy.variable}`;

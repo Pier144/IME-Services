@@ -37,24 +37,22 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
 
   return (
     <Container size="article" className="pt-50 pb-60 lg:pt-70 lg:pb-80">
-      <Eyebrow tone="gold" size="sm" tracking="30">
+      <Eyebrow tone="gold" size="sm" tracking="16">
         {t.privacy.eyebrow}
       </Eyebrow>
       <Display as="h1" className="mt-14 text-32 leading-110 md:text-46">
         {t.privacy.title}
       </Display>
-      <p className="mt-16 font-body text-17 leading-165 font-light text-ink md:text-20">
-        {t.privacy.intro}
-      </p>
+      <p className="mt-16 font-body text-17 leading-165 text-ink md:text-20">{t.privacy.intro}</p>
 
-      <p className="mt-26 border-l-2 border-gold py-6 pl-26 font-body text-14 leading-170 font-light text-ink-3">
+      <p className="mt-26 border-l-2 border-gold py-6 pl-26 font-body text-15 leading-170 font-medium text-ink-3">
         {t.privacy.placeholder}
       </p>
 
       {t.privacy.sections.map((section) => (
         <section key={section.title} className="mt-34">
           <h2 className="font-display text-21 font-medium md:text-24">{section.title}</h2>
-          <p className="mt-10 font-body text-15-5 leading-185 font-light text-ink-2 md:text-16-5">
+          <p className="mt-10 font-body text-16 leading-185 text-ink-2 md:text-17">
             {section.text}
           </p>
         </section>

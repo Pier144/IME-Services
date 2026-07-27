@@ -48,14 +48,14 @@ export function PageHero({
       <div aria-hidden="true" className="veil-page absolute inset-0" />
       {showTwinkles && <Twinkles points={twinklePresets.pageHero} />}
       <div className="absolute inset-x-0 bottom-44 px-24 lg:px-90">
-        <Eyebrow tone={eyebrowTone} size="sm" tracking="30" className="mb-12">
+        <Eyebrow tone={eyebrowTone} size="sm" tracking="16" className="mb-12">
           {eyebrow}
         </Eyebrow>
         <Display as="h1" className="text-32 leading-110 md:text-46">
           {title}
         </Display>
         {intro && (
-          <p className="mt-10 max-w-520 font-body text-16 leading-160 font-light text-ink-2">
+          <p className="mt-10 max-w-520 font-body text-16 leading-170 text-ink-2">
             {intro}
           </p>
         )}

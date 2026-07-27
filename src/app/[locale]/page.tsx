@@ -63,10 +63,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <Display as="h3" className="text-24 text-white md:text-30">
               {t.home.souls.ime.title}
             </Display>
-            <Eyebrow tone="blue" size="lg" tracking="22" className="mt-6">
+            <Eyebrow tone="blue" size="lg" tracking="16" className="mt-6">
               {t.home.souls.ime.eyebrow}
             </Eyebrow>
-            <ul className="mt-26 flex flex-col gap-12 font-body text-15 font-light text-ink-2">
+            <ul className="mt-26 flex flex-col gap-12 font-body text-16 text-ink-2">
               {t.home.souls.ime.bullets.map((bullet) => (
                 <li key={bullet} className="flex items-baseline gap-10">
                   <span
@@ -86,10 +86,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
           <div className="mt-24 flex-1 border border-panel-line bg-panel-fabbrica px-24 py-34 md:mt-0 md:px-46 md:py-44">
             <LogoFabbrica as="h3" className="text-28 md:text-34" />
-            <Eyebrow tone="rose" size="lg" tracking="22" className="mt-6">
+            <Eyebrow tone="rose" size="lg" tracking="16" className="mt-6">
               {t.home.souls.fabbrica.eyebrow}
             </Eyebrow>
-            <ul className="mt-26 flex flex-col gap-12 font-body text-15 font-light text-ink-2">
+            <ul className="mt-26 flex flex-col gap-12 font-body text-16 text-ink-2">
               {t.home.souls.fabbrica.bullets.map((bullet) => (
                 <li key={bullet} className="flex items-baseline gap-10">
                   <span
@@ -131,7 +131,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <Display as="h2" className="text-26 md:text-32">
               {t.home.news.title}
             </Display>
-            <p className="mt-12 font-body text-15 leading-160 font-light text-ink-3">
+            <p className="mt-12 font-body text-16 leading-170 text-ink-3">
               {t.home.news.intro}
             </p>
             <ArrowLink href={localePath(typedLocale, routes.news)} className="mt-22">
@@ -141,7 +141,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
           <div className="flex flex-1 flex-col">
             {latest.length === 0 && (
-              <p className="font-body text-15 font-light text-ink-3">{t.home.news.empty}</p>
+              <p className="font-body text-16 text-ink-3">{t.home.news.empty}</p>
             )}
             {latest.map((article) => {
               const category = getNewsCategory(article.category);
@@ -153,7 +153,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 >
                   <time
                     dateTime={(article.publishedAt ?? article.createdAt).toISOString()}
-                    className="flex-none font-body text-12 text-ink-3 md:w-90"
+                    className="flex-none font-body text-12 font-medium text-ink-3 md:w-90"
                   >
                     {formatShortDate(article.publishedAt ?? article.createdAt, typedLocale)}
                   </time>
@@ -187,7 +187,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 /** L'occhiello di categoria: blu per il mondo impianti, rosa per la Fabbrica. */
 function cnCategory(tone: 'blue' | 'rose' | undefined) {
   return [
-    'font-body text-10-5 font-normal tracking-16',
+    'font-body text-10-5 font-medium tracking-16',
     tone === 'rose' ? 'text-rose' : 'text-blue-lt',
   ].join(' ');
 }

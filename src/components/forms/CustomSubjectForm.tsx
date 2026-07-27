@@ -115,7 +115,7 @@ export function CustomSubjectForm({ catalog }: { catalog: RequestItem[] }) {
         <Display as="h2" className="text-24 md:text-28">
           {t.custom.form.successTitle}
         </Display>
-        <p className="mt-14 max-w-520 font-body text-15-5 leading-170 font-light text-ink-2">
+        <p className="mt-14 max-w-520 font-body text-16 leading-170 text-ink-2">
           {t.custom.form.successText}
         </p>
         <Button variant="ghostGold" size="compact" className="mt-24" onClick={() => setSubmitted(false)}>
@@ -135,7 +135,7 @@ export function CustomSubjectForm({ catalog }: { catalog: RequestItem[] }) {
       <Display as="h2" className="text-24 md:text-28">
         {t.custom.form.title}
       </Display>
-      <p className="mt-8 font-body text-14 font-light text-ink-3">{t.custom.form.subtitle}</p>
+      <p className="mt-8 font-body text-15 font-medium text-ink-3">{t.custom.form.subtitle}</p>
 
       {/* Soggetti arrivati dalla richiesta multipla */}
       {ready && items.length > 0 && (
@@ -152,7 +152,7 @@ export function CustomSubjectForm({ catalog }: { catalog: RequestItem[] }) {
               </li>
             ))}
           </ul>
-          <p className="mt-10 font-body text-12 font-light text-ink-4">
+          <p className="mt-10 font-body text-13 font-medium text-ink-4">
             {t.custom.form.selectedSubjectsHint}
           </p>
         </div>

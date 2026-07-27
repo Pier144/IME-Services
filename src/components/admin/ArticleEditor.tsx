@@ -262,7 +262,7 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
         </p>
       )}
       {!canPublish && (
-        <p className="border-b border-hairline px-24 py-10 font-body text-12-5 font-light text-ink-4">
+        <p className="border-b border-hairline px-24 py-10 font-body text-12-5 font-medium text-ink-4">
           {t.admin.editor.publishBlocked}
         </p>
       )}
@@ -400,7 +400,7 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
                 value={draft.bodyText}
                 onChange={(event) => update('bodyText', event.target.value)}
                 placeholder={t.admin.editor.bodyPlaceholder}
-                className="h-200 w-full resize-y bg-field-bg px-16 py-16 font-body text-14 leading-185 font-light text-ink-2 outline-none placeholder:text-ink-4"
+                className="h-200 w-full resize-y bg-field-bg px-16 py-16 font-body text-15 leading-185 font-medium text-ink-2 outline-none placeholder:text-ink-4"
               />
             </div>
           </div>
@@ -410,7 +410,7 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
             <FieldLabel htmlFor={`${uid}-tag`} tone="admin">
               {t.admin.editor.labels.tags}
             </FieldLabel>
-            <div className="flex flex-wrap items-center gap-8 font-body text-12-5 font-light text-ink-2">
+            <div className="flex flex-wrap items-center gap-8 font-body text-12-5 font-medium text-ink-2">
               {draft.tags.map((tag) => (
                 <span
                   key={tag}
@@ -521,7 +521,7 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
               unit={t.admin.editor.characters}
             />
 
-            <p className="mt-12 font-body text-13 leading-170 font-light text-ink-3">
+            <p className="mt-12 font-body text-13 leading-170 font-medium text-ink-3">
               {t.admin.editor.url}
               <br />
               <span className="text-ink-2">
@@ -552,7 +552,7 @@ function SeoCounter({
   const width = Math.min(100, Math.round((value / limit) * 100));
 
   return (
-    <div className="mt-12 font-body text-13 leading-170 font-light text-ink-3">
+    <div className="mt-12 font-body text-13 leading-170 font-medium text-ink-3">
       {label} ·{' '}
       <span className={over ? 'text-red' : undefined}>
         {value}/{limit}

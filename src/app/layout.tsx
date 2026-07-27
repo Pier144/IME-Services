@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: `%s | ${site.shortName}`,
   },
   description:
-    'Dal 1968 a Domegliara (VR): luminarie artistiche per città ed eventi, impianti elettrici civili e industriali.',
+    'Dal 2014 a Domegliara (VR): luminarie artistiche per città ed eventi, impianti elettrici civili e industriali.',
   applicationName: site.shortName,
   authors: [{ name: site.legalName }],
   formatDetection: { telephone: true, address: false, email: false },

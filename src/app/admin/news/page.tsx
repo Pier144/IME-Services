@@ -64,7 +64,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
             <Display as="h1" className="text-26 md:text-30">
               {t.admin.news.title}
             </Display>
-            <p className="mt-5 font-body text-13-5 font-light text-ink-3">
+            <p className="mt-5 font-body text-13-5 font-medium text-ink-3">
               {counts.total} {counts.total === 1 ? t.admin.news.countArticle : t.admin.news.countArticles}
               {counts.drafts > 0 && (
                 <>
@@ -114,7 +114,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
         </div>
 
         {page.items.length === 0 ? (
-          <p className="border-b border-hairline py-40 text-center font-body text-14 font-light text-ink-3">
+          <p className="border-b border-hairline py-40 text-center font-body text-15 font-medium text-ink-3">
             {counts.total === 0 ? t.admin.news.emptyAll : t.admin.news.empty}
           </p>
         ) : (
@@ -123,7 +123,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
               <li
                 key={article.id}
                 className={cn(
-                  'flex flex-col gap-10 border-b border-hairline-soft py-16 font-body text-14 font-light text-ink-2',
+                  'flex flex-col gap-10 border-b border-hairline-soft py-16 font-body text-15 font-medium text-ink-2',
                   'md:grid md:items-center md:gap-0 md:py-13',
                   COLUMNS,
                 )}
@@ -186,7 +186,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
         )}
 
         {/* --- Piede --------------------------------------------------------- */}
-        <div className="mt-22 flex flex-wrap items-center justify-between gap-14 font-body text-13 font-light text-ink-3">
+        <div className="mt-22 flex flex-wrap items-center justify-between gap-14 font-body text-13 font-medium text-ink-3">
           <span>
             {page.from}-{page.to} {t.admin.news.results} {page.total}
           </span>

@@ -68,7 +68,7 @@ export default async function SubjectPage({
     <>
       <Container className="pt-26">
         <Breadcrumb
-          tracking="26"
+          tracking="18"
           items={[
             { label: t.nav.luminarie.toUpperCase(), href: localePath(typedLocale, routes.luminarie) },
             {
@@ -91,11 +91,11 @@ export default async function SubjectPage({
             {subject.name}
           </Display>
           {type && (
-            <Eyebrow tone="gold" size="sm" tracking="20" className="mt-10">
+            <Eyebrow tone="gold" size="sm" tracking="16" className="mt-10">
               {t.subject.typeLabel} · {type.display}
             </Eyebrow>
           )}
-          <p className="mt-18 font-body text-15-5 leading-170 font-light text-ink-2">
+          <p className="mt-18 font-body text-16 leading-170 text-ink-2">
             {subject.description}
           </p>
 
@@ -105,7 +105,7 @@ export default async function SubjectPage({
               {subject.specs.map((spec) => (
                 <div
                   key={spec.key}
-                  className="flex justify-between gap-20 border-b border-hairline py-13 font-body text-14 font-light"
+                  className="flex justify-between gap-20 border-b border-hairline py-13 font-body text-15 font-medium"
                 >
                   <dt className="text-ink-3">{t.subject.specs[spec.key]}</dt>
                   <dd className="text-right text-ink">{spec.value}</dd>
@@ -126,7 +126,7 @@ export default async function SubjectPage({
             <AddToRequestButton slug={subject.slug} name={subject.name} type={subject.type} />
           </div>
 
-          <p className="mt-16 font-body text-12-5 leading-160 font-light text-ink-3">
+          <p className="mt-16 font-body text-14 leading-170 font-medium text-ink-3">
             {t.subject.note}
           </p>
         </div>

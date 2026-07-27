@@ -42,13 +42,13 @@ export default async function ImpiantiPage({ params }: { params: Promise<{ local
       {/* --- Hero split ---------------------------------------------------- */}
       <section className="flex flex-col items-stretch lg:flex-row">
         <div className="flex-1 bg-panel-ime px-24 py-50 lg:py-70 lg:pr-60 lg:pl-90">
-          <Eyebrow tone="blue" size="sm" tracking="30">
+          <Eyebrow tone="blue" size="sm" tracking="16">
             {t.impianti.eyebrow}
           </Eyebrow>
           <Display as="h1" className="mt-18 max-w-420 text-32 leading-114 md:text-46">
             {t.impianti.title}
           </Display>
-          <p className="mt-16 max-w-440 font-body text-16 leading-170 font-light text-ink-2">
+          <p className="mt-16 max-w-440 font-body text-16 leading-170 text-ink-2">
             {t.impianti.intro}
           </p>
           <div className="mt-30 flex flex-wrap gap-14">
@@ -92,7 +92,7 @@ export default async function ImpiantiPage({ params }: { params: Promise<{ local
                 sizes="(max-width: 900px) 100vw, 360px"
               />
               <h3 className="mt-26 font-display text-21 font-medium md:text-23">{service.title}</h3>
-              <p className="mt-10 font-body text-14-5 leading-175 font-light text-ink-3">
+              <p className="mt-10 font-body text-15 leading-175 font-medium text-ink-3">
                 {service.text}
               </p>
             </article>
@@ -123,7 +123,7 @@ export default async function ImpiantiPage({ params }: { params: Promise<{ local
                 {step.number}
               </p>
               <h3 className="mt-9 font-display text-20 font-medium">{step.title}</h3>
-              <p className="mt-7 font-body text-14 leading-165 font-light text-ink-3">{step.text}</p>
+              <p className="mt-7 font-body text-15 leading-165 font-medium text-ink-3">{step.text}</p>
             </li>
           ))}
         </ol>
@@ -143,20 +143,20 @@ export default async function ImpiantiPage({ params }: { params: Promise<{ local
                 <span className="flex-1 font-display text-18 font-medium md:text-19">
                   {sector.title}
                 </span>
-                <span className="font-body text-13-5 font-light text-ink-3">{sector.note}</span>
+                <span className="font-body text-13-5 font-medium text-ink-3">{sector.note}</span>
               </li>
             ))}
           </ul>
         </div>
 
         <aside className="w-full flex-none border border-hairline bg-panel-fabbrica px-24 py-30 lg:w-340 lg:px-32">
-          <Eyebrow tone="rose" size="sm" tracking="24">
+          <Eyebrow tone="rose" size="sm" tracking="18">
             {t.impianti.aside.eyebrow}
           </Eyebrow>
           <Display as="h2" className="mt-12 text-21 leading-135 md:text-23">
             {t.impianti.aside.title}
           </Display>
-          <p className="mt-10 font-body text-14 leading-170 font-light text-ink-3">
+          <p className="mt-10 font-body text-15 leading-170 font-medium text-ink-3">
             {t.impianti.aside.text}
           </p>
           <ArrowLink href={localePath(typedLocale, routes.luminarie)} className="mt-20">

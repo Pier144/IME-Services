@@ -177,10 +177,15 @@
 }
 
 /* Le famiglie tipografiche arrivano da next/font (self-hosted, non dal CDN).
-   `inline` perché il valore rimanda a una variabile definita a runtime. */
+   `inline` perché il valore rimanda a una variabile definita a runtime.
+
+   `display` e `body` puntano entrambi ad Archivo: il sito ha una sola famiglia.
+   I due nomi restano distinti perché dicono il ruolo di ogni pezzo di testo, e
+   perché se un giorno il testo tornasse a una famiglia sua basterà cambiare una
+   riga qui invece di rincorrere le classi in tutti i componenti. */
 @theme inline {
   --font-display: var(--font-archivo), 'Archivo', system-ui, sans-serif;
-  --font-body: var(--font-work-sans), 'Work Sans', system-ui, sans-serif;
+  --font-body: var(--font-archivo), 'Archivo', system-ui, sans-serif;
   --font-script: var(--font-satisfy), 'Satisfy', cursive;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
@@ -194,13 +199,14 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* Niente `font-smoothing: antialiased`: su macOS assottiglia i glifi, e su
+     fondo scuro il testo chiaro è già penalizzato dall'irradiazione ottica.
+     Le due righe che c'erano qui erano metà del problema "font troppo esile". */
   body {
     background-color: var(--color-night);
     color: var(--color-ink);
     font-family: var(--font-body);
     font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   /* Titoli: display Archivo 500, mai maiuscolo forzato, a capo "pretty". */

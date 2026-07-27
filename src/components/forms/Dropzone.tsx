@@ -114,7 +114,7 @@ export function Dropzone({
             ＋
           </p>
         )}
-        <p className={cn('font-body text-13 font-light text-ink', !compact && 'mt-6')}>
+        <p className={cn('font-body text-14 font-medium text-ink', !compact && 'mt-6')}>
           {kind === 'cv' ? t.forms.dropzone.titleCv : t.forms.dropzone.title}{' '}
           <button
             type="button"
@@ -124,7 +124,7 @@ export function Dropzone({
             {t.common.browse}
           </button>
         </p>
-        <p className="mt-4 font-body text-12 font-light text-ink-3">
+        <p className="mt-4 font-body text-13 font-medium text-ink-3">
           {kind === 'cv' ? t.forms.dropzone.hintCv : t.forms.dropzone.hintAttachment}
         </p>
 
@@ -143,7 +143,7 @@ export function Dropzone({
       </div>
 
       {busy && (
-        <p className="mt-10 font-body text-12 font-light text-ink-3">{t.forms.dropzone.uploading}</p>
+        <p className="mt-10 font-body text-12 font-medium text-ink-3">{t.forms.dropzone.uploading}</p>
       )}
       {error && (
         <p role="alert" className="mt-10 font-body text-12 text-red">
@@ -155,7 +155,7 @@ export function Dropzone({
         {files.map((file) => (
           <li
             key={file.key}
-            className="mt-10 flex items-center justify-between gap-14 border border-rule-toolbar px-14 py-10 font-body text-13 font-light text-ink-2"
+            className="mt-10 flex items-center justify-between gap-14 border border-rule-toolbar px-14 py-10 font-body text-14 font-medium text-ink-2"
           >
             <span className="truncate">
               {file.name} · {formatFileSize(file.size)}

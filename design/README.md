@@ -8,6 +8,14 @@ Il sito pubblico ha 8 pagine più una **area riservata** per la gestione delle n
 live). Direzione visiva approvata dal cliente: **"Notturna"** — fondo notte, foto delle luci protagoniste, un solo
 colore d'azione (oro). Tipografia approvata: **Archivo** (titoli) + **Work Sans** (testo).
 
+> **Modifica successiva all'approvazione — luglio 2026.** Su richiesta del cliente il testo non è
+> più in Work Sans: tutto il sito usa **Archivo**, unica famiglia. Motivo: il testo risultava
+> "troppo esile e tecnico". La causa misurata non era la famiglia ma il peso 300 usato in 72 punti,
+> unito a `font-smoothing: antialiased` e alle maiuscole spaziate fino a 0,34em. Sono cambiati
+> anche i pesi (400 sopra i 16px, 500 sotto), i corpi minimi e il tetto del letter-spacing, sceso a
+> 0,22em. **Su questi punti fa fede il codice, non questo documento.** Il resto — colori, griglia,
+> geometria, spaziature — resta come approvato.
+
 ## About the Design Files
 I file in questo bundle sono **riferimenti di design realizzati in HTML**: prototipi che mostrano aspetto e
 comportamento previsti, **non codice di produzione da copiare**. Il compito è **ricreare questi design in React**
@@ -81,6 +89,12 @@ Gradienti fissi:
 - velo hero home (più leggero in alto): `linear-gradient(180deg,rgba(10,14,28,.25) 0%,rgba(10,14,28,.05) 40%,rgba(10,14,28,.88) 100%)`
 
 ### Tipografia
+
+> ⚠️ Sezione **superata** dalla modifica di luglio 2026 descritta in cima. Le due righe qui sotto
+> descrivono la coppia approvata in origine; oggi il testo è in Archivo come i titoli, il peso 300
+> non esiste più e il letter-spacing non supera 0,22em. Le scale di corpi e interlinee restano
+> valide come intervallo.
+
 - **Display — Archivo, weight 500.** Titoli, nomi soggetto, numeri grandi. Mai maiuscolo forzato.
 - **Testo — Work Sans**, weight 300 (paragrafi lunghi), 400 (UI, meta), 500 (link/CTA), 600 (bottone primario).
 - **Archivo 800 italic** solo dentro la pill del logo. **Satisfy 400** solo per il wordmark Fabbrica.

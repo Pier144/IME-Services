@@ -41,7 +41,7 @@ export function ArticleCard({
           {article.title}
         </Display>
         {article.excerpt && (
-          <p className="mt-8 font-body text-14 leading-165 font-light text-ink-3">
+          <p className="mt-8 font-body text-15 leading-165 font-medium text-ink-3">
             {article.excerpt}
           </p>
         )}
@@ -85,7 +85,7 @@ export function FeaturedArticle({
             {article.title}
           </Display>
           {article.excerpt && (
-            <p className="mt-14 font-body text-15-5 leading-170 font-light text-ink-2">
+            <p className="mt-14 font-body text-16 leading-170 text-ink-2">
               {article.excerpt}
             </p>
           )}

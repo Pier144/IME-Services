@@ -100,7 +100,7 @@ export function HeroCarousel() {
             {active && <Twinkles points={twinklePresets.homeHero} />}
 
             <div className="absolute inset-x-0 bottom-44 px-24 lg:bottom-64 lg:px-90">
-              <Eyebrow tone="gold" size="md" tracking="34" className="mb-14">
+              <Eyebrow tone="gold" size="md" tracking="16" className="mb-14">
                 {t.home.hero.eyebrow}
               </Eyebrow>
               <Display
@@ -109,7 +109,7 @@ export function HeroCarousel() {
               >
                 {slide.title}
               </Display>
-              <p className="mt-14 max-w-520 font-body text-15 leading-160 font-light text-ink-2 md:text-17">
+              <p className="mt-14 max-w-520 font-body text-16 leading-170 text-ink-2 md:text-18">
                 {slide.subtitle}
               </p>
               <div className="mt-26 flex flex-wrap gap-14">
@@ -154,7 +154,7 @@ export function HeroCarousel() {
       </button>
 
       {/* Indice delle slide, in basso a destra */}
-      <div className="absolute right-24 bottom-14 hidden items-center gap-22 font-body text-11 tracking-14 md:flex lg:right-90 lg:bottom-64">
+      <div className="absolute right-24 bottom-14 hidden items-center gap-22 font-body text-11 font-medium tracking-14 md:flex lg:right-90 lg:bottom-64">
         {slides.map((slide, slideIndex) => {
           const active = slideIndex === index;
           return (

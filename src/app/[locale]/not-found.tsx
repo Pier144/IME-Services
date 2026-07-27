@@ -15,13 +15,13 @@ export default function NotFound() {
 
   return (
     <Container className="py-70 lg:py-100">
-      <Eyebrow tone="gold" size="sm" tracking="30">
+      <Eyebrow tone="gold" size="sm" tracking="16">
         {t.notFound.eyebrow}
       </Eyebrow>
       <Display as="h1" className="mt-14 max-w-640 text-32 leading-110 md:text-46">
         {t.notFound.title}
       </Display>
-      <p className="mt-16 max-w-520 font-body text-16 leading-170 font-light text-ink-2">
+      <p className="mt-16 max-w-520 font-body text-16 leading-170 text-ink-2">
         {t.notFound.text}
       </p>
       <div className="mt-30 flex flex-wrap gap-14">

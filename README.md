@@ -50,7 +50,8 @@ Area riservata: <http://localhost:3000/admin> · credenziali in `.env`
 - **Tailwind CSS v4** con i token del design in `src/app/globals.css`.
 - **Prisma + Postgres** su Supabase (progetto `IME-Services`, regione `eu-west-1`).
 - **react-hook-form + zod** per i form, con gli stessi schemi lato client e lato server.
-- **next/font** per Archivo, Work Sans e Satisfy, self-hostati (nessuna chiamata al CDN di Google).
+- **next/font** per Archivo e Satisfy, self-hostati (nessuna chiamata al CDN di Google). Archivo è
+  caricato come font variabile: due soli file, tondo e corsivo, e tutti i pesi disponibili.
 
 Nessuna libreria di animazione: le uniche animazioni sono il *twinkle* in CSS e il carosello dell'hero.
 

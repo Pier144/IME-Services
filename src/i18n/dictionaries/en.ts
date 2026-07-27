@@ -60,9 +60,9 @@ const en: Dictionary = {
   home: {
     metaTitle: 'IME Service — artistic light displays and electrical systems near Verona',
     metaDescription:
-      'Since 1968 in Domegliara (Verona, Italy): artistic light displays for towns and events with La Fabbrica di Babbo Natale, plus residential and industrial electrical systems.',
+      'Since 2014 in Domegliara (Verona, Italy): artistic light displays for towns and events with La Fabbrica di Babbo Natale, plus residential and industrial electrical systems.',
     hero: {
-      eyebrow: 'SINCE 1968 · THREE GENERATIONS OF LIGHT',
+      eyebrow: 'SINCE 2014 · THREE GENERATIONS OF LIGHT',
       ctaPrimary: 'SEE THE LIGHT DISPLAYS',
       ctaSecondary: 'REQUEST A QUOTE',
       previous: 'Previous slide',
@@ -90,7 +90,7 @@ const en: Dictionary = {
           label: 'SYSTEMS',
           title: 'Systems that last for years.',
           subtitle:
-            'Design, installation and maintenance of residential and industrial electrical systems across the province.',
+            'Residential and industrial: design, installation and maintenance across the province.',
           photo: 'PHOTO SLIDE 3/4 — industrial switchboard or work site in progress',
         },
         {
@@ -201,7 +201,7 @@ const en: Dictionary = {
       numbers: [
         { value: '4-6', label: 'weeks of production' },
         { value: '2D · 3D', label: 'bespoke structures' },
-        { value: '1968', label: 'family workshop' },
+        { value: '2014', label: 'family workshop' },
       ],
     },
     how: {
@@ -279,36 +279,36 @@ const en: Dictionary = {
   },
 
   about: {
-    metaTitle: 'About us — since 1968, three generations of light | IME Service',
+    metaTitle: 'About us — since 2014, three generations of light | IME Service',
     metaDescription:
-      'IME Service is a family business in Domegliara (Verona, Italy): electrical systems since 1968, artistic light displays since the 1990s, the La Fabbrica di Babbo Natale brand since 2015.',
-    eyebrow: 'SINCE 1968 · THREE GENERATIONS',
+      'IME Service is a family business in Domegliara (Verona, Italy): electrical systems since 2014, artistic light displays since 2015 under the La Fabbrica di Babbo Natale brand.',
+    eyebrow: 'SINCE 2014 · THREE GENERATIONS',
     title: 'About us',
     heroPhoto: 'ARCHIVE PHOTO — family archive, the workshop in the 1970s (or a current group portrait)',
     statement:
       'We are a family of electricians who, at some point, also learned how to make light for the holidays.',
     body1:
-      'It all starts in a small workshop in Domegliara, with residential and industrial systems. Then come the first light displays for the village, and from there the neighbouring towns. Today IME Service brings together two trades: electrical work and the production of light decorations under the brand',
+      'It all starts in a small workshop in Domegliara, with residential and industrial systems. Then come the village light displays, and from there the neighbouring towns. Today we bring together two trades: electrical work and light decorations under the brand',
     body2:
-      'We design, build, install and maintain. Everything goes through our own workshop, and that is what lets us say yes even to the strangest requests.',
+      'We design, build, install and maintain. Everything goes through our own workshop: that is why we can say yes even to the strangest requests.',
     timelineLabel: 'OUR STORY',
     timeline: [
       {
-        year: '1968',
-        title: 'The first generation',
-        text: 'The electrical business opens in Domegliara: houses, warehouses and Valpolicella farm buildings.',
+        year: 'The origins',
+        title: 'The family workshop',
+        text: 'Electrical work passes from father to son: houses, warehouses and Valpolicella farm buildings.',
         accent: 'blue',
       },
       {
-        year: 'The 1990s',
-        title: 'The first light displays',
-        text: 'Christmas lighting for the village becomes a job, then a speciality requested across the province.',
+        year: '2014',
+        title: 'IME Service is founded',
+        text: 'The family business takes its present form, with a workshop in Domegliara.',
         accent: 'blue',
       },
       {
         year: '2015',
         title: 'La Fabbrica di Babbo Natale',
-        text: 'The brand dedicated to 2D and 3D light decorations is born, with in-house production from custom drawings.',
+        text: 'The brand for 2D and 3D light decorations is born, produced in-house from custom drawings.',
         accent: 'red',
       },
       {
@@ -319,7 +319,7 @@ const en: Dictionary = {
       },
     ],
     numbers: [
-      { value: '55+', label: 'YEARS IN BUSINESS' },
+      { value: '2014', label: 'FOUNDED' },
       { value: '3', label: 'GENERATIONS' },
       { value: '80+', label: 'TOWNS LIT UP' },
       { value: '100%', label: 'IN-HOUSE PRODUCTION' },
@@ -356,7 +356,7 @@ const en: Dictionary = {
     eyebrow: 'IME SERVICE · SYSTEMS & TECHNOLOGY',
     title: 'Electrical systems, from the work site to the festival.',
     intro:
-      'Design, installation and maintenance of residential and industrial systems. And, when it is only needed for a few days, a complete rental package for fairs, festivals and events.',
+      'Design, installation and maintenance of residential and industrial systems. And a complete rental package for fairs, festivals and events.',
     heroPhoto: 'PHOTO — industrial switchboard or work site in progress',
     ctaPrimary: 'BOOK A SITE VISIT',
     servicesLabel: 'WHAT WE DO',
@@ -429,7 +429,7 @@ const en: Dictionary = {
     titleLine2: 'that know how to make light.',
     heroPhoto: 'PHOTO — crew working from the cherry picker, sunset light',
     intro:
-      'We are a family business in Domegliara: small enough that everyone knows each other, structured enough to work on public contracts. You learn on the job, you spend a lot of time outdoors, and in December you do a job very few people in the world do.',
+      'A family business in Domegliara: small enough that everyone knows each other, structured enough for public contracts. You learn on the job, you work outdoors, and in December you do a job very few people in the world do.',
     benefits: [
       'Permanent contract after the trial period',
       'Training on safety, work at height and certifications',

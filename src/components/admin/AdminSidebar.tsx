@@ -64,7 +64,7 @@ export function AdminSidebar({ email }: { email: string }) {
         })}
       </nav>
 
-      <div className="hidden border-t border-hairline px-22 pt-18 font-body text-12-5 leading-150 font-light text-ink-4 md:mt-auto md:block">
+      <div className="hidden border-t border-hairline px-22 pt-18 font-body text-12-5 leading-170 font-medium text-ink-4 md:mt-auto md:block">
         {t.admin.signedInAs}
         <br />
         <span className="text-ink-2">{email}</span>

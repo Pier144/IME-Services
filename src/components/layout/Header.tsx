@@ -74,7 +74,7 @@ export function Header() {
         {/* Navigazione desktop */}
         <nav
           aria-label={t.nav.mainNav}
-          className="hidden items-center gap-18 font-body text-13-5 font-normal text-nav md:flex lg:gap-26"
+          className="hidden items-center gap-18 font-body text-13-5 font-medium text-nav md:flex lg:gap-26"
         >
           {items.map((item) =>
             item.hasMenu ? (
@@ -267,7 +267,7 @@ function LuminarieMenu({
                           locale,
                           `${routes.luminarie}?stagione=${season}&tipologia=${type.slug}`,
                         )}
-                        className="font-body text-13-5 font-light text-ink-2 transition-colors duration-200 hover:text-gold"
+                        className="font-body text-14 font-medium text-ink-2 transition-colors duration-200 hover:text-gold"
                       >
                         {type.name}
                       </Link>
@@ -312,7 +312,7 @@ function MobileNav({
                 onClick={onNavigate}
                 aria-current={isActive(item.href) ? 'page' : undefined}
                 className={cn(
-                  'flex items-center gap-10 py-16 font-body text-16 font-light text-nav',
+                  'flex items-center gap-10 py-16 font-body text-16 text-nav',
                   isActive(item.href) && 'text-gold',
                 )}
               >
@@ -357,7 +357,7 @@ function LocaleSwitch() {
   const bare = stripLocale(pathname ?? '/');
 
   return (
-    <div className="flex items-center gap-2 font-body text-11-5 tracking-06">
+    <div className="flex items-center gap-2 font-body text-11-5 font-medium tracking-06">
       {locales.map((value: Locale) => {
         const active = value === locale;
         return (

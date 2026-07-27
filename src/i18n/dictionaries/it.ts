@@ -60,9 +60,9 @@ const it = {
   home: {
     metaTitle: 'IME Service — luminarie artistiche e impianti elettrici a Verona',
     metaDescription:
-      'Dal 1968 a Domegliara (VR): luminarie artistiche per città ed eventi con La Fabbrica di Babbo Natale, impianti elettrici civili e industriali.',
+      'Dal 2014 a Domegliara (VR): luminarie artistiche per città ed eventi con La Fabbrica di Babbo Natale, impianti elettrici civili e industriali.',
     hero: {
-      eyebrow: 'DAL 1968 · TRE GENERAZIONI DI LUCE',
+      eyebrow: 'DAL 2014 · TRE GENERAZIONI DI LUCE',
       ctaPrimary: 'SCOPRI LE LUMINARIE',
       ctaSecondary: 'RICHIEDI UN PREVENTIVO',
       previous: 'Slide precedente',
@@ -91,7 +91,7 @@ const it = {
           label: 'IMPIANTI',
           title: 'Impianti che tengono, negli anni.',
           subtitle:
-            'Progettazione, realizzazione e manutenzione di impianti elettrici civili e industriali in tutta la provincia.',
+            'Civili e industriali: progettazione, realizzazione e manutenzione in tutta la provincia.',
           photo: 'FOTO SLIDE 3/4 — quadro elettrico industriale o cantiere in corso',
         },
         {
@@ -202,7 +202,7 @@ const it = {
       numbers: [
         { value: '4-6', label: 'settimane di produzione' },
         { value: '2D · 3D', label: 'strutture su misura' },
-        { value: '1968', label: 'officina di famiglia' },
+        { value: '2014', label: 'officina di famiglia' },
       ],
     },
     how: {
@@ -281,48 +281,48 @@ const it = {
   },
 
   about: {
-    metaTitle: 'Chi siamo — dal 1968, tre generazioni di luce | IME Service',
+    metaTitle: 'Chi siamo — dal 2014, tre generazioni di luce | IME Service',
     metaDescription:
-      'IME Service è un’azienda familiare di Domegliara (VR): dal 1968 impianti elettrici, dagli anni ’90 luminarie artistiche, dal 2015 il marchio La Fabbrica di Babbo Natale.',
-    eyebrow: 'DAL 1968 · TRE GENERAZIONI',
+      'IME Service è un’azienda familiare di Domegliara (VR): dal 2014 impianti elettrici civili e industriali, dal 2015 le luminarie artistiche con il marchio La Fabbrica di Babbo Natale.',
+    eyebrow: 'DAL 2014 · TRE GENERAZIONI',
     title: 'Chi siamo',
     heroPhoto:
       'FOTO STORICA — archivio di famiglia, officina anni ’70 (o ritratto di gruppo attuale)',
     statement:
       'Siamo una famiglia di elettricisti che a un certo punto ha imparato a fare luce anche per le feste.',
     body1:
-      'Tutto comincia in una piccola officina a Domegliara, con impianti civili e industriali. Poi arrivano le prime luminarie per il paese, e da lì i comuni vicini. Oggi IME Service unisce due mestieri: l’impiantistica elettrica e la produzione di decorazioni luminose con il marchio',
+      'Tutto comincia in una piccola officina a Domegliara, con impianti civili e industriali. Poi arrivano le luminarie del paese, e da lì i comuni vicini. Oggi uniamo due mestieri: impianti elettrici e decorazioni luminose con il marchio',
     body2:
-      'Progettiamo, costruiamo, installiamo e manteniamo. Tutto passa dalla nostra officina, e questo ci permette di dire di sì anche alle richieste più strane.',
+      'Progettiamo, costruiamo, installiamo e manteniamo. Tutto passa dalla nostra officina: per questo diciamo di sì anche alle richieste più strane.',
     timelineLabel: 'LA NOSTRA STORIA',
     timeline: [
       {
-        year: '1968',
-        title: 'La prima generazione',
-        text: 'Nasce l’attività di impiantistica elettrica a Domegliara: case, capannoni, stalle della Valpolicella.',
+        year: 'Le origini',
+        title: 'L’officina di famiglia',
+        text: 'L’impiantistica elettrica passa di padre in figlio: case, capannoni e stalle della Valpolicella.',
         accent: 'blue',
       },
       {
-        year: 'Anni ’90',
-        title: 'Le prime luminarie',
-        text: 'L’illuminazione natalizia del paese diventa un lavoro, poi una specialità richiesta in tutta la provincia.',
+        year: '2014',
+        title: 'Nasce IME Service',
+        text: 'L’attività di famiglia prende la forma di oggi, con officina a Domegliara.',
         accent: 'blue',
       },
       {
         year: '2015',
         title: 'La Fabbrica di Babbo Natale',
-        text: 'Nasce il marchio dedicato alle decorazioni luminose 2D e 3D, con produzione interna su disegno.',
+        text: 'Nasce il marchio delle decorazioni luminose 2D e 3D, prodotte su disegno in officina.',
         accent: 'red',
       },
       {
         year: 'Oggi',
         title: 'La terza generazione',
-        text: 'Impianti, noleggio per manifestazioni e luminarie artistiche per comuni, aziende ed eventi privati.',
+        text: 'Impianti, noleggio per manifestazioni e luminarie artistiche per comuni, aziende ed eventi.',
         accent: 'gold',
       },
     ],
     numbers: [
-      { value: '55+', label: 'ANNI DI ATTIVITÀ' },
+      { value: '2014', label: 'ANNO DI FONDAZIONE' },
       { value: '3', label: 'GENERAZIONI' },
       { value: '80+', label: 'COMUNI ILLUMINATI' },
       { value: '100%', label: 'PRODUZIONE INTERNA' },
@@ -359,7 +359,7 @@ const it = {
     eyebrow: 'IME SERVICE · IMPIANTI & TECNOLOGIA',
     title: 'Impianti elettrici, dal cantiere alla manifestazione.',
     intro:
-      'Progettazione, realizzazione e manutenzione di impianti civili e industriali. E, quando serve solo per qualche giorno, il noleggio completo per fiere, sagre ed eventi.',
+      'Progettazione, realizzazione e manutenzione di impianti civili e industriali. E il noleggio completo per fiere, sagre ed eventi.',
     heroPhoto: 'FOTO — quadro elettrico industriale o cantiere in corso',
     ctaPrimary: 'RICHIEDI UN SOPRALLUOGO',
     servicesLabel: 'COSA FACCIAMO',
@@ -432,7 +432,7 @@ const it = {
     titleLine2: 'che sappiano fare luce.',
     heroPhoto: 'FOTO — squadra al lavoro sul cestello, luce del tramonto',
     intro:
-      'Siamo un’azienda familiare di Domegliara: piccola abbastanza perché ci si conosca tutti, strutturata abbastanza per lavorare su commesse pubbliche. Si impara sul campo, si sta molto all’aperto e a dicembre si fa un mestiere che poche persone al mondo fanno.',
+      'Un’azienda familiare di Domegliara: piccoli abbastanza perché ci si conosca tutti, strutturati abbastanza per le commesse pubbliche. Si impara sul campo, si sta all’aperto, e a dicembre si fa un mestiere che fanno in pochi al mondo.',
     benefits: [
       'Contratto a tempo indeterminato dopo la prova',
       'Formazione su sicurezza, lavori in quota e certificazioni',

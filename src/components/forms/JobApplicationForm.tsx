@@ -112,7 +112,7 @@ export function JobApplicationForm({
         <Display as="h2" className="text-24 md:text-28">
           {t.careers.form.successTitle}
         </Display>
-        <p className="mt-14 font-body text-15-5 leading-170 font-light text-ink-2">
+        <p className="mt-14 font-body text-16 leading-170 text-ink-2">
           {t.careers.form.successText}
         </p>
       </div>
@@ -129,7 +129,7 @@ export function JobApplicationForm({
       <Display as="h2" className="text-24 md:text-28">
         {t.careers.form.title}
       </Display>
-      <p className="mt-8 font-body text-14 font-light text-ink-3">{t.careers.form.subtitle}</p>
+      <p className="mt-8 font-body text-15 font-medium text-ink-3">{t.careers.form.subtitle}</p>
 
       <div className="mt-26 grid grid-cols-1 gap-18 sm:grid-cols-2">
         <Field

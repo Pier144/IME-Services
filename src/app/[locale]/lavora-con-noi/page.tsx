@@ -56,10 +56,8 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
 
       {/* --- Perché lavorare qui -------------------------------------------- */}
       <Container className="flex flex-col gap-30 pt-44 lg:flex-row lg:gap-60 lg:pt-64">
-        <p className="flex-1 font-body text-16 leading-185 font-light text-ink-2">
-          {t.careers.intro}
-        </p>
-        <ul className="flex flex-1 flex-col gap-14 font-body text-14-5 font-light text-ink-2">
+        <p className="flex-1 font-body text-16 leading-185 text-ink-2">{t.careers.intro}</p>
+        <ul className="flex flex-1 flex-col gap-14 font-body text-15 font-medium text-ink-2">
           {t.careers.benefits.map((benefit) => (
             <li key={benefit} className="flex items-baseline gap-12">
               <span aria-hidden="true" className="flex-none text-gold">
@@ -82,7 +80,7 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
             >
               <div className="flex-1">
                 <h3 className="font-display text-21 font-medium md:text-24">{position.title}</h3>
-                <p className="mt-7 font-body text-14-5 leading-170 font-light text-ink-3">
+                <p className="mt-7 font-body text-15 leading-170 font-medium text-ink-3">
                   {position.text}
                 </p>
               </div>

@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
 /**
- * Etichetta di sezione: 11.5px, letter-spacing .34em, testo secondario.
+ * Etichetta di sezione: 12px, letter-spacing .22em, testo secondario.
  * È il ritmo che separa i blocchi in tutte le pagine.
  */
 export function SectionLabel({
@@ -18,7 +18,7 @@ export function SectionLabel({
   return (
     <Tag
       className={cn(
-        'font-body text-11-5 font-normal tracking-34',
+        'font-body text-12 font-medium tracking-22',
         tone === 'gold' ? 'text-gold' : 'text-ink-3',
         className,
       )}
@@ -30,22 +30,24 @@ export function SectionLabel({
 
 /**
  * Occhiello: la riga in maiuscoletto sopra i titoli degli hero.
- * `tracking` va scelto secondo il mockup (.3em hero, .26em breadcrumb soggetto,
- * .24em card laterali, .22em pannelli, .18em meta articolo).
+ * `tracking` segue la gerarchia del mockup, compressa: il tetto è .22em invece
+ * di .34em (hero .20em, breadcrumb e card .18em, meta articolo .16em). Le
+ * maiuscole troppo distanziate erano gran parte della sensazione "tecnica"
+ * lamentata; sopra .22em non si torna, e infatti l'unione non li accetta più.
  */
 export function Eyebrow({
   children,
   className,
   tone = 'gold',
   size = 'md',
-  tracking = '30',
+  tracking = '20',
   as: Tag = 'p',
 }: {
   children: React.ReactNode;
   className?: string;
   tone?: 'gold' | 'muted' | 'blue' | 'rose';
   size?: 'sm' | 'md' | 'lg';
-  tracking?: '18' | '20' | '22' | '24' | '26' | '30' | '34';
+  tracking?: '16' | '18' | '20' | '22';
   as?: 'p' | 'div' | 'span' | 'h2';
 }) {
   const tones = {
@@ -54,20 +56,17 @@ export function Eyebrow({
     blue: 'text-blue-lt',
     rose: 'text-rose',
   } as const;
-  const sizes = { sm: 'text-11', md: 'text-11-5', lg: 'text-12' } as const;
+  const sizes = { sm: 'text-11-5', md: 'text-12', lg: 'text-12-5' } as const;
   const trackings = {
+    '16': 'tracking-16',
     '18': 'tracking-18',
     '20': 'tracking-20',
     '22': 'tracking-22',
-    '24': 'tracking-24',
-    '26': 'tracking-26',
-    '30': 'tracking-30',
-    '34': 'tracking-34',
   } as const;
 
   return (
     <Tag
-      className={cn('font-body font-normal', sizes[size], trackings[tracking], tones[tone], className)}
+      className={cn('font-body font-medium', sizes[size], trackings[tracking], tones[tone], className)}
     >
       {children}
     </Tag>
