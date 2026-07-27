@@ -72,7 +72,6 @@ const en: Dictionary = {
       goTo: 'Go to slide',
       slides: [
         {
-          index: '01',
           label: 'CHRISTMAS',
           title: 'We light up the wonder.',
           subtitle:
@@ -81,7 +80,6 @@ const en: Dictionary = {
             'PHOTO SLIDE 1/4 — town high street with Christmas lights switched on, night shot (supplied by the client)',
         },
         {
-          index: '02',
           label: 'EVENTS',
           title: 'Every event has its own light.',
           subtitle:
@@ -89,7 +87,6 @@ const en: Dictionary = {
           photo: 'PHOTO SLIDE 2/4 — outdoor summer event lighting, evening',
         },
         {
-          index: '03',
           label: 'SYSTEMS',
           title: 'Systems that last for years.',
           subtitle:
@@ -97,7 +94,6 @@ const en: Dictionary = {
           photo: 'PHOTO SLIDE 3/4 — industrial switchboard or work site in progress',
         },
         {
-          index: '04',
           label: 'THE WORKSHOP',
           title: 'Your design, turned into light.',
           subtitle:

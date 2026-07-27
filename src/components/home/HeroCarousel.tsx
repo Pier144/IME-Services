@@ -77,7 +77,7 @@ export function HeroCarousel() {
         const active = slideIndex === index;
         return (
           <div
-            key={slide.index}
+            key={slide.label}
             role="group"
             aria-roledescription="slide"
             aria-label={`${slideIndex + 1} / ${slides.length}`}
@@ -159,7 +159,7 @@ export function HeroCarousel() {
           const active = slideIndex === index;
           return (
             <button
-              key={slide.index}
+              key={slide.label}
               type="button"
               onClick={() => go(slideIndex)}
               aria-current={active ? 'true' : undefined}
@@ -169,7 +169,7 @@ export function HeroCarousel() {
               )}
             >
               <span className="sr-only">{t.home.hero.goTo} </span>
-              {slide.index} {slide.label}
+              {slide.label}
             </button>
           );
         })}

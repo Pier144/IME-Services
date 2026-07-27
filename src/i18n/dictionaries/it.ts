@@ -72,7 +72,6 @@ const it = {
       goTo: 'Vai alla slide',
       slides: [
         {
-          index: '01',
           label: 'NATALE',
           title: 'Accendiamo la meraviglia.',
           subtitle:
@@ -81,7 +80,6 @@ const it = {
             'FOTO SLIDE 1/4 — corso cittadino con luminarie natalizie accese, notturna (fornita dal cliente)',
         },
         {
-          index: '02',
           label: 'EVENTI',
           title: 'Ogni evento ha la sua luce.',
           subtitle:
@@ -90,7 +88,6 @@ const it = {
             'FOTO SLIDE 2/4 — allestimento luminoso per un evento estivo all’aperto, sera',
         },
         {
-          index: '03',
           label: 'IMPIANTI',
           title: 'Impianti che tengono, negli anni.',
           subtitle:
@@ -98,7 +95,6 @@ const it = {
           photo: 'FOTO SLIDE 3/4 — quadro elettrico industriale o cantiere in corso',
         },
         {
-          index: '04',
           label: 'LA FABBRICA',
           title: 'Il tuo soggetto, dal disegno alla luce.',
           subtitle:

@@ -145,6 +145,13 @@ export function Header() {
  * Tendina Luminarie
  * Due colonne (Natalizie / Eventi) con le tipologie sotto. Su desktop si apre
  * al passaggio del mouse con 120 ms di ritardo, su mobile al tocco; Esc chiude.
+ *
+ * Fra la voce di menu e il pannello ci sono 14px di stacco: sono dentro un
+ * involucro trasparente che fa parte della tendina, non un vuoto. Altrimenti il
+ * mouse, scendendo verso le voci, uscirebbe dall'elemento e la tendina si
+ * chiuderebbe prima di poterci arrivare. Alla chiusura c'è anche un ritardo di
+ * grazia: chi taglia in diagonale verso l'ultima voce della seconda colonna esce
+ * per un istante dal riquadro, e non deve perdere il menu per così poco.
  * ----------------------------------------------------------------------- */
 
 function LuminarieMenu({
@@ -179,9 +186,16 @@ function LuminarieMenu({
     };
   }, [open, onOpenChange]);
 
+  // Un solo timer per apertura e chiusura: chi parte annulla l'altro, così
+  // entrare e uscire in fretta non lascia una chiusura in sospeso.
   const openWithDelay = () => {
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => onOpenChange(true), 120);
+  };
+
+  const closeWithDelay = () => {
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => onOpenChange(false), 180);
   };
 
   const closeNow = () => {
@@ -189,13 +203,22 @@ function LuminarieMenu({
     onOpenChange(false);
   };
 
+  // Niente chiusure programmate dopo lo smontaggio.
+  useEffect(() => () => {
+    if (timer.current) clearTimeout(timer.current);
+  }, []);
+
   return (
     <div
       ref={container}
       className="relative"
       onMouseEnter={openWithDelay}
-      onMouseLeave={closeNow}
+      onMouseLeave={closeWithDelay}
       onFocus={() => onOpenChange(true)}
+      onBlur={(event) => {
+        // Con Tab si esce dalla tendina: va chiusa, come farebbe il mouse.
+        if (!container.current?.contains(event.relatedTarget)) closeNow();
+      }}
     >
       <Link
         href={localePath(locale, routes.luminarie)}
@@ -221,35 +244,39 @@ function LuminarieMenu({
       </Link>
 
       {open && (
-        <div
-          id={menuId}
-          className="absolute top-34 left-0 z-40 flex gap-40 border border-hairline bg-panel-ime px-30 py-26"
-        >
-          {seasons.map((season) => (
-            <div key={season} className="min-w-160">
-              <Link
-                href={localePath(locale, `${routes.luminarie}?stagione=${season}`)}
-                className="font-body text-12 tracking-22 text-gold transition-colors duration-200 hover:text-gold-hover"
-              >
-                {t.nav.seasons[season].toUpperCase()}
-              </Link>
-              <ul className="mt-14 flex flex-col gap-10">
-                {typesForSeason(season).map((type) => (
-                  <li key={type.slug}>
-                    <Link
-                      href={localePath(
-                        locale,
-                        `${routes.luminarie}?stagione=${season}&tipologia=${type.slug}`,
-                      )}
-                      className="font-body text-13-5 font-light text-ink-2 transition-colors duration-200 hover:text-gold"
-                    >
-                      {type.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        // L'involucro è trasparente e comincia subito sotto la voce: i 14px di
+        // stacco stanno qui dentro, quindi il mouse che scende non esce mai.
+        <div className="absolute top-full left-0 z-40 pt-14">
+          <div
+            id={menuId}
+            className="flex gap-40 border border-hairline bg-panel-ime px-30 py-26"
+          >
+            {seasons.map((season) => (
+              <div key={season} className="min-w-160">
+                <Link
+                  href={localePath(locale, `${routes.luminarie}?stagione=${season}`)}
+                  className="font-body text-12 tracking-22 text-gold transition-colors duration-200 hover:text-gold-hover"
+                >
+                  {t.nav.seasons[season].toUpperCase()}
+                </Link>
+                <ul className="mt-14 flex flex-col gap-10">
+                  {typesForSeason(season).map((type) => (
+                    <li key={type.slug}>
+                      <Link
+                        href={localePath(
+                          locale,
+                          `${routes.luminarie}?stagione=${season}&tipologia=${type.slug}`,
+                        )}
+                        className="font-body text-13-5 font-light text-ink-2 transition-colors duration-200 hover:text-gold"
+                      >
+                        {type.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
