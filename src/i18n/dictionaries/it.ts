@@ -585,7 +585,7 @@ const it = {
     sections: [
       {
         title: 'Titolare del trattamento',
-        text: 'IME Service srls, Via Adige 238, 37015 Domegliara (VR), P.IVA 04236040236, info@ime-service.it.',
+        text: 'IME Service srls, Via Adige 238, 37015 Domegliara (VR), P.IVA 04236040236, imeservicesrls@gmail.com.',
       },
       {
         title: 'Dati raccolti',
@@ -601,7 +601,7 @@ const it = {
       },
       {
         title: 'I tuoi diritti',
-        text: 'Puoi chiedere in qualsiasi momento accesso, rettifica o cancellazione dei tuoi dati scrivendo a info@ime-service.it.',
+        text: 'Puoi chiedere in qualsiasi momento accesso, rettifica o cancellazione dei tuoi dati scrivendo a imeservicesrls@gmail.com.',
       },
     ],
   },

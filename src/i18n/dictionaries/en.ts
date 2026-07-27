@@ -550,7 +550,7 @@ const en: Dictionary = {
     sections: [
       {
         title: 'Data controller',
-        text: 'IME Service srls, Via Adige 238, 37015 Domegliara (VR), Italy, VAT no. 04236040236, info@ime-service.it.',
+        text: 'IME Service srls, Via Adige 238, 37015 Domegliara (VR), Italy, VAT no. 04236040236, imeservicesrls@gmail.com.',
       },
       {
         title: 'Data collected',
@@ -566,7 +566,7 @@ const en: Dictionary = {
       },
       {
         title: 'Your rights',
-        text: 'You can ask for access, correction or deletion of your data at any time by writing to info@ime-service.it.',
+        text: 'You can ask for access, correction or deletion of your data at any time by writing to imeservicesrls@gmail.com.',
       },
     ],
   },

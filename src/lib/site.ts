@@ -18,9 +18,9 @@ export const site = {
   },
   phone: '045 2221396',
   phoneHref: '+390452221396',
-  mobile: '345 3021563',
-  mobileHref: '+393453021563',
-  email: 'info@ime-service.it',
+  mobile: '339 7320285',
+  mobileHref: '+393397320285',
+  email: 'imeservicesrls@gmail.com',
   editorialEmail: 'redazione@ime-service.it',
   openingHours: 'Lun-Ven 8:00-12:30 · 14:00-18:00',
   // Anno di costituzione della società (srls). Verificato: la P.IVA 04236040236
