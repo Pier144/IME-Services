@@ -16,11 +16,18 @@ import { cn } from '@/lib/utils';
  * La voce attiva è oro; "Luminarie" apre una tendina a due colonne
  * (Natalizie / Eventi) con le tipologie sotto.
  * Sotto i 900px la navigazione diventa un pannello a tutta altezza.
+ *
+ * Sulla home si appoggia sopra la foto dell'hero invece di stare in una barra
+ * sua: esce dal flusso, perde il filetto inferiore e schiarisce le voci, che
+ * lì stanno su un'immagine e non sul fondo notte. Il velo dell'hero è più
+ * carico in cima apposta per reggerlo. Il riconoscimento è qui e non nel
+ * layout perché il percorso lo sa già questo componente.
  */
 export function Header() {
   const { locale, t } = useI18n();
   const pathname = usePathname();
   const current = stripLocale(pathname ?? '/');
+  const sopraLaFoto = current === '/';
 
   /**
    * Menu e tendina si chiudono da soli quando si cambia pagina.
@@ -65,7 +72,15 @@ export function Header() {
     href === routes.home ? current === '/' : current === href || current.startsWith(`${href}/`);
 
   return (
-    <header className="relative z-30 border-b border-hairline">
+    <header
+      className={cn(
+        'z-30',
+        sopraLaFoto
+          ? // Fuori dal flusso: la foto dell'hero parte da sotto, non sotto la barra.
+            'absolute inset-x-0 top-0'
+          : 'relative border-b border-hairline',
+      )}
+    >
       <div className="flex items-center justify-between px-24 py-18 lg:px-40">
         <Link href={localePath(locale, routes.home)} className="flex-none" aria-label={t.common.home}>
           <LogoIme size="header" />
@@ -74,7 +89,10 @@ export function Header() {
         {/* Navigazione desktop */}
         <nav
           aria-label={t.nav.mainNav}
-          className="hidden items-center gap-18 font-body text-13-5 font-medium text-nav md:flex lg:gap-26"
+          className={cn(
+            'hidden items-center gap-18 font-body text-13-5 font-medium md:flex lg:gap-26',
+            sopraLaFoto ? 'text-white/90' : 'text-nav',
+          )}
         >
           {items.map((item) =>
             item.hasMenu ? (
@@ -114,21 +132,28 @@ export function Header() {
             className="flex flex-col justify-center gap-5 p-6"
           >
             <span className="sr-only">{menuOpen ? t.nav.closeMenu : t.nav.openMenu}</span>
+            {/* Sulla foto le stanghette vanno bianche, non color testo. */}
             <span
               aria-hidden="true"
               className={cn(
-                'block h-1 w-22 bg-ink transition-transform duration-200',
+                'block h-1 w-22 transition-transform duration-200',
+                sopraLaFoto && !menuOpen ? 'bg-white' : 'bg-ink',
                 menuOpen && 'translate-y-6 rotate-45',
               )}
             />
             <span
               aria-hidden="true"
-              className={cn('block h-1 w-22 bg-ink transition-opacity duration-200', menuOpen && 'opacity-0')}
+              className={cn(
+                'block h-1 w-22 transition-opacity duration-200',
+                sopraLaFoto && !menuOpen ? 'bg-white' : 'bg-ink',
+                menuOpen && 'opacity-0',
+              )}
             />
             <span
               aria-hidden="true"
               className={cn(
-                'block h-1 w-22 bg-ink transition-transform duration-200',
+                'block h-1 w-22 transition-transform duration-200',
+                sopraLaFoto && !menuOpen ? 'bg-white' : 'bg-ink',
                 menuOpen && '-translate-y-6 -rotate-45',
               )}
             />

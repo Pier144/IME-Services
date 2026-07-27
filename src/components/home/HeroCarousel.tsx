@@ -1,30 +1,43 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { PhotoSlot } from '@/components/media/PhotoSlot';
 import { Twinkles, twinklePresets } from '@/components/media/Twinkles';
-import { ButtonLink } from '@/components/ui/Button';
-import { Display, Eyebrow } from '@/components/ui/Typography';
 import { useI18n } from '@/i18n/provider';
 import { localePath } from '@/i18n/config';
 import { routes } from '@/lib/routes';
 import { photos } from '@/data/photos';
 import { cn } from '@/lib/utils';
 
-const AUTOPLAY_MS = 6000;
+const AUTOPLAY_MS = 6500;
 
 /**
- * Hero della home: quattro slide in crossfade da 600 ms.
+ * Hero della home: quattro slide a tutta finestra, in crossfade da 700 ms.
  *
- * Autoplay ogni 6 s, in pausa quando il mouse è sopra o quando il fuoco della
- * tastiera è dentro. Frecce e indice sono comandi veri, quindi la navigazione
- * da tastiera funziona senza scorciatoie inventate. Con
- * `prefers-reduced-motion: reduce` l'autoplay non parte proprio: si resta sulla
- * prima slide e si cambia solo a mano.
+ * Il testo sta al centro e non in basso a sinistra, e il titolo è molto grande:
+ * è quello che dà alla pagina il tono da manifesto. L'intestazione del sito si
+ * appoggia sopra la foto — se ne occupa <Header>, che sulla home passa da sé in
+ * modalità sovrapposta — quindi il velo è più carico in cima, altrimenti le
+ * voci di menu non si leggerebbero sulle foto chiare.
+ *
+ * Autoplay ogni 6,5 s, in pausa quando il mouse è sopra o quando il fuoco della
+ * tastiera è dentro. Le frecce stanno ai bordi e l'indice è ridotto a quattro
+ * trattini: sono comandi veri, quindi la tastiera funziona senza scorciatoie
+ * inventate. Con `prefers-reduced-motion: reduce` non parte niente: né
+ * l'autoplay, né lo zoom lento della foto, né l'entrata del testo.
  */
 export function HeroCarousel() {
   const { locale, t } = useI18n();
   const slides = t.home.hero.slides;
+
+  /** Dove porta ogni slide, nell'ordine del dizionario. */
+  const destinazioni = [
+    routes.luminarie,
+    `${routes.luminarie}?stagione=eventi`,
+    routes.impianti,
+    routes.custom,
+  ];
 
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -66,7 +79,7 @@ export function HeroCarousel() {
       ref={region}
       aria-roledescription="carousel"
       aria-label={t.home.hero.eyebrow}
-      className="relative h-380 overflow-hidden md:h-480 lg:h-600"
+      className="relative h-[86vh] min-h-560 overflow-hidden lg:h-screen"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
@@ -83,7 +96,7 @@ export function HeroCarousel() {
             aria-label={`${slideIndex + 1} / ${slides.length}`}
             aria-hidden={!active}
             className={cn(
-              'absolute inset-0 transition-opacity duration-600 ease-linear',
+              'absolute inset-0 transition-opacity duration-700 ease-linear',
               active ? 'opacity-100' : 'pointer-events-none opacity-0',
             )}
           >
@@ -91,55 +104,44 @@ export function HeroCarousel() {
               label={slide.photo}
               src={photos.homeHero[slideIndex]}
               alt={slide.title}
-              className="absolute inset-0"
+              className={cn('absolute inset-0', active && 'hero-respiro')}
               labelPosition="top-right"
               priority={slideIndex === 0}
               sizes="100vw"
             />
-            <div aria-hidden="true" className="veil-home absolute inset-0" />
+            <div aria-hidden="true" className="veil-hero absolute inset-0" />
             {active && <Twinkles points={twinklePresets.homeHero} />}
 
-            <div className="absolute inset-x-0 bottom-44 px-24 lg:bottom-64 lg:px-90">
-              <Eyebrow tone="gold" size="md" tracking="16" className="mb-14">
-                {t.home.hero.eyebrow}
-              </Eyebrow>
-              <Display
-                as={slideIndex === 0 ? 'h1' : 'p'}
-                className="max-w-640 text-32 leading-112 md:text-40 lg:text-58"
+            <div className="relative flex h-full flex-col items-center justify-center px-24 text-center">
+              <p className="hero-occhiello font-body text-12 font-medium tracking-22 text-gold">
+                {slide.label}
+              </p>
+              <h1
+                className="hero-titolo mt-18 max-w-[15ch] font-display leading-[1.03] font-semibold text-balance text-white"
+                style={{ fontSize: 'clamp(38px, 6.4vw, 82px)' }}
               >
                 {slide.title}
-              </Display>
-              <p className="mt-14 max-w-520 font-body text-16 leading-170 text-ink-2 md:text-18">
+              </h1>
+              <p className="hero-riga mt-20 max-w-620 font-body text-16 leading-165 text-white/82 md:text-18">
                 {slide.subtitle}
               </p>
-              <div className="mt-26 flex flex-wrap gap-14">
-                <ButtonLink
-                  href={localePath(locale, routes.luminarie)}
-                  variant="ghostGold"
-                  size="hero"
-                  tabIndex={active ? undefined : -1}
-                >
-                  {t.home.hero.ctaPrimary}
-                </ButtonLink>
-                <ButtonLink
-                  href={localePath(locale, routes.custom)}
-                  variant="ghost"
-                  size="hero"
-                  tabIndex={active ? undefined : -1}
-                >
-                  {t.home.hero.ctaSecondary}
-                </ButtonLink>
-              </div>
+              <Link
+                href={localePath(locale, destinazioni[slideIndex])}
+                tabIndex={active ? undefined : -1}
+                className="hero-bottone mt-32 inline-flex items-center bg-gold px-34 py-16 font-body text-12 font-semibold tracking-18 text-gold-ink"
+              >
+                {slide.cta}
+              </Link>
             </div>
           </div>
         );
       })}
 
-      {/* Frecce circolari 44px, centrate ai lati a 22px */}
+      {/* Frecce ai bordi, a metà altezza */}
       <button
         type="button"
         onClick={() => go(index - 1)}
-        className="absolute top-1/2 left-22 flex size-44 -translate-y-1/2 items-center justify-center rounded-full border border-arrow text-18 text-white transition-colors duration-200 ease-out hover:border-white"
+        className="hero-freccia absolute top-1/2 left-8 z-20 -translate-y-1/2 px-14 py-20 text-34 leading-none text-white/70 lg:left-20"
       >
         <span aria-hidden="true">‹</span>
         <span className="sr-only">{t.home.hero.previous}</span>
@@ -147,14 +149,14 @@ export function HeroCarousel() {
       <button
         type="button"
         onClick={() => go(index + 1)}
-        className="absolute top-1/2 right-22 flex size-44 -translate-y-1/2 items-center justify-center rounded-full border border-arrow text-18 text-white transition-colors duration-200 ease-out hover:border-white"
+        className="hero-freccia absolute top-1/2 right-8 z-20 -translate-y-1/2 px-14 py-20 text-34 leading-none text-white/70 lg:right-20"
       >
         <span aria-hidden="true">›</span>
         <span className="sr-only">{t.home.hero.next}</span>
       </button>
 
-      {/* Indice delle slide, in basso a destra */}
-      <div className="absolute right-24 bottom-14 hidden items-center gap-22 font-body text-11 font-medium tracking-14 md:flex lg:right-90 lg:bottom-64">
+      {/* Indice: quattro trattini. L'etichetta resta per chi usa lo screen reader. */}
+      <div className="absolute inset-x-0 bottom-34 z-20 flex justify-center gap-10">
         {slides.map((slide, slideIndex) => {
           const active = slideIndex === index;
           return (
@@ -164,12 +166,13 @@ export function HeroCarousel() {
               onClick={() => go(slideIndex)}
               aria-current={active ? 'true' : undefined}
               className={cn(
-                'pb-4 transition-colors duration-200 ease-out',
-                active ? 'border-b border-gold text-gold' : 'text-ink-3 hover:text-gold',
+                'h-2 w-38 transition-colors duration-300 ease-out',
+                active ? 'bg-gold' : 'bg-white/28 hover:bg-white/55',
               )}
             >
-              <span className="sr-only">{t.home.hero.goTo} </span>
-              {slide.label}
+              <span className="sr-only">
+                {t.home.hero.goTo} {slide.label}
+              </span>
             </button>
           );
         })}

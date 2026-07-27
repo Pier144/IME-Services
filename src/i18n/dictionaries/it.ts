@@ -63,8 +63,6 @@ const it = {
       'Dal 2014 a Domegliara (VR): luminarie artistiche per città ed eventi con La Fabbrica di Babbo Natale, impianti elettrici civili e industriali.',
     hero: {
       eyebrow: 'DAL 2014 · TRE GENERAZIONI DI LUCE',
-      ctaPrimary: 'SCOPRI LE LUMINARIE',
-      ctaSecondary: 'RICHIEDI UN PREVENTIVO',
       previous: 'Slide precedente',
       next: 'Slide successiva',
       pause: 'Metti in pausa il carosello',
@@ -76,6 +74,7 @@ const it = {
           title: 'Accendiamo la meraviglia.',
           subtitle:
             'Luminarie artistiche per città ed eventi, impianti elettrici civili e industriali. Da Domegliara, Verona.',
+          cta: 'SCOPRI LE LUMINARIE',
           photo:
             'FOTO SLIDE 1/4 — corso cittadino con luminarie natalizie accese, notturna (fornita dal cliente)',
         },
@@ -84,6 +83,7 @@ const it = {
           title: 'Ogni evento ha la sua luce.',
           subtitle:
             'Allestimenti luminosi per sagre, fiere, matrimoni e manifestazioni: progetto, noleggio e assistenza.',
+          cta: 'ALLESTIMENTI PER EVENTI',
           photo:
             'FOTO SLIDE 2/4 — allestimento luminoso per un evento estivo all’aperto, sera',
         },
@@ -92,6 +92,7 @@ const it = {
           title: 'Impianti che tengono, negli anni.',
           subtitle:
             'Civili e industriali: progettazione, realizzazione e manutenzione in tutta la provincia.',
+          cta: 'SCOPRI GLI IMPIANTI',
           photo: 'FOTO SLIDE 3/4 — quadro elettrico industriale o cantiere in corso',
         },
         {
@@ -99,10 +100,36 @@ const it = {
           title: 'Il tuo soggetto, dal disegno alla luce.',
           subtitle:
             'Decorazioni luminose 2D e 3D costruite su misura nella nostra officina di famiglia.',
+          cta: 'ENTRA IN OFFICINA',
           photo:
             'FOTO SLIDE 4/4 — officina della Fabbrica: struttura in filo di alluminio con LED in lavorazione',
         },
       ],
+    },
+    /** I quattro mondi, elencati sotto l'hero. L'ordine è quello dell'hero. */
+    worlds: ['LUMINARIE NATALIZIE', 'LUMINARIE PER EVENTI', 'IMPIANTI ELETTRICI', 'SOGGETTI SU MISURA'],
+    intro: {
+      title: 'Due anime, una famiglia.',
+      lead: 'Siamo una famiglia di elettricisti che a un certo punto ha imparato a fare luce anche per le feste.',
+      text: 'Progettiamo, costruiamo, installiamo e manteniamo. Tutto passa dalla nostra officina di Domegliara: per questo diciamo di sì anche alle richieste più strane, dalle luminarie di un centro storico al soggetto disegnato a mano su un tovagliolo.',
+    },
+    quote: {
+      title: 'Scrivici per informazioni o preventivi',
+      lead: 'Perché lavorare con noi?',
+      text: 'Progettiamo e costruiamo tutto in casa, e installiamo con le nostre squadre. Sopralluogo e proposta senza impegno: rispondiamo entro due giorni lavorativi.',
+      phoneLabel: 'TELEFONO',
+      emailLabel: 'EMAIL',
+      workshopLabel: 'OFFICINA',
+      name: 'Nome e cognome',
+      company: 'Comune o azienda',
+      email: 'Email',
+      phone: 'Telefono',
+      message: 'La tua richiesta',
+      submit: 'INVIA',
+      sending: 'INVIO IN CORSO…',
+      successTitle: 'Richiesta inviata.',
+      successText: 'Ti rispondiamo entro due giorni lavorativi. Se hai fretta, chiamaci.',
+      successAgain: 'INVIANE UN’ALTRA',
     },
     souls: {
       label: 'DUE ANIME, UNA FAMIGLIA',

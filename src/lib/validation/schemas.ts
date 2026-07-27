@@ -48,7 +48,7 @@ export function quoteRequestSchema(errors: Errors) {
       attachments: z.array(storedFileSchema).max(10).default([]),
       privacy: z.literal(true, { message: errors.privacyRequired }),
       locale: z.enum(['it', 'en']).default('it'),
-      source: z.enum(['soggetti-personalizzati', 'catalogo', 'impianti']).default(
+      source: z.enum(['soggetti-personalizzati', 'catalogo', 'impianti', 'home']).default(
         'soggetti-personalizzati',
       ),
       /**

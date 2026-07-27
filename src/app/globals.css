@@ -291,6 +291,107 @@
     text-align: center;
   }
 
+  /* --- Hero della home ----------------------------------------------------
+     Il velo è più carico in cima rispetto agli altri: lì sopra ci sta
+     l'intestazione del sito, che sulla home è sovrapposta alla foto e deve
+     restare leggibile anche sulle slide chiare. La macchia radiale al centro
+     stacca il titolo dal fondo senza scurire tutta l'immagine. */
+  .veil-hero {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(10, 14, 28, 0.62) 0%,
+        rgba(10, 14, 28, 0.1) 26%,
+        rgba(10, 14, 28, 0.1) 56%,
+        rgba(10, 14, 28, 0.86) 100%
+      ),
+      radial-gradient(ellipse 70% 55% at 50% 50%, rgba(10, 14, 28, 0.52) 0%, rgba(10, 14, 28, 0) 100%);
+  }
+
+  /* 24 secondi per un 6% di scala: si nota solo se lo si cerca, ma toglie
+     alla foto ferma l'aria da cartolina. */
+  .hero-respiro img {
+    animation: hero-respiro 24s ease-out both;
+  }
+
+  @keyframes hero-respiro {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+
+  .hero-occhiello {
+    animation: hero-sale 700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+  .hero-titolo {
+    animation: hero-sale 700ms cubic-bezier(0.22, 0.61, 0.36, 1) 90ms both;
+  }
+  .hero-riga {
+    animation: hero-sale 700ms cubic-bezier(0.22, 0.61, 0.36, 1) 170ms both;
+  }
+  .hero-bottone {
+    animation: hero-sale 700ms cubic-bezier(0.22, 0.61, 0.36, 1) 250ms both;
+    transition: background-color 200ms ease-out, transform 150ms ease-out;
+  }
+
+  @keyframes hero-sale {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .hero-bottone:hover {
+    background-color: var(--color-gold-hover);
+  }
+  .hero-bottone:active {
+    transform: translateY(1px);
+  }
+
+  .hero-freccia {
+    transition: color 200ms ease-out;
+  }
+  .hero-freccia:hover {
+    color: var(--color-white);
+  }
+
+  /* --- Elenco dei quattro mondi ------------------------------------------- */
+  .mondo-trattino {
+    transition: width 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .mondo:hover .mondo-trattino {
+    width: 34px;
+  }
+
+  /* --- Campi pieni del preventivo in home ---------------------------------
+     Pieni e senza bordo, al contrario dei campi bordati del resto del sito:
+     è quello che dà alla fascia il peso visivo che ha nel riferimento. Il
+     riempimento è il colore del testo del sito, non un grigio qualsiasi. */
+  .campo-pieno {
+    background: var(--color-ink);
+    color: var(--color-night);
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    transition: box-shadow 180ms ease-out;
+  }
+
+  .campo-pieno::placeholder {
+    color: var(--color-ink-4);
+    opacity: 1;
+  }
+
+  .campo-pieno:focus {
+    box-shadow: inset 0 0 0 2px var(--color-gold);
+  }
+
   /* --- Veli sulle foto ---------------------------------------------------- */
   .veil-page {
     background: linear-gradient(180deg, rgba(10, 14, 28, 0.35), rgba(10, 14, 28, 0.92));
@@ -374,6 +475,20 @@
   .twinkle {
     animation: none;
     opacity: 0.45;
+  }
+
+  .hero-respiro img,
+  .hero-occhiello,
+  .hero-titolo,
+  .hero-riga,
+  .hero-bottone {
+    animation: none;
+  }
+
+  .mondo-trattino,
+  .hero-freccia,
+  .campo-pieno {
+    transition: none;
   }
 
   .card-media > *,

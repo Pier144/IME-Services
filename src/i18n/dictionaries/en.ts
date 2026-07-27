@@ -63,8 +63,6 @@ const en: Dictionary = {
       'Since 2014 in Domegliara (Verona, Italy): artistic light displays for towns and events with La Fabbrica di Babbo Natale, plus residential and industrial electrical systems.',
     hero: {
       eyebrow: 'SINCE 2014 · THREE GENERATIONS OF LIGHT',
-      ctaPrimary: 'SEE THE LIGHT DISPLAYS',
-      ctaSecondary: 'REQUEST A QUOTE',
       previous: 'Previous slide',
       next: 'Next slide',
       pause: 'Pause the carousel',
@@ -76,6 +74,7 @@ const en: Dictionary = {
           title: 'We light up the wonder.',
           subtitle:
             'Artistic light displays for towns and events, residential and industrial electrical systems. From Domegliara, Verona.',
+          cta: 'SEE THE LIGHT DISPLAYS',
           photo:
             'PHOTO SLIDE 1/4 — town high street with Christmas lights switched on, night shot (supplied by the client)',
         },
@@ -84,6 +83,7 @@ const en: Dictionary = {
           title: 'Every event has its own light.',
           subtitle:
             'Lighting for fairs, festivals, weddings and public events: design, rental and on-site support.',
+          cta: 'LIGHTING FOR EVENTS',
           photo: 'PHOTO SLIDE 2/4 — outdoor summer event lighting, evening',
         },
         {
@@ -91,6 +91,7 @@ const en: Dictionary = {
           title: 'Systems that last for years.',
           subtitle:
             'Residential and industrial: design, installation and maintenance across the province.',
+          cta: 'SEE THE SYSTEMS',
           photo: 'PHOTO SLIDE 3/4 — industrial switchboard or work site in progress',
         },
         {
@@ -98,10 +99,36 @@ const en: Dictionary = {
           title: 'Your design, turned into light.',
           subtitle:
             'Bespoke 2D and 3D light decorations, built in our family workshop.',
+          cta: 'ENTER THE WORKSHOP',
           photo:
             'PHOTO SLIDE 4/4 — workshop: aluminium wire structure with LEDs being assembled',
         },
       ],
+    },
+    /** The four worlds, listed under the hero. Same order as the hero. */
+    worlds: ['CHRISTMAS LIGHTS', 'EVENT LIGHTING', 'ELECTRICAL SYSTEMS', 'BESPOKE PIECES'],
+    intro: {
+      title: 'Two souls, one family.',
+      lead: 'We are a family of electricians who, at some point, learned to make light for the holidays too.',
+      text: 'We design, build, install and maintain. Everything goes through our workshop in Domegliara: that is why we can say yes even to the strangest requests, from the lights of a town centre to a piece sketched by hand on a napkin.',
+    },
+    quote: {
+      title: 'Write to us for information or a quote',
+      lead: 'Why work with us?',
+      text: 'We design and build everything in-house, and install with our own crews. Site visit and proposal with no strings attached: we reply within two working days.',
+      phoneLabel: 'PHONE',
+      emailLabel: 'EMAIL',
+      workshopLabel: 'WORKSHOP',
+      name: 'Full name',
+      company: 'Town or company',
+      email: 'Email',
+      phone: 'Phone',
+      message: 'Your request',
+      submit: 'SEND',
+      sending: 'SENDING…',
+      successTitle: 'Request sent.',
+      successText: 'We reply within two working days. If it is urgent, give us a call.',
+      successAgain: 'SEND ANOTHER',
     },
     souls: {
       label: 'TWO SOULS, ONE FAMILY',
