@@ -177,21 +177,42 @@ configurazione. In produzione `smtp` (nodemailer) o `resend`. Se l'invio fallisc
 
 ## Deploy su Vercel
 
-1. **Supabase** — crea il bucket `allegati` **privato** e genera le chiavi in *Storage → S3 Access
-   Keys*. Il progetto è già in `eu-west-1`.
-2. **Vercel** — importa il repository. `vercel.json` fissa la regione `dub1` (Dublino, accanto al
-   database) e il comando di build `prisma generate && prisma migrate deploy && next build`, così
-   ogni deploy applica da sé le migrazioni pendenti.
-3. **Variabili d'ambiente**, da impostare su *tutti* gli ambienti — non solo Production, perché
-   sitemap e pagine articolo interrogano il database **durante la build**:
+Progetto Supabase `IME-Services` (`eu-west-1`) e progetto Vercel `ime-services` esistono già,
+collegato quest'ultimo al repository GitHub. Schema applicato, contenuti seminati, bucket creato:
+**manca solo la configurazione delle variabili d'ambiente su Vercel.**
 
-   `DATABASE_URL` · `DIRECT_URL` · `AUTH_SECRET` · `ADMIN_EMAIL` · `ADMIN_PASSWORD` ·
-   `NEXT_PUBLIC_SITE_URL` · `STORAGE_DRIVER=s3` · `S3_ENDPOINT` · `S3_REGION` · `S3_BUCKET` ·
-   `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` · `MAIL_DRIVER=smtp` e le `SMTP_*`
-4. **Primo popolamento** — una volta sola, da locale con le variabili di produzione:
-   `npm run db:seed`
-5. **Dominio** — collega `ime-service.it` e allinea `NEXT_PUBLIC_SITE_URL`, che alimenta URL
+1. **Variabili d'ambiente** — da impostare su *tutti e tre* gli ambienti (Production, Preview,
+   Development), non solo Production: sitemap e pagine articolo interrogano il database **durante
+   la build**, e senza `DIRECT_URL` la build si ferma prima ancora di partire.
+
+   | Variabile | Valore |
+   | --- | --- |
+   | `DATABASE_URL` | transaction pooler, porta 6543 (vedi `.env.example`) |
+   | `DIRECT_URL` | session pooler, porta 5432 |
+   | `AUTH_SECRET` | **da rigenerare**, mai riusare quello di sviluppo |
+   | `ADMIN_EMAIL` · `ADMIN_PASSWORD` | credenziali vere dell'area riservata |
+   | `NEXT_PUBLIC_SITE_URL` | `https://www.ime-service.it` |
+   | `STORAGE_DRIVER` | `s3` — con `local` ogni caricamento fallisce, il disco è di sola lettura |
+   | `S3_ENDPOINT` · `S3_REGION` · `S3_BUCKET` | vedi `.env.example` |
+   | `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` | *Supabase → Storage → S3 Access Keys* |
+   | `MAIL_DRIVER` + `SMTP_*` (o `RESEND_API_KEY`) | con `console` nessuno riceve le notifiche |
+
+   Il segreto di sessione si genera con:
+   `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"`
+
+2. **Migrazioni** — si applicano a mano, prima del deploy: `npm run db:deploy`.
+
+   Non stanno nel comando di build apposta. Vercel usa lo stesso comando per Production e per
+   Preview, e finché c'è un solo progetto Supabase le Preview puntano al database di produzione:
+   una migrazione su un branch ne cambierebbe lo schema prima ancora della revisione. Se un giorno
+   nascerà un progetto Supabase separato per le Preview, `prisma migrate deploy` potrà tornare in
+   `vercel.json`.
+
+3. **Dominio** — collega `ime-service.it` e allinea `NEXT_PUBLIC_SITE_URL`, che alimenta URL
    canonici, Open Graph e sitemap.
+
+`vercel.json` fissa la regione `dub1` (Dublino, accanto al database) e il comando di build
+`prisma generate && next build`.
 
 ### Cosa resta da sistemare prima del go-live
 
