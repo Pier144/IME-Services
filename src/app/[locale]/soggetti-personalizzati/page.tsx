@@ -60,19 +60,6 @@ export default async function CustomSubjectsPage({
           <p className="mt-16 max-w-440 font-body text-16 leading-170 text-ink-2">
             {t.custom.hero.text}
           </p>
-          <dl className="mt-34 flex flex-wrap gap-24 font-body text-14 leading-150 font-medium text-ink-3 md:gap-34">
-            {t.custom.hero.numbers.map((number) => (
-              <div key={number.label}>
-                <dt className="sr-only">{number.label}</dt>
-                <dd>
-                  <span className="block font-display text-30 font-medium text-gold">
-                    {number.value}
-                  </span>
-                  {number.label}
-                </dd>
-              </div>
-            ))}
-          </dl>
         </div>
         <PhotoSlot
           label={t.custom.hero.photo}

@@ -201,11 +201,6 @@ const en: Dictionary = {
       text: 'We build bespoke 2D and 3D light decorations: a company logo, the symbol of a town, a character for an event. Send us a sketch, even a hand-drawn one.',
       photo:
         'PHOTO: custom piece in the workshop: aluminium wire structure with LEDs, work in progress',
-      numbers: [
-        { value: '4-6', label: 'weeks of production' },
-        { value: '2D · 3D', label: 'bespoke structures' },
-        { value: '2014', label: 'family workshop' },
-      ],
     },
     how: {
       label: 'HOW IT WORKS',
