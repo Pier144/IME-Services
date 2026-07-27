@@ -41,3 +41,8 @@ yarn-error.log*
 .idea
 .vscode/*
 !.vscode/extensions.json
+
+# skill degli agenti: le fonti stanno in .agents/ e si committano,
+# i collegamenti sotto .claude/skills/ sono symlink a percorsi assoluti
+# di questa macchina e vanno rigenerati con `npx skills add`
+/.claude/skills/
