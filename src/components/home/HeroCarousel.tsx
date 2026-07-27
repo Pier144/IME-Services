@@ -8,6 +8,7 @@ import { Display, Eyebrow } from '@/components/ui/Typography';
 import { useI18n } from '@/i18n/provider';
 import { localePath } from '@/i18n/config';
 import { routes } from '@/lib/routes';
+import { photos } from '@/data/photos';
 import { cn } from '@/lib/utils';
 
 const AUTOPLAY_MS = 6000;
@@ -88,6 +89,8 @@ export function HeroCarousel() {
           >
             <PhotoSlot
               label={slide.photo}
+              src={photos.homeHero[slideIndex]}
+              alt={slide.title}
               className="absolute inset-0"
               labelPosition="top-right"
               priority={slideIndex === 0}

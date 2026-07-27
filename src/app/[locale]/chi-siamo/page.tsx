@@ -10,6 +10,7 @@ import { twinklePresets } from '@/components/media/Twinkles';
 import { getDictionary } from '@/i18n';
 import { isLocale, localePath, type Locale } from '@/i18n/config';
 import { routes } from '@/lib/routes';
+import { photos } from '@/data/photos';
 
 export async function generateMetadata({
   params,
@@ -49,6 +50,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         eyebrow={t.about.eyebrow}
         title={t.about.title}
         photo={t.about.heroPhoto}
+        photoSrc={photos.pageHero.about}
         height={340}
         showTwinkles={false}
       />
@@ -122,10 +124,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <Container className="pt-50 lg:pt-60">
         <SectionLabel>{t.about.placesLabel}</SectionLabel>
         <div className="mt-24 grid grid-cols-1 gap-22 sm:grid-cols-2 lg:grid-cols-3">
-          {t.about.places.map((place) => (
+          {t.about.places.map((place, index) => (
             <div key={place.title}>
               <PhotoSlot
                 label={place.photo}
+                src={photos.aboutPlaces[index]}
+                alt={place.title}
                 className="h-200 md:h-230"
                 sizes="(max-width: 900px) 100vw, 340px"
               />

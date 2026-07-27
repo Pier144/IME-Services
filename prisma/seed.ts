@@ -13,6 +13,7 @@
  */
 import { PrismaClient } from '@prisma/client';
 import { serializeBody, type BodyBlock } from '../src/lib/articles/body';
+import { articleCover } from '../src/data/photos';
 
 const prisma = new PrismaClient();
 
@@ -324,7 +325,8 @@ async function main() {
         excerpt: article.excerpt,
         body: serializeBody(article.body),
         category: article.category,
-        coverImage: null,
+        // Foto stock provvisoria dove esiste — vedi src/data/photos.ts.
+        coverImage: articleCover(article.slug),
         coverAlt: article.coverAlt,
         tags: JSON.stringify(article.tags),
         status: article.status,

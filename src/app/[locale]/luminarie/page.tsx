@@ -10,6 +10,7 @@ import { getDictionary } from '@/i18n';
 import { isLocale, localePath, type Locale } from '@/i18n/config';
 import { routes } from '@/lib/routes';
 import { subjects } from '@/data/subjects';
+import { photos } from '@/data/photos';
 import { seasons, typesForSeason, type Season } from '@/data/subject-types';
 import { firstParam } from '@/lib/utils';
 import { cn } from '@/lib/utils';
@@ -83,6 +84,7 @@ export default async function LuminariePage({
         title={t.luminarie.title}
         intro={t.luminarie.intro}
         photo={t.luminarie.heroPhoto}
+        photoSrc={photos.pageHero.luminarie}
         height={300}
       />
 

@@ -107,10 +107,14 @@ esistono solo i valori del design system.
 
 ### Fotografie
 
-Non esiste ancora nessuna foto reale. Ogni immagine è un `<PhotoSlot>` che replica il segnaposto
-del mockup e porta con sé **l'etichetta descrittiva**: quelle etichette sono il brief fotografico
-da consegnare al cliente. Quando le foto arrivano basta passare `src`: proporzioni e ingombro non
-cambiano, nessuna pagina va ritoccata.
+Le foto dell'azienda non ci sono ancora. Al loro posto ci sono **21 immagini stock provvisorie**
+(Pexels, licenza libera anche per uso commerciale) mappate in [`src/data/photos.ts`](src/data/photos.ts)
+e documentate in [CREDITI-FOTO.md](CREDITI-FOTO.md) — comprese quelle che mancano ancora.
+
+Tutto il resto resta `<PhotoSlot>`: replica il segnaposto del mockup e porta con sé **l'etichetta
+descrittiva**, che è il brief fotografico da consegnare al cliente. Quando le foto vere arrivano
+basta metterle in `public/foto/` con lo stesso nome: proporzioni e ingombro non cambiano, nessuna
+pagina va ritoccata.
 
 ### Loghi
 

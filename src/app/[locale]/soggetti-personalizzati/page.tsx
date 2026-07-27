@@ -10,6 +10,7 @@ import { isLocale, localePath, type Locale } from '@/i18n/config';
 import { routes } from '@/lib/routes';
 import { subjects } from '@/data/subjects';
 import { addressLine, site } from '@/lib/site';
+import { photos } from '@/data/photos';
 
 export async function generateMetadata({
   params,
@@ -75,6 +76,8 @@ export default async function CustomSubjectsPage({
         </div>
         <PhotoSlot
           label={t.custom.hero.photo}
+          src={photos.pageHero.custom}
+          alt={t.custom.hero.title}
           className="h-240 flex-none md:h-300 lg:h-auto lg:w-480"
           sizes="(max-width: 1200px) 100vw, 480px"
           priority
@@ -117,6 +120,8 @@ export default async function CustomSubjectsPage({
         <aside className="flex flex-none flex-col gap-22 lg:w-330">
           <PhotoSlot
             label={t.custom.aside.photo}
+            src={photos.customAside}
+            alt={t.custom.aside.title}
             className="h-200 md:h-230"
             sizes="(max-width: 1200px) 100vw, 330px"
           />

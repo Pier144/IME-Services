@@ -1,4 +1,5 @@
 import type { Season } from './subject-types';
+import { subjectPhoto } from './photos';
 
 /* ==========================================================================
  * CATALOGO SOGGETTI — DATI SEGNAPOSTO
@@ -72,6 +73,11 @@ type SubjectInput = {
 };
 
 function build(input: SubjectInput): Subject {
+  // Dove esiste una foto, vale sia per la card sia per la prima vista della
+  // galleria. Le altre tre viste restano segnaposto: di ogni soggetto abbiamo
+  // una sola immagine, e fingere il contrario non aiuterebbe nessuno.
+  const photo = subjectPhoto(input.slug);
+
   return {
     slug: input.slug,
     name: input.name,
@@ -86,8 +92,9 @@ function build(input: SubjectInput): Subject {
       { key: 'formula', value: input.formula ?? 'Vendita o noleggio stagionale' },
     ],
     photo: input.photo,
+    src: photo,
     gallery: [
-      { caption: 'vista intera', photo: input.hero },
+      { caption: 'vista intera', photo: input.hero, src: photo },
       { caption: 'dettaglio LED', photo: `FOTO — ${input.name}: dettaglio del cablaggio LED` },
       { caption: 'di giorno', photo: `FOTO — ${input.name}: la struttura spenta, di giorno` },
       { caption: 'montaggio', photo: `FOTO — ${input.name}: la squadra durante il montaggio` },

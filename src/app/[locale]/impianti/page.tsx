@@ -10,6 +10,7 @@ import { getDictionary } from '@/i18n';
 import { isLocale, localePath, type Locale } from '@/i18n/config';
 import { routes } from '@/lib/routes';
 import { site } from '@/lib/site';
+import { photos } from '@/data/photos';
 
 export async function generateMetadata({
   params,
@@ -65,6 +66,8 @@ export default async function ImpiantiPage({ params }: { params: Promise<{ local
         </div>
         <PhotoSlot
           label={t.impianti.heroPhoto}
+          src={photos.pageHero.impianti}
+          alt={t.impianti.title}
           className="h-240 flex-none md:h-300 lg:h-auto lg:w-480"
           sizes="(max-width: 1200px) 100vw, 480px"
           priority
@@ -75,7 +78,7 @@ export default async function ImpiantiPage({ params }: { params: Promise<{ local
       <Container className="pt-50 lg:pt-70">
         <SectionLabel>{t.impianti.servicesLabel}</SectionLabel>
         <div className="mt-26 grid grid-cols-1 gap-22 sm:grid-cols-2 lg:grid-cols-3">
-          {t.impianti.services.map((service) => (
+          {t.impianti.services.map((service, index) => (
             <article
               key={service.title}
               className="overflow-hidden border border-hairline bg-panel-ime px-24 pt-0 pb-30 md:px-32 md:pb-34"
@@ -83,6 +86,8 @@ export default async function ImpiantiPage({ params }: { params: Promise<{ local
               {/* La foto è a filo: i margini negativi annullano il padding della card. */}
               <PhotoSlot
                 label={service.photo}
+                src={photos.impiantiServices[index]}
+                alt={service.title}
                 className="-mx-24 h-140 md:-mx-32 md:h-150"
                 sizes="(max-width: 900px) 100vw, 360px"
               />

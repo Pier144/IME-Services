@@ -9,6 +9,7 @@ import { SectionLabel } from '@/components/ui/Typography';
 import { getDictionary } from '@/i18n';
 import { isLocale, localePath, type Locale } from '@/i18n/config';
 import { routes } from '@/lib/routes';
+import { photos } from '@/data/photos';
 
 export async function generateMetadata({
   params,
@@ -48,6 +49,7 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
           </>
         }
         photo={t.careers.heroPhoto}
+        photoSrc={photos.pageHero.careers}
         height={320}
         showTwinkles={false}
       />
@@ -104,6 +106,8 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
       <Container className="flex flex-col items-stretch gap-34 pt-50 pb-60 lg:flex-row lg:gap-44 lg:pt-60 lg:pb-80">
         <PhotoSlot
           label={t.careers.form.photo}
+          src={photos.careersForm}
+          alt={t.careers.form.title}
           className="h-240 flex-none lg:h-auto lg:w-380"
           sizes="(max-width: 1200px) 100vw, 380px"
         />
