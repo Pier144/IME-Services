@@ -50,7 +50,7 @@ export type EditorArticle = {
  * - la bozza si salva da sola ogni 30 secondi, ma solo se qualcosa è cambiato,
  *   e il timestamp mostrato è quello vero della risposta del server;
  * - PUBBLICA resta spento finché mancano titolo, categoria, copertina o
- *   sommario — lo stesso controllo gira anche lato server.
+ *   sommario. Lo stesso controllo gira anche lato server.
  */
 export function ArticleEditor({ article }: { article: EditorArticle }) {
   const { t } = useI18n();

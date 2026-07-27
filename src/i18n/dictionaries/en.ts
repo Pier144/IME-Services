@@ -58,7 +58,7 @@ const en: Dictionary = {
   },
 
   home: {
-    metaTitle: 'IME Service — artistic light displays and electrical systems near Verona',
+    metaTitle: 'IME Service · artistic light displays and electrical systems near Verona',
     metaDescription:
       'Since 2014 in Domegliara (Verona, Italy): artistic light displays for towns and events with La Fabbrica di Babbo Natale, plus residential and industrial electrical systems.',
     hero: {
@@ -76,7 +76,7 @@ const en: Dictionary = {
             'Artistic light displays for towns and events, residential and industrial electrical systems. From Domegliara, Verona.',
           cta: 'SEE THE LIGHT DISPLAYS',
           photo:
-            'PHOTO SLIDE 1/4 — town high street with Christmas lights switched on, night shot (supplied by the client)',
+            'PHOTO SLIDE 1/4: town high street with Christmas lights switched on, night shot (supplied by the client)',
         },
         {
           label: 'EVENTS',
@@ -84,7 +84,7 @@ const en: Dictionary = {
           subtitle:
             'Lighting for fairs, festivals, weddings and public events: design, rental and on-site support.',
           cta: 'LIGHTING FOR EVENTS',
-          photo: 'PHOTO SLIDE 2/4 — outdoor summer event lighting, evening',
+          photo: 'PHOTO SLIDE 2/4: outdoor summer event lighting, evening',
         },
         {
           label: 'SYSTEMS',
@@ -92,7 +92,7 @@ const en: Dictionary = {
           subtitle:
             'Residential and industrial: design, installation and maintenance across the province.',
           cta: 'SEE THE SYSTEMS',
-          photo: 'PHOTO SLIDE 3/4 — industrial switchboard or work site in progress',
+          photo: 'PHOTO SLIDE 3/4: industrial switchboard or work site in progress',
         },
         {
           label: 'THE WORKSHOP',
@@ -101,7 +101,7 @@ const en: Dictionary = {
             'Bespoke 2D and 3D light decorations, built in our family workshop.',
           cta: 'ENTER THE WORKSHOP',
           photo:
-            'PHOTO SLIDE 4/4 — workshop: aluminium wire structure with LEDs being assembled',
+            'PHOTO SLIDE 4/4: workshop: aluminium wire structure with LEDs being assembled',
         },
       ],
     },
@@ -170,14 +170,14 @@ const en: Dictionary = {
   },
 
   luminarie: {
-    metaTitle: 'Artistic light displays — catalogue | IME Service',
+    metaTitle: 'Artistic light displays · catalogue | IME Service',
     metaDescription:
       'The full IME Service catalogue of artistic light displays: Christmas trees, street crossings, suspended installations, façades and 3D pieces for towns and events.',
     breadcrumb: 'HOME / LIGHT DISPLAYS',
     title: 'Light displays',
     intro:
       'The full catalogue of light pieces, from Christmas installations for towns to lighting for events.',
-    heroPhoto: 'PHOTO — wide view of a street with several light displays on, night shot',
+    heroPhoto: 'PHOTO: wide view of a street with several light displays on, night shot',
     allTypes: 'All',
     countOne: 'piece',
     countMany: 'pieces',
@@ -222,9 +222,9 @@ const en: Dictionary = {
       'Bespoke 2D and 3D light decorations: from your drawing or logo to the finished structure, made in our workshop in Domegliara (Verona, Italy).',
     hero: {
       title: 'Your design, turned into light.',
-      text: 'We build bespoke 2D and 3D light decorations: a company logo, the symbol of a town, a character for an event. Send us a sketch — even a hand-drawn one.',
+      text: 'We build bespoke 2D and 3D light decorations: a company logo, the symbol of a town, a character for an event. Send us a sketch, even a hand-drawn one.',
       photo:
-        'PHOTO — custom piece in the workshop: aluminium wire structure with LEDs, work in progress',
+        'PHOTO: custom piece in the workshop: aluminium wire structure with LEDs, work in progress',
       numbers: [
         { value: '4-6', label: 'weeks of production' },
         { value: '2D · 3D', label: 'bespoke structures' },
@@ -263,20 +263,20 @@ const en: Dictionary = {
       sending: 'SENDING…',
       successTitle: 'Request sent.',
       successText:
-        'Thank you — we have received your request and will reply within two working days. If you need us sooner, call +39 045 2221396.',
+        'Thank you. We have received your request and will reply within two working days. If you need us sooner, call +39 045 2221396.',
       successAgain: 'Send another request',
       selectedSubjects: 'Pieces added to the request',
       selectedSubjectsHint: 'We attach them to the request. You can remove any before sending.',
     },
     aside: {
-      photo: 'PHOTO — example of a bespoke piece: illuminated town coat of arms',
+      photo: 'PHOTO: example of a bespoke piece: illuminated town coat of arms',
       eyebrow: 'RATHER TALK IT THROUGH?',
       title: 'Call us, the workshop answers',
     },
   },
 
   news: {
-    metaTitle: 'News — from the workshop | IME Service',
+    metaTitle: 'News · from the workshop | IME Service',
     metaDescription:
       'Switch-on nights, new collections, work sites and small stories of light from the Veneto. News from IME Service and La Fabbrica di Babbo Natale.',
     eyebrow: 'NEWS',
@@ -306,12 +306,12 @@ const en: Dictionary = {
   },
 
   about: {
-    metaTitle: 'About us — since 2014, three generations of light | IME Service',
+    metaTitle: 'About us · since 2014, three generations of light | IME Service',
     metaDescription:
       'IME Service is a family business in Domegliara (Verona, Italy): electrical systems since 2014, artistic light displays since 2015 under the La Fabbrica di Babbo Natale brand.',
     eyebrow: 'SINCE 2014 · THREE GENERATIONS',
     title: 'About us',
-    heroPhoto: 'ARCHIVE PHOTO — family archive, the workshop in the 1970s (or a current group portrait)',
+    heroPhoto: 'ARCHIVE PHOTO: family archive, the workshop in the 1970s (or a current group portrait)',
     statement:
       'We are a family of electricians who, at some point, also learned how to make light for the holidays.',
     body1:
@@ -356,17 +356,17 @@ const en: Dictionary = {
       {
         title: 'The workshop',
         text: 'Where the structures and the wiring are born.',
-        photo: 'PHOTO — workshop: structures being built',
+        photo: 'PHOTO: workshop: structures being built',
       },
       {
         title: 'The warehouse',
         text: 'The rental fleet of light displays, serviced every year.',
-        photo: 'PHOTO — seasonal light display warehouse',
+        photo: 'PHOTO: seasonal light display warehouse',
       },
       {
         title: 'The vehicles',
         text: 'Platforms and vans to install safely.',
-        photo: 'PHOTO — vehicles and cherry picker in IME livery',
+        photo: 'PHOTO: vehicles and cherry picker in IME livery',
       },
     ],
     cta: {
@@ -384,24 +384,24 @@ const en: Dictionary = {
     title: 'Electrical systems, from the work site to the festival.',
     intro:
       'Design, installation and maintenance of residential and industrial systems. And a complete rental package for fairs, festivals and events.',
-    heroPhoto: 'PHOTO — industrial switchboard or work site in progress',
+    heroPhoto: 'PHOTO: industrial switchboard or work site in progress',
     ctaPrimary: 'BOOK A SITE VISIT',
     servicesLabel: 'WHAT WE DO',
     services: [
       {
         title: 'Residential and industrial',
         text: 'New systems, upgrades, switchboards, wiring, indoor and outdoor lighting. Certification and testing included.',
-        photo: 'PHOTO — residential system, home',
+        photo: 'PHOTO: residential system, home',
       },
       {
         title: 'Event rental',
         text: 'Temporary systems for festivals, fairs and public events: switchboards, cabling, light towers, support throughout.',
-        photo: 'PHOTO — rented switchboard at a village festival',
+        photo: 'PHOTO: rented switchboard at a village festival',
       },
       {
         title: 'Light shows',
         text: 'Architectural and scenic lighting: façades, monuments, shop windows, television studios.',
-        photo: 'PHOTO — illuminated façade at night',
+        photo: 'PHOTO: illuminated façade at night',
       },
     ],
     processLabel: 'HOW WE WORK',
@@ -448,13 +448,13 @@ const en: Dictionary = {
   },
 
   careers: {
-    metaTitle: 'Work with us — open positions | IME Service',
+    metaTitle: 'Work with us · open positions | IME Service',
     metaDescription:
       'We are looking for electricians, wiring technicians and installation crew for the IME Service team in Domegliara (Verona, Italy). Open positions and speculative applications.',
     eyebrow: 'WORK WITH US',
     titleLine1: 'We are looking for hands',
     titleLine2: 'that know how to make light.',
-    heroPhoto: 'PHOTO — crew working from the cherry picker, sunset light',
+    heroPhoto: 'PHOTO: crew working from the cherry picker, sunset light',
     intro:
       'A family business in Domegliara: small enough that everyone knows each other, structured enough for public contracts. You learn on the job, you work outdoors, and in December you do a job very few people in the world do.',
     benefits: [
@@ -491,12 +491,12 @@ const en: Dictionary = {
     form: {
       title: 'Speculative application',
       subtitle: 'None of the positions fits? Write to us anyway: the crews grow every year.',
-      photo: 'PHOTO — two technicians wiring a piece in the workshop',
+      photo: 'PHOTO: two technicians wiring a piece in the workshop',
       submit: 'SEND APPLICATION',
       sending: 'SENDING…',
       successTitle: 'Application sent.',
       successText:
-        'Thank you — we have received your CV. If the profile fits we will call you, otherwise we keep it on file for the coming seasons.',
+        'Thank you. We have received your CV. If the profile fits we will call you, otherwise we keep it on file for the coming seasons.',
       spontaneous: 'Speculative application',
     },
   },

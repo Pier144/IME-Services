@@ -62,7 +62,7 @@ export async function POST(request: Request) {
   });
 
   const mail = await sendMail({
-    subject: `Nuova candidatura — ${data.name}${data.role ? ` (${data.role})` : ''}`,
+    subject: `Nuova candidatura: ${data.name}${data.role ? ` (${data.role})` : ''}`,
     replyTo: data.email,
     text: [
       `Nome:     ${data.name}`,

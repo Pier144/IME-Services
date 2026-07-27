@@ -81,7 +81,12 @@ export function ArticleBody({
               <blockquote key={key} className={s.quote}>
                 <p>«{block.text}»</p>
                 {block.attribution && (
-                  <footer className={s.quoteAttribution}>— {block.attribution.toUpperCase()}</footer>
+                  <footer className={`flex items-center gap-10 ${s.quoteAttribution}`}>
+                    {/* Il filetto che introduce l'attribuzione è disegnato, non
+                        scritto: nel testo del sito non compaiono trattini lunghi. */}
+                    <span aria-hidden="true" className="block h-1 w-16 flex-none bg-current" />
+                    {block.attribution.toUpperCase()}
+                  </footer>
                 )}
               </blockquote>
             );
@@ -91,9 +96,12 @@ export function ArticleBody({
               <ul key={key} className={s.list}>
                 {block.items.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-baseline gap-12">
-                    <span aria-hidden="true" className="flex-none text-gold">
-                      —
-                    </span>
+                    {/* Trattino disegnato, non scritto: stesso segno di prima
+                        senza il carattere. */}
+                    <span
+                      aria-hidden="true"
+                      className="relative -top-4 block h-1 w-12 flex-none bg-gold"
+                    />
                     <span>{renderInline(item)}</span>
                   </li>
                 ))}

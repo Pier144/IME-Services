@@ -51,7 +51,7 @@ sostituirle con materiale proprio.
 Slot lasciati volutamente a segnaposto, perché nessuna foto stock reggeva il
 confronto con quello che chiede il brief:
 
-- **I mezzi** (Chi siamo) — tutte le foto di flotte trovate mostravano il
+- **I mezzi** (Chi siamo): tutte le foto di flotte trovate mostravano il
   marchio di un'altra azienda sulle fiancate. Serve una foto dei furgoni e del
   cestello con la livrea IME.
 - **Le tre viste secondarie** di ogni soggetto a catalogo (dettaglio LED, di

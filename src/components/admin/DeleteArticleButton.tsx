@@ -56,7 +56,7 @@ export function DeleteArticleButton({ id, title }: { id: string; title: string }
         className="font-body text-12-5 tracking-06 text-ink-3 transition-colors duration-200 hover:text-red"
       >
         {t.admin.news.delete}
-        <span className="sr-only"> — {title}</span>
+        <span className="sr-only">: {title}</span>
       </button>
 
       {open && (

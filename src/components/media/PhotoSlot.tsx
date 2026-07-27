@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 type PhotoSlotProps = {
   /**
    * Etichetta descrittiva presa dal mockup: è il brief fotografico per il
-   * cliente ("FOTO — albero 6 m in piazza"). Resta anche quando la foto
+   * cliente ("FOTO: albero 6 m in piazza"). Resta anche quando la foto
    * arriva, come testo alternativo di riserva.
    */
   label: string;

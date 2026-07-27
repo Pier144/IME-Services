@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 /* ==========================================================================
-   IME Service — design token
+   IME Service: design token
    Fonte unica di verità: design/README.md, sezione "Design Tokens".
    Le scale native di Tailwind sono azzerate di proposito: nel progetto esistono
    SOLO i valori del design system. Se un valore non è qui dentro, non va usato.

@@ -1,7 +1,7 @@
 /**
  * Dati iniziali delle news.
  *
- * Riproduce l'archivio disegnato nel mockup 2i — 14 articoli di cui 2 bozze —
+ * Riproduce l'archivio disegnato nel mockup 2i, 14 articoli di cui 2 bozze,
  * con i titoli, le categorie e le date che compaiono nei mockup 2d e 2i.
  * L'articolo di Piazza Bra ha il corpo completo del mockup 2e, così la pagina
  * di lettura si vede subito con contenuti veri.
@@ -48,7 +48,7 @@ const articles: Seed[] = [
       'Tre settimane di lavoro, 42 sospensioni e un albero da otto metri: il racconto dell’allestimento firmato IME Service per il centro storico.',
     category: 'natale-in-citta',
     coverAlt:
-      'FOTO DI APERTURA ARTICOLO — Piazza Bra con luminarie accese, ripresa larga notturna',
+      'Grandi angeli luminosi sospesi sopra una via cittadina, con le facciate illuminate ai lati',
     tags: ['Verona', 'Luminarie natalizie', 'Enti pubblici'],
     status: 'published',
     featured: true,
@@ -73,7 +73,7 @@ const articles: Seed[] = [
       },
       {
         type: 'image',
-        label: 'FOTO — montaggio notturno con cestello elevatore',
+        label: 'FOTO: montaggio notturno con cestello elevatore',
         caption: 'Il montaggio delle sospensioni, novembre 2025.',
       },
       {
@@ -87,7 +87,7 @@ const articles: Seed[] = [
     title: 'Zucche luminose: la collezione Halloween è in produzione',
     excerpt: 'Sei nuovi soggetti 3D, dalle zucche ai pipistrelli, già disponibili a noleggio.',
     category: 'collezioni',
-    coverAlt: 'FOTO — zucche luminose in officina',
+    coverAlt: 'Zucche intagliate e illuminate dall’interno, disposte su balle di paglia al calare della sera',
     tags: ['Halloween', 'Soggetti 3D', 'Noleggio'],
     status: 'published',
     publishedAt: '2025-10-28',
@@ -105,7 +105,7 @@ const articles: Seed[] = [
     excerpt:
       'Dimmerazione DALI e corpi LED a temperatura variabile per le riprese in diretta.',
     category: 'progetti',
-    coverAlt: 'FOTO — studio TV con impianto luci',
+    coverAlt: 'Facciata di un edificio storico illuminata dal basso con luce calda, di notte',
     tags: ['Impianti', 'Illuminazione tecnica'],
     status: 'published',
     publishedAt: '2025-09-09',
@@ -122,7 +122,7 @@ const articles: Seed[] = [
     title: 'Impianti a noleggio: l’estate delle sagre venete',
     excerpt: 'Quadri, cablaggi e illuminazione per 14 manifestazioni tra Verona e Trento.',
     category: 'progetti',
-    coverAlt: 'FOTO — palco evento estivo con luci',
+    coverAlt: 'Festa all’aperto di sera: bandierine colorate e lampadine sospese sopra la gente',
     tags: ['Noleggio', 'Eventi', 'Sicurezza'],
     status: 'published',
     publishedAt: '2025-07-22',
@@ -139,7 +139,7 @@ const articles: Seed[] = [
     title: 'Come nasce un soggetto su misura',
     excerpt: 'Dal disegno a mano al collaudo: un giro nel nostro reparto produzione.',
     category: 'la-fabbrica',
-    coverAlt: 'FOTO — officina, saldatura struttura',
+    coverAlt: 'Saldatura di un telaio metallico in officina, con le scintille attorno alla torcia',
     tags: ['La Fabbrica', 'Produzione', 'Soggetti su misura'],
     status: 'published',
     publishedAt: '2025-05-14',
@@ -156,7 +156,7 @@ const articles: Seed[] = [
     title: 'Cerchiamo elettricisti: la squadra si allarga',
     excerpt: 'Due posizioni aperte per la stagione delle installazioni.',
     category: 'azienda',
-    coverAlt: 'FOTO — squadra tecnici sul cestello',
+    coverAlt: 'Due operai in giacca ad alta visibilità al lavoro sul cestello di una piattaforma aerea',
     tags: ['Lavora con noi', 'Azienda'],
     status: 'published',
     publishedAt: '2025-02-18',
@@ -174,7 +174,7 @@ const articles: Seed[] = [
     excerpt:
       'Attraversamenti, portali e un albero da dodici metri per il Natale del centro commerciale naturale.',
     category: 'natale-in-citta',
-    coverAlt: 'FOTO — via del centro di Bussolengo con luminarie accese',
+    coverAlt: 'Piazza di paese di notte con l’albero di Natale acceso e fili di luci tesi sopra la pavimentazione bagnata',
     tags: ['Bussolengo', 'Luminarie natalizie'],
     status: 'published',
     publishedAt: '2025-12-01',
@@ -192,7 +192,7 @@ const articles: Seed[] = [
     excerpt:
       'Numeri alla mano: un attraversamento a microled costa meno di una lampadina da comodino accesa tutta la sera.',
     category: 'collezioni',
-    coverAlt: 'FOTO — dettaglio di microled accesi su una struttura',
+    coverAlt: 'Viale alberato di notte, con gli alberi spogli avvolti da fili di luci e la neve sulla strada',
     tags: ['Consumi', 'LED', 'Enti pubblici'],
     status: 'published',
     publishedAt: '2025-11-05',
@@ -210,7 +210,7 @@ const articles: Seed[] = [
     excerpt:
       'Scaffalature dedicate, revisione annuale e tracciabilità di ogni soggetto che esce e rientra.',
     category: 'azienda',
-    coverAlt: 'FOTO — magazzino con scaffalature e strutture luminose',
+    coverAlt: 'Corsia di magazzino con scaffalature metalliche cariche di scatole e segnaletica gialla a terra',
     tags: ['Azienda', 'Magazzino', 'Noleggio'],
     status: 'published',
     publishedAt: '2025-08-19',
@@ -227,7 +227,7 @@ const articles: Seed[] = [
     title: 'Una cantina della Valpolicella illuminata come si deve',
     excerpt: 'Luce radente sulla pietra, niente abbagliamento per chi arriva dalla strada.',
     category: 'progetti',
-    coverAlt: 'FOTO — facciata di cantina storica illuminata di sera',
+    coverAlt: 'Facciata di un edificio storico illuminata dal basso con luce calda, di notte',
     tags: ['Illuminazione architetturale', 'Valpolicella'],
     status: 'published',
     publishedAt: '2025-06-11',
@@ -245,7 +245,7 @@ const articles: Seed[] = [
     excerpt:
       'Formazione, piattaforme certificate e un piano di montaggio scritto per ogni cantiere.',
     category: 'azienda',
-    coverAlt: 'FOTO — tecnico imbragato su piattaforma aerea',
+    coverAlt: 'Due operai in giacca ad alta visibilità al lavoro sul cestello di una piattaforma aerea',
     tags: ['Sicurezza', 'Formazione'],
     status: 'published',
     publishedAt: '2025-04-02',
@@ -262,7 +262,7 @@ const articles: Seed[] = [
     title: 'Il mercatino di Natale, casetta per casetta',
     excerpt: 'Linee dedicate, quadri protetti e ghirlande su ogni ingresso: l’allestimento di dicembre.',
     category: 'natale-in-citta',
-    coverAlt: 'FOTO — casette del mercatino di Natale illuminate',
+    coverAlt: 'Piazza di paese di notte con l’albero di Natale acceso e fili di luci tesi sopra la pavimentazione bagnata',
     tags: ['Mercatini', 'Impianti temporanei'],
     status: 'published',
     publishedAt: '2025-11-24',
@@ -279,7 +279,7 @@ const articles: Seed[] = [
     title: 'Natale 2026: si progetta già in primavera',
     excerpt: 'Perché conviene definire l’allestimento con otto mesi di anticipo.',
     category: 'natale-in-citta',
-    coverAlt: 'FOTO — attraversamento stradale acceso',
+    coverAlt: 'Via pedonale con festoni di luci tesi da un lato all’altro e un pannello luminoso con casetta e abeti',
     tags: ['Progettazione', 'Enti pubblici'],
     status: 'draft',
     publishedAt: null,
@@ -297,14 +297,14 @@ const articles: Seed[] = [
     excerpt:
       'Schede tecniche complete, misure disponibili e formule di noleggio per ogni soggetto a catalogo.',
     category: 'collezioni',
-    coverAlt: 'FOTO — pagine del catalogo soggetti in preparazione',
+    coverAlt: 'Grande albero di Natale acceso in piazza, con la stella in cima e una casetta di legno accanto',
     tags: ['Catalogo', 'La Fabbrica'],
     status: 'draft',
     publishedAt: null,
     body: shortBody(
       'Stiamo mettendo insieme le schede di tutti i soggetti che produciamo, con le misure e i consumi reali.',
       [
-        'Per ogni soggetto ci saranno le altezze disponibili, il tipo di sorgente luminosa, gli effetti di accensione, l’assorbimento e la formula — vendita o noleggio stagionale.',
+        'Per ogni soggetto ci saranno le altezze disponibili, il tipo di sorgente luminosa, gli effetti di accensione, l’assorbimento e la formula: vendita o noleggio stagionale.',
         'Nel frattempo il catalogo online è già consultabile e filtrabile per stagione e tipologia.',
       ],
     ),
@@ -325,7 +325,7 @@ async function main() {
         excerpt: article.excerpt,
         body: serializeBody(article.body),
         category: article.category,
-        // Foto stock provvisoria dove esiste — vedi src/data/photos.ts.
+        // Foto stock provvisoria dove esiste, vedi src/data/photos.ts.
         coverImage: articleCover(article.slug),
         coverAlt: article.coverAlt,
         tags: JSON.stringify(article.tags),

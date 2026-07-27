@@ -113,7 +113,7 @@ export default async function ArticlePage({
       {/* --- Apertura ------------------------------------------------------ */}
       <header className="relative h-280 overflow-hidden md:h-360 lg:h-420">
         <PhotoSlot
-          label={article.coverAlt || `FOTO DI APERTURA ARTICOLO — ${article.title}`}
+          label={article.coverAlt || `FOTO DI APERTURA ARTICOLO: ${article.title}`}
           src={article.coverImage}
           alt={article.coverAlt || article.title}
           className="absolute inset-0"

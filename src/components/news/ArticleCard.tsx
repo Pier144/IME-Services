@@ -26,7 +26,7 @@ export function ArticleCard({
         className="group/card block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
       >
         <PhotoSlot
-          label={article.coverAlt || `FOTO — ${article.title}`}
+          label={article.coverAlt || `FOTO: ${article.title}`}
           src={article.coverImage}
           alt={article.coverAlt || article.title}
           className="card-media h-180 md:h-200"
@@ -69,7 +69,7 @@ export function FeaturedArticle({
         className="group/card flex flex-col focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold lg:flex-row"
       >
         <PhotoSlot
-          label={article.coverAlt || `FOTO ARTICOLO IN EVIDENZA — ${article.title}`}
+          label={article.coverAlt || `FOTO ARTICOLO IN EVIDENZA: ${article.title}`}
           src={article.coverImage}
           alt={article.coverAlt || article.title}
           className="card-media h-220 flex-none md:h-300 lg:h-360 lg:w-620"

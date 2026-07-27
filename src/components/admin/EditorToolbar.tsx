@@ -6,8 +6,8 @@ import { useI18n } from '@/i18n/provider';
 /**
  * Barra strumenti dell'area di scrittura (mockup 2j).
  *
- * Ogni comando scrive nel testo il marcatore corrispondente — gli stessi che
- * `textToBlocks` sa leggere — attorno alla selezione. Niente editor ricco:
+ * Ogni comando scrive nel testo il marcatore corrispondente (gli stessi che
+ * `textToBlocks` sa leggere) attorno alla selezione. Niente editor ricco:
  * il testo resta leggibile, versionabile e senza HTML da ripulire.
  */
 export function EditorToolbar({
@@ -77,7 +77,7 @@ export function EditorToolbar({
       label: '“ ”',
       title: t.admin.editor.toolbar.quote,
       className: '',
-      run: () => apply((s) => `> ${s || 'Citazione'}\n— Attribuzione`, { block: true }),
+      run: () => apply((s) => `> ${s || 'Citazione'}\n-- Attribuzione`, { block: true }),
     },
     {
       key: 'list',
@@ -109,7 +109,7 @@ export function EditorToolbar({
         const caption = window.prompt(t.admin.editor.imageCaptionPrompt, '') ?? '';
         apply(
           (s) =>
-            `![${s || 'FOTO — descrivi la foto richiesta'}](${src ?? ''}${caption ? ` "${caption}"` : ''})`,
+            `![${s || 'FOTO: descrivi la foto richiesta'}](${src ?? ''}${caption ? ` "${caption}"` : ''})`,
           { block: true },
         );
       },

@@ -60,9 +60,11 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
         <ul className="flex flex-1 flex-col gap-14 font-body text-15 font-medium text-ink-2">
           {t.careers.benefits.map((benefit) => (
             <li key={benefit} className="flex items-baseline gap-12">
-              <span aria-hidden="true" className="flex-none text-gold">
-                —
-              </span>
+              {/* Trattino disegnato, non scritto. */}
+              <span
+                aria-hidden="true"
+                className="relative -top-4 block h-1 w-12 flex-none bg-gold"
+              />
               {benefit}
             </li>
           ))}
@@ -92,7 +94,7 @@ export default async function CareersPage({ params }: { params: Promise<{ locale
                   className="text-gold transition-colors duration-200 ease-out hover:text-gold-hover"
                 >
                   {t.careers.apply} <span aria-hidden="true">→</span>
-                  <span className="sr-only"> — {position.title}</span>
+                  <span className="sr-only">: {position.title}</span>
                 </Link>
               </div>
             </li>

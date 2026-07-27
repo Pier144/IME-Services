@@ -29,7 +29,7 @@ export interface StorageDriver {
 /**
  * Cartelle che contengono dati personali: allegati alle richieste di preventivo
  * (disegni, planimetrie) e curriculum. Chi le chiede deve avere una sessione
- * dell'area riservata — sul sito pubblico non compaiono mai.
+ * dell'area riservata: sul sito pubblico non compaiono mai.
  */
 const PROTECTED_FOLDERS: readonly string[] = ['preventivi', 'candidature'];
 

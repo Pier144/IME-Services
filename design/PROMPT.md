@@ -9,9 +9,9 @@ Devi sviluppare il nuovo sito di **IME Service srls** (Domegliara, Verona): impi
 + luminarie artistiche con il marchio *La Fabbrica di Babbo Natale*.
 
 ## Materiali
-- `design/README.md` — specifica di design completa: token, tipografia, misure, comportamenti, modello dati.
+- `design/README.md`: specifica di design completa: token, tipografia, misure, comportamenti, modello dati.
   **Leggila per intera prima di scrivere codice.**
-- `design/Mockup IME Service.dc.html` — mockup visivi. Aprilo e guardalo. È un canvas che affianca più schermate:
+- `design/Mockup IME Service.dc.html`: mockup visivi. Aprilo e guardalo. È un canvas che affianca più schermate:
   ogni schermata sta in un contenitore `.dv-opt` con un id visibile (`2a`, `2b`, …).
   **Il "cromo" del canvas non fa parte del sito**: badge id, etichette `.dv-*`, riquadri tratteggiati
   `.phd`/`.phl` (segnaposto foto). Implementa solo il contenuto dentro ogni `.dv-card`.
@@ -19,7 +19,7 @@ Devi sviluppare il nuovo sito di **IME Service srls** (Domegliara, Verona): impi
   (`1b`–`1p`) sono esplorazioni scartate: ignorale.
 
 Gli HTML sono **riferimenti di design, non codice da copiare**: ricrea le schermate in React con i pattern del
-progetto. Se il progetto è vuoto, usa **Next.js (App Router) + TypeScript + Tailwind** — servono SEO, i18n IT/EN
+progetto. Se il progetto è vuoto, usa **Next.js (App Router) + TypeScript + Tailwind**: servono SEO, i18n IT/EN
 e rendering statico.
 
 ## Cosa costruire

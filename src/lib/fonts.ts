@@ -10,7 +10,7 @@ import { Archivo, Satisfy } from 'next/font/google';
  *           600 i bottoni pieni, 800 italic dentro la pill del logo IME.
  * Satisfy → solo il wordmark "La Fabbrica di Babbo Natale".
  *
- * Archivo è caricato come font variabile — nessun `weight` dichiarato — quindi
+ * Archivo è caricato come font variabile, senza nessun `weight` dichiarato, e
  * arrivano due soli file (tondo e corsivo) invece di otto tagli statici, e tutti
  * i pesi restano disponibili. Prima di questo cambio il testo era in Work Sans
  * peso 300, e quel peso è la ragione per cui il sito risultava esile: chiaro su

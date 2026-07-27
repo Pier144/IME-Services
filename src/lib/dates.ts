@@ -46,24 +46,24 @@ const MONTHS_LONG: Record<Locale, readonly string[]> = {
   ],
 };
 
-/** "12 DIC 2025" — liste ed elenchi. */
+/** "12 DIC 2025" per liste ed elenchi. */
 export function formatShortDate(date: Date, locale: Locale): string {
   return `${date.getUTCDate().toString().padStart(2, '0')} ${MONTHS_SHORT[locale][date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
-/** "12 DICEMBRE 2025" — apertura dell'articolo. */
+/** "12 DICEMBRE 2025" per l apertura dell'articolo. */
 export function formatLongDate(date: Date, locale: Locale): string {
   return `${date.getUTCDate()} ${MONTHS_LONG[locale][date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
-/** "12/12/2025" — tabella dell'area riservata. */
+/** "12/12/2025" per la tabella dell'area riservata. */
 export function formatNumericDate(date: Date): string {
   const day = date.getUTCDate().toString().padStart(2, '0');
   const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
   return `${day}/${month}/${date.getUTCFullYear()}`;
 }
 
-/** "2025-12-12" — valore degli <input type="date"> e degli attributi datetime. */
+/** "2025-12-12" per il valore degli <input type="date"> e degli attributi datetime. */
 export function toDateInputValue(date: Date | null | undefined): string {
   if (!date) return '';
   return date.toISOString().slice(0, 10);

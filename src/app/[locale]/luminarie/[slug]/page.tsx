@@ -32,7 +32,7 @@ export async function generateMetadata({
   if (!isLocale(locale) || !subject) return {};
 
   const type = getSubjectType(subject.type);
-  const title = `${subject.name} — ${type?.name ?? ''} | ${site.shortName}`;
+  const title = `${subject.name} · ${type?.name ?? ''} | ${site.shortName}`;
 
   return {
     title: subject.name,
@@ -141,7 +141,7 @@ export default async function SubjectPage({
               <PhotoSlot
                 label={installation.photo}
                 src={installation.src}
-                alt={`${subject.name} — ${installation.place}`}
+                alt={`${subject.name} · ${installation.place}`}
                 className="h-190 md:h-220"
                 sizes="(max-width: 900px) 100vw, 340px"
               />

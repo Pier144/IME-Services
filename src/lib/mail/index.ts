@@ -36,7 +36,7 @@ async function sendWithConsole(message: MailMessage): Promise<MailResult> {
   console.info(
     [
       separator,
-      `EMAIL (driver "console" — non è stata spedita davvero)`,
+      `EMAIL (driver "console": non è stata spedita davvero)`,
       `Da:       ${sender()}`,
       `A:        ${recipients()}`,
       message.replyTo ? `Rispondi: ${message.replyTo}` : null,

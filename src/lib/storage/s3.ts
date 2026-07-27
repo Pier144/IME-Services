@@ -3,7 +3,7 @@ import { createHash, createHmac } from 'node:crypto';
 import type { StorageDriver } from './types';
 
 /**
- * Driver S3 — usato con lo Storage di Supabase, che espone un endpoint
+ * Driver S3, usato con lo Storage di Supabase, che espone un endpoint
  * S3-compatibile con firma SigV4. Funziona identico con R2, MinIO, Scaleway o
  * S3 vero.
  *

@@ -129,7 +129,7 @@ export function bodyIncipit(blocks: BodyBlock[], maxChars = 180): string {
  * Converte il testo scritto nell'editor in blocchi.
  * Righe vuote separano i paragrafi; i prefissi replicano la barra strumenti.
  *   ## titolo   → titolo di sezione
- *   > citazione → citazione (una riga "— Attribuzione" subito dopo la lega)
+ *   > citazione → citazione (una riga "-- Attribuzione" subito dopo la lega)
  *   - voce      → elenco
  *   ![etichetta](src "didascalia") → immagine
  */
@@ -152,11 +152,11 @@ export function textToBlocks(input: string, { firstIsLead = true } = {}): BodyBl
 
     if (lines[0].startsWith('> ')) {
       const quoteLines = lines.filter((line) => line.startsWith('> ')).map((line) => line.slice(2));
-      const attributionLine = lines.find((line) => line.startsWith('— '));
+      const attributionLine = lines.find((line) => line.startsWith('-- '));
       blocks.push({
         type: 'quote',
         text: quoteLines.join(' ').trim(),
-        attribution: attributionLine?.replace(/^—\s*/, '').trim() || undefined,
+        attribution: attributionLine?.replace(/^--\s*/, '').trim() || undefined,
       });
       continue;
     }
@@ -170,7 +170,7 @@ export function textToBlocks(input: string, { firstIsLead = true } = {}): BodyBl
     if (image) {
       blocks.push({
         type: 'image',
-        label: image[1] || 'FOTO — da definire',
+        label: image[1] || 'FOTO: da definire',
         src: image[2] || null,
         caption: image[3] || undefined,
       });
@@ -193,7 +193,7 @@ export function blocksToText(blocks: BodyBlock[]): string {
         case 'heading':
           return `## ${block.text}`;
         case 'quote':
-          return block.attribution ? `> ${block.text}\n— ${block.attribution}` : `> ${block.text}`;
+          return block.attribution ? `> ${block.text}\n-- ${block.attribution}` : `> ${block.text}`;
         case 'list':
           return block.items.map((item) => `- ${item}`).join('\n');
         case 'image':

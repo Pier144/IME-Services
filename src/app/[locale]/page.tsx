@@ -43,7 +43,7 @@ export async function generateMetadata({
  *
  * L'ordine è quello approvato dal cliente sulla bozza: prima l'hero a tutta
  * finestra, poi i quattro mondi fermi e cliccabili, le due anime in fasce
- * alternate, il catalogo, le news e in fondo la richiesta di preventivo — che
+ * alternate, il catalogo, le news e in fondo la richiesta di preventivo, che
  * prima mandava altrove e ora si compila qui.
  */
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {

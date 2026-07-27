@@ -10,8 +10,8 @@ import { cn } from '@/lib/utils';
  * destra il discorso.
  *
  * I mondi sono le stesse quattro porte delle slide, ma qui restano ferme e
- * cliccabili: chi ha saltato il carosello — o è arrivato quando girava la slide
- * sbagliata — le ritrova tutte insieme. Ognuno prende il colore del proprio
+ * cliccabili: chi ha saltato il carosello, o è arrivato quando girava la slide
+ * sbagliata, le ritrova tutte insieme. Ognuno prende il colore del proprio
  * mondo: rosa e rosso per il Natale e la Fabbrica, oro per gli eventi, blu per
  * gli impianti.
  */

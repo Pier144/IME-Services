@@ -5,7 +5,7 @@ import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.shortName} — luminarie artistiche e impianti elettrici`,
+    default: `${site.shortName} · luminarie artistiche e impianti elettrici`,
     template: `%s | ${site.shortName}`,
   },
   description:
@@ -23,9 +23,9 @@ export const viewport: Viewport = {
 /**
  * Layout radice "di passaggio".
  *
- * `<html>` e `<body>` non stanno qui ma nei due layout sottostanti — quello
+ * `<html>` e `<body>` non stanno qui ma nei due layout sottostanti, quello
  * della lingua (`[locale]/layout.tsx`) e quello dell'area riservata
- * (`admin/layout.tsx`) — perché è lì che si conosce il valore giusto di `lang`
+ * (`admin/layout.tsx`), perché è lì che si conosce il valore giusto di `lang`
  * e la cornice della pagina. Qui restano solo i metadati comuni.
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {

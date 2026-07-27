@@ -9,7 +9,7 @@ export const runtime = 'nodejs';
  * Unico varco verso gli allegati.
  *
  * Il bucket è privato e i file non hanno mai un indirizzo pubblico: si passa
- * sempre da qui, che prima controlla chi sta chiedendo e poi serve il file —
+ * sempre da qui, che prima controlla chi sta chiedendo e poi serve il file:
  * dal disco con lo storage locale, con un link firmato a scadenza con S3.
  *
  * Le copertine degli articoli sono pubbliche perché stanno sul sito pubblico.

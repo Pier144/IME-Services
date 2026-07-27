@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
 /**
- * Le due onde — blu (IME) e rossa (La Fabbrica) — riprese dalla livrea dei
+ * Le due onde, blu (IME) e rossa (La Fabbrica), riprese dalla livrea dei
  * furgoni. Separano i due pannelli "due anime" in home.
  * Sotto i 900px il blocco si impila e le onde ruotano in orizzontale.
  */

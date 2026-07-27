@@ -17,8 +17,8 @@ const AUTOPLAY_MS = 6500;
  *
  * Il testo sta al centro e non in basso a sinistra, e il titolo è molto grande:
  * è quello che dà alla pagina il tono da manifesto. L'intestazione del sito si
- * appoggia sopra la foto — se ne occupa <Header>, che sulla home passa da sé in
- * modalità sovrapposta — quindi il velo è più carico in cima, altrimenti le
+ * appoggia sopra la foto (se ne occupa <Header>, che sulla home passa da sé in
+ * modalità sovrapposta), quindi il velo è più carico in cima, altrimenti le
  * voci di menu non si leggerebbero sulle foto chiare.
  *
  * Autoplay ogni 6,5 s, in pausa quando il mouse è sopra o quando il fuoco della

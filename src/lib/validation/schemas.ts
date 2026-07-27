@@ -53,7 +53,7 @@ export function quoteRequestSchema(errors: Errors) {
       ),
       /**
        * Campo esca: invisibile nel form, i robot lo riempiono e le persone no.
-       * Qui viene accettato senza obiezioni — è il route handler a scartare in
+       * Qui viene accettato senza obiezioni: è il route handler a scartare in
        * silenzio la richiesta, rispondendo come se fosse andata a buon fine.
        * Farlo fallire in validazione direbbe al mittente che è stato scoperto.
        */
@@ -83,7 +83,7 @@ export function jobApplicationSchema(errors: Errors) {
     }),
     privacy: z.literal(true, { message: errors.privacyRequired }),
     locale: z.enum(['it', 'en']).default('it'),
-    /** Campo esca — vedi la nota in `quoteRequestSchema`. */
+    /** Campo esca, vedi la nota in `quoteRequestSchema`. */
     website: z.string().max(200).optional().default(''),
   });
 }

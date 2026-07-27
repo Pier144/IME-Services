@@ -1,4 +1,4 @@
-# IME Service — sito
+# IME Service, sito
 
 Nuovo sito di **IME Service srls** (Domegliara, Verona): impianti elettrici civili e industriali
 e luminarie artistiche con il marchio *La Fabbrica di Babbo Natale*.
@@ -27,7 +27,7 @@ le due stringhe di connessione (Supabase → Project Settings → Database → C
 > tenere quello di produzione solo nelle variabili di Vercel.
 
 Area riservata: <http://localhost:3000/admin> · credenziali in `.env`
-(`redazione@ime-service.it` / `cambiami-subito` — **da cambiare** prima di qualunque uso reale).
+(`redazione@ime-service.it` / `cambiami-subito`: **da cambiare** prima di qualunque uso reale).
 
 ### Comandi
 
@@ -39,14 +39,14 @@ Area riservata: <http://localhost:3000/admin> · credenziali in `.env`
 | `npm run lint` | ESLint (regole Next + TypeScript) |
 | `npm run db:migrate` | crea una nuova migrazione (sviluppo) |
 | `npm run db:deploy` | applica le migrazioni pendenti (produzione) |
-| `npm run db:seed` | aggiunge gli articoli mancanti — non sovrascrive quelli esistenti |
+| `npm run db:seed` | aggiunge gli articoli mancanti, non sovrascrive quelli esistenti |
 | `npm run db:studio` | apre Prisma Studio sul database |
 
 ---
 
 ## Stack
 
-- **Next.js 16 (App Router) + React 19 + TypeScript** — SEO, i18n e rendering statico.
+- **Next.js 16 (App Router) + React 19 + TypeScript**: SEO, i18n e rendering statico.
 - **Tailwind CSS v4** con i token del design in `src/app/globals.css`.
 - **Prisma + Postgres** su Supabase (progetto `IME-Services`, regione `eu-west-1`).
 - **react-hook-form + zod** per i form, con gli stessi schemi lato client e lato server.
@@ -70,7 +70,7 @@ Nessuna libreria di animazione: le uniche animazioni sono il *twinkle* in CSS e 
 | `/chi-siamo` | `2f` | storia, timeline, numeri, luoghi |
 | `/impianti` | `2g` | servizi, processo, settori |
 | `/lavora-con-noi` | `2h` | posizioni aperte + candidatura |
-| `/privacy` | — | struttura pronta, testo legale da fornire |
+| `/privacy` | · | struttura pronta, testo legale da fornire |
 | `/admin/news` | `2i` | lista articoli con ricerca, filtri, paginazione |
 | `/admin/news/[id]` | `2j` | editor con anteprima live e contatori SEO |
 
@@ -118,7 +118,7 @@ esistono solo i valori del design system.
 
 Le foto dell'azienda non ci sono ancora. Al loro posto ci sono **21 immagini stock provvisorie**
 (Pexels, licenza libera anche per uso commerciale) mappate in [`src/data/photos.ts`](src/data/photos.ts)
-e documentate in [CREDITI-FOTO.md](CREDITI-FOTO.md) — comprese quelle che mancano ancora.
+e documentate in [CREDITI-FOTO.md](CREDITI-FOTO.md): comprese quelle che mancano ancora.
 
 Tutto il resto resta `<PhotoSlot>`: replica il segnaposto del mockup e porta con sé **l'etichetta
 descrittiva**, che è il brief fotografico da consegnare al cliente. Quando le foto vere arrivano
@@ -146,7 +146,7 @@ Postgres gestito da Supabase. Servono **due** stringhe di connessione, e non van
   una sessione vera per prendere i lock sullo schema.
 
 Le tabelle stanno nello schema `public`, che Supabase espone anche via Data API con la chiave
-`anon` — che è pubblica. La migrazione iniziale quindi **attiva RLS senza policy** e **revoca i
+`anon`: che è pubblica. La migrazione iniziale quindi **attiva RLS senza policy** e **revoca i
 privilegi** ai ruoli `anon` e `authenticated`: da lì non si legge niente. L'applicazione non è
 toccata perché Prisma si collega con il ruolo `postgres`, che ha `BYPASSRLS`.
 
@@ -156,7 +156,7 @@ dall'interno, quindi il tipo `Json` nativo non aggiungerebbe nulla.
 ### Allegati
 
 `STORAGE_DRIVER=local` (default in sviluppo) scrive in `./storage/uploads`, fuori da `public/`.
-`STORAGE_DRIVER=s3` usa Supabase Storage tramite il suo endpoint S3-compatibile — e funziona
+`STORAGE_DRIVER=s3` usa Supabase Storage tramite il suo endpoint S3-compatibile: e funziona
 identico con R2, Scaleway, MinIO o S3 vero.
 
 **Il bucket va creato privato.** Nessun allegato ha mai un indirizzo pubblico: si passa sempre da
@@ -170,7 +170,7 @@ con controllo di dimensione e formato ripetuto lato server.
 
 ### Email
 
-`MAIL_DRIVER=console` (default) stampa la notifica nei log — comodo in sviluppo, nessuna
+`MAIL_DRIVER=console` (default) stampa la notifica nei log: comodo in sviluppo, nessuna
 configurazione. In produzione `smtp` (nodemailer) o `resend`. Se l'invio fallisce la richiesta
 **non va persa**: è già salvata a database e l'errore finisce nei log.
 
@@ -182,7 +182,7 @@ Progetto Supabase `IME-Services` (`eu-west-1`) e progetto Vercel `ime-services` 
 collegato quest'ultimo al repository GitHub. Schema applicato, contenuti seminati, bucket creato:
 **manca solo la configurazione delle variabili d'ambiente su Vercel.**
 
-1. **Variabili d'ambiente** — da impostare su *tutti e tre* gli ambienti (Production, Preview,
+1. **Variabili d'ambiente**: da impostare su *tutti e tre* gli ambienti (Production, Preview,
    Development), non solo Production: sitemap e pagine articolo interrogano il database **durante
    la build**, e senza `DIRECT_URL` la build si ferma prima ancora di partire.
 
@@ -193,7 +193,7 @@ collegato quest'ultimo al repository GitHub. Schema applicato, contenuti seminat
    | `AUTH_SECRET` | **da rigenerare**, mai riusare quello di sviluppo |
    | `ADMIN_EMAIL` · `ADMIN_PASSWORD` | credenziali vere dell'area riservata |
    | `NEXT_PUBLIC_SITE_URL` | `https://www.ime-service.it` |
-   | `STORAGE_DRIVER` | `s3` — con `local` ogni caricamento fallisce, il disco è di sola lettura |
+   | `STORAGE_DRIVER` | `s3`: con `local` ogni caricamento fallisce, il disco è di sola lettura |
    | `S3_ENDPOINT` · `S3_REGION` · `S3_BUCKET` | vedi `.env.example` |
    | `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` | *Supabase → Storage → S3 Access Keys* |
    | `MAIL_DRIVER` + `SMTP_*` (o `RESEND_API_KEY`) | con `console` nessuno riceve le notifiche |
@@ -201,7 +201,7 @@ collegato quest'ultimo al repository GitHub. Schema applicato, contenuti seminat
    Il segreto di sessione si genera con:
    `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"`
 
-2. **Migrazioni** — si applicano a mano, prima del deploy: `npm run db:deploy`.
+2. **Migrazioni**: si applicano a mano, prima del deploy: `npm run db:deploy`.
 
    Non stanno nel comando di build apposta. Vercel usa lo stesso comando per Production e per
    Preview, e finché c'è un solo progetto Supabase le Preview puntano al database di produzione:
@@ -209,7 +209,7 @@ collegato quest'ultimo al repository GitHub. Schema applicato, contenuti seminat
    nascerà un progetto Supabase separato per le Preview, `prisma migrate deploy` potrà tornare in
    `vercel.json`.
 
-3. **Dominio** — collega `ime-service.it` e allinea `NEXT_PUBLIC_SITE_URL`, che alimenta URL
+3. **Dominio**: collega `ime-service.it` e allinea `NEXT_PUBLIC_SITE_URL`, che alimenta URL
    canonici, Open Graph e sitemap.
 
 `vercel.json` fissa la regione `dub1` (Dublino, accanto al database) e il comando di build
@@ -253,15 +253,15 @@ titolo 58→40→32, colonna articolo 210 → 24, navigazione in pannello).
 
 Da sostituire prima del go-live:
 
-- **Catalogo soggetti** (`src/data/subjects.ts`) — 48 soggetti plausibili e coerenti col mestiere,
+- **Catalogo soggetti** (`src/data/subjects.ts`): 48 soggetti plausibili e coerenti col mestiere,
   ma inventati. Gli otto disegnati nel mockup `2a` e i quattro correlati di `2b` hanno i nomi
   originali. Serve l'anagrafica reale.
-- **News** (`prisma/seed.ts`) — i 14 articoli del mockup `2i`, con i titoli e le date reali del
+- **News** (`prisma/seed.ts`): i 14 articoli del mockup `2i`, con i titoli e le date reali del
   design e corpi scritti per il collaudo.
-- **Numeri di "Chi siamo"** (55+ anni, 3 generazioni, 80+ comuni, 100% produzione interna) —
+- **Numeri di "Chi siamo"** (3 generazioni, 80+ comuni, 100% produzione interna):
   sono stime, il `design/README.md` chiede di confermarle con il cliente.
-- **Informativa privacy** — la pagina esiste ed è linkata, il testo legale va fornito.
-- **Posizioni aperte** — le tre del mockup `2h`, da confermare.
+- **Informativa privacy**: la pagina esiste ed è linkata, il testo legale va fornito.
+- **Posizioni aperte**: le tre del mockup `2h`, da confermare.
 
 ---
 
@@ -294,6 +294,6 @@ Da sostituire prima del go-live:
 
 In `design/`, come consegnati:
 
-- `Mockup IME Service.dc.html` — canvas con tutte le schermate (turno 2 = direzione approvata).
-- `README.md` — specifica di design completa: token, tipografia, misure, comportamenti.
-- `PROMPT.md` — il brief di sviluppo.
+- `Mockup IME Service.dc.html`: canvas con tutte le schermate (turno 2 = direzione approvata).
+- `README.md`: specifica di design completa: token, tipografia, misure, comportamenti.
+- `PROMPT.md`: il brief di sviluppo.

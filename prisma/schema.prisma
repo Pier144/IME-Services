@@ -1,4 +1,4 @@
-// IME Service — schema dati
+// IME Service: schema dati
 //
 // Postgres gestito da Supabase (progetto IME-Services, regione eu-west-1).
 //
@@ -31,9 +31,9 @@ model Article {
   title  String
   /// Sommario mostrato in lista e in apertura di articolo.
   excerpt String @default("")
-  /// JSON: BodyBlock[] — vedi src/lib/articles/body.ts
+  /// JSON: BodyBlock[], vedi src/lib/articles/body.ts
   body   String @default("[]")
-  /// Slug della categoria — vedi src/data/news-categories.ts
+  /// Slug della categoria, vedi src/data/news-categories.ts
   category String
   /// Percorso o URL della foto di copertina. Null = si usa il PhotoSlot.
   coverImage String?
@@ -74,9 +74,9 @@ model QuoteRequest {
   usage String?
   notes String?
 
-  /// JSON: string[] — slug dei soggetti a catalogo aggiunti alla richiesta.
+  /// JSON: string[] con gli slug dei soggetti a catalogo aggiunti alla richiesta.
   subjects String @default("[]")
-  /// JSON: StoredFile[] — vedi src/lib/storage/types.ts
+  /// JSON: StoredFile[], vedi src/lib/storage/types.ts
   attachments String @default("[]")
 
   /// Da quale form è arrivata: "soggetti-personalizzati" | "catalogo" | "impianti"
@@ -95,11 +95,11 @@ model JobApplication {
   name  String
   phone String
   email String
-  /// Slug della posizione — vedi src/data/job-postings.ts. Null = spontanea.
+  /// Slug della posizione, vedi src/data/job-postings.ts. Null = spontanea.
   role  String?
   about String?
 
-  /// JSON: StoredFile | null — il curriculum.
+  /// JSON: StoredFile | null, il curriculum.
   cv String?
 
   locale  String  @default("it")

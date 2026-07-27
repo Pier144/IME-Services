@@ -146,12 +146,12 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
 
                 <span className="text-ink-3">
                   <span className="md:hidden">{t.admin.news.columns.category}: </span>
-                  {article.category ? categoryName(article.category) : '—'}
+                  {article.category ? categoryName(article.category) : '·'}
                 </span>
 
                 <span className="text-ink-3">
                   <span className="md:hidden">{t.admin.news.columns.date}: </span>
-                  {article.publishedAt ? formatNumericDate(article.publishedAt) : '—'}
+                  {article.publishedAt ? formatNumericDate(article.publishedAt) : '·'}
                 </span>
 
                 <span>

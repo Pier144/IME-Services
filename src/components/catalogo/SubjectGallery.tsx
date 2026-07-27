@@ -23,7 +23,7 @@ export function SubjectGallery({ shots, name }: { shots: readonly GalleryShot[];
       <PhotoSlot
         label={active.photo}
         src={active.src}
-        alt={`${name} — ${active.caption}`}
+        alt={`${name} · ${active.caption}`}
         className="h-260 md:h-340 lg:h-440"
         sizes="(max-width: 1200px) 100vw, 700px"
         priority

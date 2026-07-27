@@ -11,8 +11,8 @@ import { cn } from '@/lib/utils';
 /**
  * Anteprima live dell'editor (mockup 2j).
  *
- * Usa gli stessi componenti della pagina pubblica — `ArticleMeta`,
- * `ArticleBody`, `PhotoSlot`, `Display` — con la sola `scale="preview"` a
+ * Usa gli stessi componenti della pagina pubblica (`ArticleMeta`,
+ * `ArticleBody`, `PhotoSlot`, `Display`) con la sola `scale="preview"` a
  * rimpicciolire i corpi. Non c'è un secondo markup: quello che si vede qui è
  * quello che finisce online.
  */

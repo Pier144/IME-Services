@@ -81,7 +81,7 @@ export async function POST(request: Request) {
     .filter(Boolean);
 
   const mail = await sendMail({
-    subject: `Nuova richiesta di preventivo — ${data.name}`,
+    subject: `Nuova richiesta di preventivo: ${data.name}`,
     replyTo: data.email,
     text: [
       `Nome:      ${data.name}`,

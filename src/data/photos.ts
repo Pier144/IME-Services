@@ -1,5 +1,5 @@
 /**
- * FOTOGRAFIE — MATERIALE PROVVISORIO
+ * FOTOGRAFIE: MATERIALE PROVVISORIO
  *
  * Sono immagini stock di Pexels (licenza gratuita anche per uso commerciale,
  * senza obbligo di attribuzione) scelte una per una per avvicinarsi al brief

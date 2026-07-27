@@ -35,7 +35,7 @@ export function ShareLinks({ url, title }: { url: string; title: string }) {
         className="transition-colors duration-200 hover:text-gold"
       >
         {t.article.shareFacebook}
-        <span className="sr-only"> — {title}</span>
+        <span className="sr-only">: {title}</span>
       </a>
       <span aria-hidden="true">·</span>
       <a
