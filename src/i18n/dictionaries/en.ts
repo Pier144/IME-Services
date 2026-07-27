@@ -58,7 +58,7 @@ const en: Dictionary = {
           label: 'CHRISTMAS',
           title: 'We light up the wonder.',
           subtitle:
-            'Artistic light displays for towns and events, residential and industrial electrical systems. From Domegliara, Verona.',
+            'Artistic light displays for towns and events, residential and industrial electrical systems.\nFrom Domegliara, Verona.',
           cta: 'SEE THE LIGHT DISPLAYS',
           photo:
             'PHOTO SLIDE 1/4: town high street with Christmas lights switched on, night shot (supplied by the client)',

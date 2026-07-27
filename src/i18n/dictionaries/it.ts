@@ -59,7 +59,7 @@ const it = {
           label: 'NATALE',
           title: 'Accendiamo la meraviglia.',
           subtitle:
-            'Luminarie artistiche per città ed eventi, impianti elettrici civili e industriali. Da Domegliara, Verona.',
+            'Luminarie artistiche per città ed eventi, impianti elettrici civili e industriali.\nDa Domegliara, Verona.',
           cta: 'SCOPRI LE LUMINARIE',
           photo:
             'FOTO SLIDE 1/4: corso cittadino con luminarie natalizie accese, notturna (fornita dal cliente)',

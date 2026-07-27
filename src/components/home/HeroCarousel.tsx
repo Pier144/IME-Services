@@ -122,7 +122,7 @@ export function HeroCarousel() {
               >
                 {slide.title}
               </h1>
-              <p className="hero-riga mt-20 max-w-620 font-body text-16 leading-165 text-white/82 md:text-18">
+              <p className="hero-riga mt-20 max-w-620 font-body text-16 leading-165 whitespace-pre-line text-white/82 md:text-18">
                 {slide.subtitle}
               </p>
               <Link
