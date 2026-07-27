@@ -8,8 +8,6 @@ import type { Dictionary } from '../types';
  */
 const en: Dictionary = {
   meta: {
-    localeName: 'English',
-    switchTo: 'Passa all’italiano',
   },
 
   nav: {
@@ -22,7 +20,6 @@ const en: Dictionary = {
     openMenu: 'Open the menu',
     closeMenu: 'Close the menu',
     mainNav: 'Main navigation',
-    luminarieMenu: 'Light displays submenu',
     seasons: {
       natalizie: 'Christmas',
       eventi: 'Events',
@@ -41,20 +38,10 @@ const en: Dictionary = {
   common: {
     skipToContent: 'Skip to content',
     home: 'Home',
-    loading: 'Loading…',
     required: 'required',
-    optional: 'optional',
-    back: 'Back',
-    next: 'Next',
-    previous: 'Previous',
-    page: 'Page',
     remove: 'Remove',
-    close: 'Close',
     browse: 'browse',
     cancel: 'Cancel',
-    confirm: 'Confirm',
-    save: 'Save',
-    of: 'of',
   },
 
   home: {
@@ -65,8 +52,6 @@ const en: Dictionary = {
       eyebrow: 'SINCE 2014 · THREE GENERATIONS OF LIGHT',
       previous: 'Previous slide',
       next: 'Next slide',
-      pause: 'Pause the carousel',
-      play: 'Resume the carousel',
       goTo: 'Go to slide',
       slides: [
         {
@@ -109,12 +94,10 @@ const en: Dictionary = {
     worlds: ['CHRISTMAS LIGHTS', 'EVENT LIGHTING', 'ELECTRICAL SYSTEMS', 'BESPOKE PIECES'],
     intro: {
       title: 'Two souls, one family.',
-      lead: 'We are a family of electricians who, at some point, learned to make light for the holidays too.',
-      text: 'We design, build, install and maintain. Everything goes through our workshop in Domegliara: that is why we can say yes even to the strangest requests, from the lights of a town centre to a piece sketched by hand on a napkin.',
+      text: 'We design, build, install and maintain. Everything goes through our workshop in Domegliara: that is why we can say yes even to the strangest requests, from the lights of a town centre to a piece sketched on a napkin.',
     },
     quote: {
       title: 'Write to us for information or a quote',
-      lead: 'Why work with us?',
       text: 'We design and build everything in-house, and install with our own crews. Site visit and proposal with no strings attached: we reply within two working days.',
       phoneLabel: 'PHONE',
       emailLabel: 'EMAIL',
@@ -131,7 +114,6 @@ const en: Dictionary = {
       successAgain: 'SEND ANOTHER',
     },
     souls: {
-      label: 'TWO SOULS, ONE FAMILY',
       ime: {
         title: 'IME Service',
         eyebrow: 'SYSTEMS & TECHNOLOGY',
@@ -158,14 +140,8 @@ const en: Dictionary = {
     },
     news: {
       title: 'From the workshop',
-      intro: 'News, projects and switch-on nights around the Veneto.',
       link: 'ALL THE NEWS',
       empty: 'The first stories are on their way.',
-    },
-    cta: {
-      title: 'Got a town, a square or an event to light up?',
-      subtitle: 'Site visit and design proposal, no strings attached.',
-      button: 'LET’S TALK',
     },
   },
 
@@ -176,7 +152,7 @@ const en: Dictionary = {
     breadcrumb: 'HOME / LIGHT DISPLAYS',
     title: 'Light displays',
     intro:
-      'The full catalogue of light pieces, from Christmas installations for towns to lighting for events.',
+      'The catalogue of light pieces: Christmas installations for towns and lighting for events.',
     heroPhoto: 'PHOTO: wide view of a street with several light displays on, night shot',
     allTypes: 'All',
     countOne: 'piece',
@@ -199,7 +175,7 @@ const en: Dictionary = {
     addToRequest: '+ ADD TO REQUEST',
     inRequest: '✓ IN THE REQUEST',
     removeFromRequest: 'Remove from the request',
-    note: 'You can pick several pieces and send us a single request covering the whole project.',
+    note: 'You can add several pieces and send a single request.',
     installations: 'WHERE WE INSTALLED IT',
     similar: 'Similar pieces',
     similarLink: 'ALL THE PIECES',
@@ -263,10 +239,9 @@ const en: Dictionary = {
       sending: 'SENDING…',
       successTitle: 'Request sent.',
       successText:
-        'Thank you. We have received your request and will reply within two working days. If you need us sooner, call +39 045 2221396.',
+        'Thank you. We reply within two working days. If you need us sooner, call +39 045 2221396.',
       successAgain: 'Send another request',
       selectedSubjects: 'Pieces added to the request',
-      selectedSubjectsHint: 'We attach them to the request. You can remove any before sending.',
     },
     aside: {
       photo: 'PHOTO: example of a bespoke piece: illuminated town coat of arms',
@@ -371,7 +346,7 @@ const en: Dictionary = {
     ],
     cta: {
       title: 'Come and see us at Via Adige 238',
-      subtitle: 'The best way to understand what we do is to see the workshop.',
+      subtitle: 'What we do makes more sense inside the workshop.',
       button: 'GET IN TOUCH',
     },
   },
@@ -456,7 +431,7 @@ const en: Dictionary = {
     titleLine2: 'that know how to make light.',
     heroPhoto: 'PHOTO: crew working from the cherry picker, sunset light',
     intro:
-      'A family business in Domegliara: small enough that everyone knows each other, structured enough for public contracts. You learn on the job, you work outdoors, and in December you do a job very few people in the world do.',
+      'A family business in Domegliara: small enough that everyone knows each other, structured enough for public contracts. You learn on the job, you work outdoors, and in December you light up whole towns.',
     benefits: [
       'Permanent contract after the trial period',
       'Training on safety, work at height and certifications',
@@ -496,7 +471,7 @@ const en: Dictionary = {
       sending: 'SENDING…',
       successTitle: 'Application sent.',
       successText:
-        'Thank you. We have received your CV. If the profile fits we will call you, otherwise we keep it on file for the coming seasons.',
+        'Thank you. If the profile fits we will call you, otherwise we keep your CV on file for the coming seasons.',
       spontaneous: 'Speculative application',
     },
   },
@@ -540,9 +515,7 @@ const en: Dictionary = {
     privacyJob: 'I consent to the processing of my data for recruitment purposes.',
     privacyLink: 'privacy notice',
     errors: {
-      nameRequired: 'Please enter your full name.',
       nameShort: 'That name looks too short.',
-      emailRequired: 'We need an email address to reply to you.',
       emailInvalid: 'That email address does not look valid.',
       phoneRequired: 'A phone number is required.',
       phoneInvalid: 'That phone number does not look valid.',
@@ -550,7 +523,6 @@ const en: Dictionary = {
       privacyRequired: 'Consent to data processing is required.',
       cvRequired: 'Please attach your CV.',
       fileTooBig: 'The file is over the allowed limit.',
-      fileType: 'File format not allowed.',
       uploadFailed: 'Upload failed. Please try again.',
       generic: 'Something went wrong. Try again shortly or call us on +39 045 2221396.',
       tooLong: 'Text is too long.',
@@ -578,8 +550,6 @@ const en: Dictionary = {
       'How IME Service srls processes the personal data collected through this website.',
     title: 'Privacy notice',
     eyebrow: 'DATA PROCESSING',
-    intro:
-      'This page describes how IME Service srls processes the personal data collected through the forms on this website.',
     placeholder:
       'The final wording of the notice must be supplied by the company’s privacy adviser before go-live. The page structure is ready: this content just needs replacing.',
     sections: [
@@ -628,12 +598,8 @@ const en: Dictionary = {
     },
     signedInAs: 'Signed in as',
     signOut: 'Sign out',
-    comingSoon: 'Coming soon',
-    comingSoonText:
-      'This part of the back office is not active yet: the design round covers news management.',
     login: {
       title: 'Back office',
-      subtitle: 'Sign in to manage the site news.',
       email: 'EMAIL',
       password: 'PASSWORD',
       submit: 'SIGN IN',
@@ -675,7 +641,6 @@ const en: Dictionary = {
       publish: 'PUBLISH',
       unpublish: 'BACK TO DRAFT',
       saving: 'Saving…',
-      savedNow: 'Saved just now',
       savedAgo: 'Saved {time}',
       unsaved: 'Unsaved changes',
       newArticle: 'New article',
@@ -694,10 +659,7 @@ const en: Dictionary = {
       },
       featuredYes: 'Yes',
       featuredNo: 'No',
-      coverReplace: 'Replace · drag or',
-      coverAdd: 'Drag the cover here or',
       addTag: '+ add tag',
-      newTag: 'New tag',
       toolbar: {
         bold: 'Bold',
         italic: 'Italic',

@@ -113,7 +113,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <Display as="h2" className="text-28 leading-115 font-semibold md:text-36">
               {t.home.news.title}
             </Display>
-            <p className="mt-14 font-body text-16 leading-170 text-ink-3">{t.home.news.intro}</p>
             <ArrowLink href={localePath(typedLocale, routes.news)} className="mt-22">
               {t.home.news.link}
             </ArrowLink>

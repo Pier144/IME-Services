@@ -8,8 +8,6 @@
  */
 const it = {
 	meta: {
-		localeName: "Italiano",
-		switchTo: "Passa a English",
 	},
 
 	nav: {
@@ -22,7 +20,6 @@ const it = {
 		openMenu: "Apri il menu",
 		closeMenu: "Chiudi il menu",
 		mainNav: "Navigazione principale",
-		luminarieMenu: "Sottomenu Luminarie",
 		seasons: {
 			natalizie: "Natalizie",
 			eventi: "Eventi",
@@ -41,20 +38,10 @@ const it = {
 	common: {
 		skipToContent: "Vai al contenuto",
 		home: "Home",
-		loading: "Caricamento…",
 		required: "obbligatorio",
-		optional: "facoltativo",
-		back: "Indietro",
-		next: "Avanti",
-		previous: "Precedente",
-		page: "Pagina",
 		remove: "Rimuovi",
-		close: "Chiudi",
 		browse: "sfoglia",
 		cancel: "Annulla",
-		confirm: "Conferma",
-		save: "Salva",
-		of: "di",
 	},
 
 	home: {
@@ -66,8 +53,6 @@ const it = {
 			eyebrow: "DAL 2014 · TRE GENERAZIONI DI LUCE",
 			previous: "Slide precedente",
 			next: "Slide successiva",
-			pause: "Metti in pausa il carosello",
-			play: "Riprendi il carosello",
 			goTo: "Vai alla slide",
 			slides: [
 				{
@@ -117,12 +102,10 @@ const it = {
 		],
 		intro: {
 			title: "Due anime, una famiglia.",
-			lead: "Siamo una famiglia di elettricisti che a un certo punto ha imparato a fare luce anche per le feste.",
-			text: "Progettiamo, costruiamo, installiamo e manteniamo. Tutto passa dalla nostra officina di Domegliara: per questo diciamo di sì anche alle richieste più strane, dalle luminarie di un centro storico al soggetto disegnato a mano su un tovagliolo.",
+			text: "Progettiamo, costruiamo, installiamo e manteniamo. Tutto passa dalla nostra officina di Domegliara: per questo diciamo di sì anche alle richieste più strane, dalle luminarie di un centro storico al soggetto disegnato su un tovagliolo.",
 		},
 		quote: {
 			title: "Scrivici per informazioni o preventivi",
-			lead: "Perché lavorare con noi?",
 			text: "Progettiamo e costruiamo tutto in casa, e installiamo con le nostre squadre. Sopralluogo e proposta senza impegno: rispondiamo entro due giorni lavorativi.",
 			phoneLabel: "TELEFONO",
 			emailLabel: "EMAIL",
@@ -140,7 +123,6 @@ const it = {
 			successAgain: "INVIANE UN’ALTRA",
 		},
 		souls: {
-			label: "DUE ANIME, UNA FAMIGLIA",
 			ime: {
 				title: "IME Service",
 				eyebrow: "IMPIANTI & TECNOLOGIA",
@@ -167,14 +149,8 @@ const it = {
 		},
 		news: {
 			title: "Dalla Fabbrica",
-			intro: "Notizie, progetti e accensioni in giro per il Veneto.",
 			link: "TUTTE LE NEWS",
 			empty: "Le prime notizie stanno per arrivare.",
-		},
-		cta: {
-			title: "Hai una città, una piazza o un evento da illuminare?",
-			subtitle: "Sopralluogo e proposta grafica senza impegno.",
-			button: "PARLIAMONE",
 		},
 	},
 
@@ -185,7 +161,7 @@ const it = {
 		breadcrumb: "HOME / LUMINARIE",
 		title: "Luminarie",
 		intro:
-			"Il catalogo completo dei soggetti luminosi, dalle installazioni natalizie per le città agli allestimenti per eventi.",
+			"Il catalogo dei soggetti luminosi: installazioni natalizie per le città e allestimenti per eventi.",
 		heroPhoto:
 			"FOTO: panoramica di una via con più luminarie accese, notturna",
 		allTypes: "Tutte",
@@ -209,7 +185,7 @@ const it = {
 		addToRequest: "+ ALLA RICHIESTA",
 		inRequest: "✓ NELLA RICHIESTA",
 		removeFromRequest: "Togli dalla richiesta",
-		note: "Puoi selezionare più soggetti e inviarci un’unica richiesta con tutto il progetto.",
+		note: "Puoi aggiungere più soggetti e inviare un’unica richiesta.",
 		installations: "DOVE L’ABBIAMO INSTALLATO",
 		similar: "Soggetti simili",
 		similarLink: "TUTTI I SOGGETTI",
@@ -274,11 +250,9 @@ const it = {
 			sending: "INVIO IN CORSO…",
 			successTitle: "Richiesta inviata.",
 			successText:
-				"Grazie: abbiamo ricevuto la tua richiesta e ti rispondiamo entro due giorni lavorativi. Se serve prima, chiamaci allo 045 2221396.",
+				"Grazie. Ti rispondiamo entro due giorni lavorativi. Se serve prima, chiamaci allo 045 2221396.",
 			successAgain: "Invia un’altra richiesta",
 			selectedSubjects: "Soggetti aggiunti alla richiesta",
-			selectedSubjectsHint:
-				"Li alleghiamo alla richiesta. Puoi toglierne qualcuno prima di inviare.",
 		},
 		aside: {
 			photo: "FOTO: esempio di soggetto su misura: stemma comunale luminoso",
@@ -386,7 +360,7 @@ const it = {
 		cta: {
 			title: "Vieni a trovarci in Via Adige 238",
 			subtitle:
-				"Il modo migliore per capire cosa sappiamo fare è vedere l’officina.",
+				"In officina si capisce meglio quello che facciamo.",
 			button: "CONTATTACI",
 		},
 	},
@@ -488,7 +462,7 @@ const it = {
 		titleLine2: "che sappiano fare luce.",
 		heroPhoto: "FOTO: squadra al lavoro sul cestello, luce del tramonto",
 		intro:
-			"Un’azienda familiare di Domegliara: piccoli abbastanza perché ci si conosca tutti, strutturati abbastanza per le commesse pubbliche. Si impara sul campo, si sta all’aperto, e a dicembre si fa un mestiere che fanno in pochi al mondo.",
+			"Un’azienda familiare di Domegliara: piccoli abbastanza perché ci si conosca tutti, strutturati abbastanza per le commesse pubbliche. Si impara sul campo, si sta all’aperto, e a dicembre si accendono i paesi.",
 		benefits: [
 			"Contratto a tempo indeterminato dopo la prova",
 			"Formazione su sicurezza, lavori in quota e certificazioni",
@@ -529,7 +503,7 @@ const it = {
 			sending: "INVIO IN CORSO…",
 			successTitle: "Candidatura inviata.",
 			successText:
-				"Grazie: abbiamo ricevuto il tuo curriculum. Se il profilo è in linea ti richiamiamo noi, altrimenti lo teniamo per le prossime stagioni.",
+				"Grazie. Se il profilo è in linea ti richiamiamo noi, altrimenti teniamo il curriculum per le prossime stagioni.",
 			spontaneous: "Candidatura spontanea",
 		},
 	},
@@ -575,9 +549,7 @@ const it = {
 		privacyJob: "Acconsento al trattamento dei dati per la selezione.",
 		privacyLink: "informativa privacy",
 		errors: {
-			nameRequired: "Scrivi il tuo nome e cognome.",
 			nameShort: "Il nome sembra troppo corto.",
-			emailRequired: "Serve un indirizzo email per risponderti.",
 			emailInvalid: "Questo indirizzo email non sembra valido.",
 			phoneRequired: "Serve un numero di telefono.",
 			phoneInvalid: "Questo numero di telefono non sembra valido.",
@@ -586,7 +558,6 @@ const it = {
 			privacyRequired: "Serve il consenso al trattamento dei dati.",
 			cvRequired: "Allega il tuo curriculum.",
 			fileTooBig: "Il file supera il limite consentito.",
-			fileType: "Formato non ammesso.",
 			uploadFailed: "Caricamento non riuscito. Riprova.",
 			generic:
 				"Qualcosa non ha funzionato. Riprova fra poco o chiamaci allo 045 2221396.",
@@ -615,8 +586,6 @@ const it = {
 			"Informativa sul trattamento dei dati personali raccolti tramite il sito di IME Service srls.",
 		title: "Informativa privacy",
 		eyebrow: "TRATTAMENTO DEI DATI",
-		intro:
-			"Questa pagina descrive come IME Service srls tratta i dati personali raccolti attraverso i form del sito.",
 		placeholder: "Inserire un testo di policy prima della pubblicazione.",
 		sections: [
 			{
@@ -664,12 +633,8 @@ const it = {
 		},
 		signedInAs: "Accesso come",
 		signOut: "Esci",
-		comingSoon: "In arrivo",
-		comingSoonText:
-			"Questa sezione dell’area riservata non è ancora attiva: il turno di design copre la gestione delle news.",
 		login: {
 			title: "Area riservata",
-			subtitle: "Accedi per gestire le news del sito.",
 			email: "EMAIL",
 			password: "PASSWORD",
 			submit: "ACCEDI",
@@ -712,7 +677,6 @@ const it = {
 			publish: "PUBBLICA",
 			unpublish: "RIPORTA IN BOZZA",
 			saving: "Salvataggio…",
-			savedNow: "Salvato adesso",
 			savedAgo: "Salvato {time}",
 			unsaved: "Modifiche non salvate",
 			newArticle: "Nuovo articolo",
@@ -732,10 +696,7 @@ const it = {
 			},
 			featuredYes: "Sì",
 			featuredNo: "No",
-			coverReplace: "Sostituisci · trascina o",
-			coverAdd: "Trascina la copertina o",
 			addTag: "+ aggiungi tag",
-			newTag: "Nuovo tag",
 			toolbar: {
 				bold: "Grassetto",
 				italic: "Corsivo",

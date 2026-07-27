@@ -67,10 +67,6 @@ export const twinklePresets = {
     { size: 3, top: '19%', left: '25%' },
     { size: 2, top: '33%', right: '23%', delay: 1.5 },
   ],
-  ctaHome: [
-    { size: 3, top: '15%', left: '12%' },
-    { size: 2, top: '35%', right: '18%', delay: 1.2 },
-  ],
   ctaPage: [
     { size: 3, top: '13%', left: '14%' },
     { size: 2, bottom: '17%', right: '17%', delay: 1.4 },

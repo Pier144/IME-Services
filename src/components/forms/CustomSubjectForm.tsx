@@ -152,9 +152,6 @@ export function CustomSubjectForm({ catalog }: { catalog: RequestItem[] }) {
               </li>
             ))}
           </ul>
-          <p className="mt-10 font-body text-13 font-medium text-ink-4">
-            {t.custom.form.selectedSubjectsHint}
-          </p>
         </div>
       )}
 

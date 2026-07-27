@@ -43,7 +43,6 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
       <Display as="h1" className="mt-14 text-32 leading-110 md:text-46">
         {t.privacy.title}
       </Display>
-      <p className="mt-16 font-body text-17 leading-165 text-ink md:text-20">{t.privacy.intro}</p>
 
       <p className="mt-26 border-l-2 border-gold py-6 pl-26 font-body text-15 leading-170 font-medium text-ink-3">
         {t.privacy.placeholder}

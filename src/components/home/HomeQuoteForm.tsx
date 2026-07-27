@@ -82,8 +82,7 @@ export function HomeQuoteForm() {
           <Display as="h2" className="max-w-420 text-30 leading-112 font-semibold text-balance md:text-42">
             {t.home.quote.title}
           </Display>
-          <p className="mt-24 font-body text-16 leading-165 font-medium text-ink">{t.home.quote.lead}</p>
-          <p className="mt-10 max-w-460 font-body text-16 leading-170 text-ink-2">{t.home.quote.text}</p>
+          <p className="mt-24 max-w-460 font-body text-16 leading-170 text-ink-2">{t.home.quote.text}</p>
 
           <dl className="mt-36 flex flex-col gap-14 border-t border-hairline pt-26">
             {[

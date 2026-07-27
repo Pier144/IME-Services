@@ -114,7 +114,7 @@ export const subjects: readonly Subject[] = [
     name: 'Albero Galassia',
     type: 'alberi-di-natale',
     description:
-      'Struttura conica in alluminio rivestita da cascate di microled bianco caldo, con puntale a stella e giochi di accensione programmabili. Pensato per piazze e rotonde, si monta in giornata.',
+      'Struttura conica in alluminio rivestita da cascate di microled, con puntale a stella e accensioni programmabili. Per piazze e rotonde. Si monta in giornata.',
     heights: '4 m · 6 m · 8 m · 10 m',
     source: 'Microled 24V bianco caldo',
     effects: 'Fisso · cascata · scintillio',
@@ -132,7 +132,7 @@ export const subjects: readonly Subject[] = [
     name: 'Albero Spirale',
     type: 'alberi-di-natale',
     description:
-      'Cono a spirale continua che sale dalla base al puntale: acceso in sequenza dà l’effetto di una luce che gira. Occupa poco a terra, quindi entra anche nelle piazze strette.',
+      'Cono a spirale continua dalla base al puntale: acceso in sequenza sembra una luce che gira. Occupa poco a terra, entra anche nelle piazze strette.',
     heights: '3 m · 5 m · 7 m',
     source: 'Microled 24V bianco caldo o freddo',
     effects: 'Fisso · rotazione · dissolvenza',
@@ -150,7 +150,7 @@ export const subjects: readonly Subject[] = [
     name: 'Albero Nastro',
     type: 'alberi-di-natale',
     description:
-      'Nastri luminosi che scendono dal puntale e si allargano fino a terra, ancorati a una corona perimetrale. Sotto ci si può camminare: funziona bene dove la piazza è anche passaggio.',
+      'Nastri luminosi che scendono dal puntale e si allargano fino a terra, ancorati a una corona perimetrale. Sotto ci si cammina: va bene dove la piazza è anche passaggio.',
     heights: '6 m · 8 m · 12 m',
     source: 'Tubo flessibile LED bianco caldo',
     effects: 'Fisso · cascata',
@@ -168,7 +168,7 @@ export const subjects: readonly Subject[] = [
     name: 'Albero Cono Classico',
     type: 'alberi-di-natale',
     description:
-      'Il cono di sempre, con catene verticali e sfere lungo il profilo. È il soggetto più richiesto dai comuni piccoli: si monta in mezza giornata e si smonta altrettanto in fretta.',
+      'Il cono di sempre, con catene verticali e sfere lungo il profilo. Lo scelgono soprattutto i comuni piccoli: mezza giornata per montarlo, altrettanto per smontarlo.',
     heights: '3 m · 4 m · 6 m',
     source: 'Catene LED bianco caldo con sfere opaline',
     effects: 'Fisso · scintillio',
@@ -186,7 +186,7 @@ export const subjects: readonly Subject[] = [
     name: 'Albero Corona',
     type: 'alberi-di-natale',
     description:
-      'Struttura ad anelli sovrapposti di diametro decrescente, illuminati indipendentemente. Gli anelli si accendono a salire e il puntale chiude la sequenza.',
+      'Anelli sovrapposti di diametro decrescente, illuminati indipendentemente: si accendono a salire e il puntale chiude la sequenza.',
     heights: '5 m · 7 m · 9 m',
     source: 'Microled 24V bicolore (caldo + freddo)',
     effects: 'Fisso · salita · alternanza',
@@ -204,7 +204,7 @@ export const subjects: readonly Subject[] = [
     name: 'Albero Monumentale',
     type: 'alberi-di-natale',
     description:
-      'Il formato grande, con struttura reticolare calcolata e zavorra certificata: pensato per piazze principali e rotonde di ingresso. Progetto strutturale e collaudo inclusi.',
+      'Il formato grande, con struttura reticolare e zavorra certificata, per piazze principali e rotonde di ingresso. Progetto strutturale e collaudo inclusi.',
     heights: '12 m · 15 m · 18 m',
     source: 'Microled 24V bianco caldo, oltre 60.000 punti',
     effects: 'Fisso · cascata · scene programmate',
@@ -223,7 +223,7 @@ export const subjects: readonly Subject[] = [
     name: 'Albero Pixel',
     type: 'alberi-di-natale',
     description:
-      'Ogni punto luce è indirizzabile: sulla superficie del cono si possono far scorrere scritte, fiocchi di neve o il logo del comune. Si programma da remoto.',
+      'Ogni punto luce è indirizzabile: sul cono si fanno scorrere scritte, fiocchi di neve o il logo del comune. Si programma da remoto.',
     heights: '6 m · 8 m · 10 m',
     source: 'Pixel LED RGB indirizzabili',
     effects: 'Scene programmabili · testo scorrevole · video a bassa risoluzione',
@@ -260,7 +260,7 @@ export const subjects: readonly Subject[] = [
     name: 'Albero Valpolicella',
     type: 'alberi-di-natale',
     description:
-      'Cono rivestito di tralci stilizzati e grappoli luminosi: nato per i comuni della Valpolicella, funziona ovunque ci sia una storia agricola da raccontare.',
+      'Cono rivestito di tralci stilizzati e grappoli luminosi. Nato per i comuni della Valpolicella, sta bene in ogni paese di vigne.',
     heights: '5 m · 7 m',
     source: 'Microled 24V ambra e bianco caldo',
     effects: 'Fisso · scintillio · dissolvenza',
@@ -280,7 +280,7 @@ export const subjects: readonly Subject[] = [
     name: 'Onda di Stelle',
     type: 'attraversamenti-stradali',
     description:
-      'Attraversamento a cascata: file di stelle a densità decrescente che scendono verso il centro della carreggiata. Montaggio su fune d’acciaio già in opera o su nuovi ancoraggi.',
+      'File di stelle a densità decrescente che scendono verso il centro della carreggiata. Montaggio su fune d’acciaio già in opera o su nuovi ancoraggi.',
     heights: 'Luci da 8 a 22 m',
     source: 'Microled 24V bianco caldo',
     effects: 'Fisso · cascata · scintillio',
@@ -298,7 +298,7 @@ export const subjects: readonly Subject[] = [
     name: 'Cascata di Neve',
     type: 'attraversamenti-stradali',
     description:
-      'Tubi verticali con effetto di caduta continua, appesi in file parallele. È il soggetto che si nota di più in movimento: funziona bene sulle vie percorse in auto.',
+      'Tubi verticali con effetto di caduta continua, appesi in file parallele. Si nota soprattutto in movimento: va bene sulle vie percorse in auto.',
     heights: 'Luci da 10 a 20 m',
     source: 'Tubi snowfall LED bianco freddo',
     effects: 'Caduta continua · caduta alternata',
@@ -316,7 +316,7 @@ export const subjects: readonly Subject[] = [
     name: 'Tenda di Ghiaccio',
     type: 'attraversamenti-stradali',
     description:
-      'Tenda di fili verticali a lunghezza variabile, con terminali a stalattite. Chiude visivamente la via e crea un soffitto luminoso continuo.',
+      'Fili verticali a lunghezza variabile, con terminali a stalattite: sopra la via si forma un soffitto luminoso continuo.',
     heights: 'Luci da 8 a 18 m',
     source: 'Microled 24V bianco freddo',
     effects: 'Fisso · scintillio freddo',
@@ -334,7 +334,7 @@ export const subjects: readonly Subject[] = [
     name: 'Archi di Natale',
     type: 'attraversamenti-stradali',
     description:
-      'Arcate luminose ripetute lungo la via: ogni campata è un arco a sezione piena, decorato con festoni e stelle. Il classico che il pubblico si aspetta.',
+      'Arcate ripetute lungo la via: ogni campata è un arco a sezione piena, decorato con festoni e stelle.',
     heights: 'Luci da 8 a 16 m',
     source: 'Microled 24V bianco caldo e ambra',
     effects: 'Fisso · onda progressiva',
@@ -353,7 +353,7 @@ export const subjects: readonly Subject[] = [
     type: 'attraversamenti-stradali',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Teli di microled a bassa densità, quasi trasparenti di giorno. Nati per gli allestimenti estivi, funzionano anche a Natale dove serve un tocco leggero.',
+      'Teli di microled a bassa densità, quasi trasparenti di giorno. Nati per gli allestimenti estivi, li usiamo anche a Natale.',
     heights: 'Luci da 6 a 16 m',
     source: 'Microled 24V bianco caldo su rete trasparente',
     effects: 'Fisso · respiro lento',
@@ -371,7 +371,7 @@ export const subjects: readonly Subject[] = [
     name: 'Pioggia di Comete',
     type: 'attraversamenti-stradali',
     description:
-      'Comete sospese di lunghezza diversa, orientate tutte nella stessa direzione. Danno movimento anche da ferme, e da lontano leggono benissimo.',
+      'Comete sospese di lunghezza diversa, orientate tutte nella stessa direzione. Danno movimento anche da ferme.',
     heights: 'Luci da 10 a 20 m',
     source: 'Microled 24V bianco freddo con code ambra',
     effects: 'Fisso · scia progressiva',
@@ -389,7 +389,7 @@ export const subjects: readonly Subject[] = [
     name: 'Ghirlanda di Corso',
     type: 'attraversamenti-stradali',
     description:
-      'Ghirlanda continua di abete sintetico ignifugo con luce integrata, tesa da facciata a facciata. Ha volume anche di giorno: è la soluzione per i centri storici.',
+      'Ghirlanda continua di abete sintetico ignifugo con luce integrata, tesa da facciata a facciata. Ha volume anche di giorno: la usiamo nei centri storici.',
     heights: 'Luci da 6 a 14 m',
     source: 'Microled 24V bianco caldo su ghirlanda ignifuga',
     effects: 'Fisso',
@@ -410,7 +410,7 @@ export const subjects: readonly Subject[] = [
     type: 'sospensioni',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Cielo continuo di punti luce su tutta la superficie della piazza, sostenuto da funi incrociate. Cambia completamente la percezione dello spazio sotto.',
+      'Cielo continuo di punti luce su tutta la piazza, sostenuto da funi incrociate. Da sotto cambia la percezione dello spazio.',
     heights: 'Superfici da 200 a 1.500 m²',
     source: 'Microled 24V bianco caldo, 25 punti/m²',
     effects: 'Fisso · scintillio casuale · onda',
@@ -430,7 +430,7 @@ export const subjects: readonly Subject[] = [
     type: 'sospensioni',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Galleria pedonale continua: arcate ravvicinate che formano un tunnel attraversabile. È il soggetto più fotografato, quindi ottimo per i centri commerciali e le fiere.',
+      'Arcate ravvicinate che formano una galleria pedonale. Lo chiedono soprattutto i centri commerciali e le fiere: la gente ci si fotografa.',
     heights: 'Lunghezze da 10 a 60 m · larghezza 3-6 m',
     source: 'Microled 24V bianco caldo e RGB',
     effects: 'Fisso · onda in avanti · scene programmate',
@@ -450,7 +450,7 @@ export const subjects: readonly Subject[] = [
     type: 'sospensioni',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Stelle di diametro diverso appese a quote diverse: da sotto sembrano un cielo in profondità. Funziona negli spazi coperti e nei porticati.',
+      'Stelle di diametro vario appese a quote diverse: da sotto sembrano un cielo in profondità. Per spazi coperti e porticati.',
     heights: 'Superfici da 100 a 600 m²',
     source: 'Stelle LED bianco caldo, diametri 40-120 cm',
     effects: 'Fisso · accensione casuale',
@@ -468,7 +468,7 @@ export const subjects: readonly Subject[] = [
     name: 'Lampadario di Piazza',
     type: 'sospensioni',
     description:
-      'Un solo grande corpo centrale, sospeso al centro della piazza: struttura circolare a più livelli con pendenti luminosi. Fa da punto di ritrovo.',
+      'Un solo corpo sospeso al centro della piazza, a più livelli con pendenti luminosi. Fa da punto di ritrovo.',
     heights: 'Diametri 3 m · 5 m · 7 m',
     source: 'Microled 24V bianco caldo con pendenti a stalattite',
     effects: 'Fisso · pendenti a cascata',
@@ -487,7 +487,7 @@ export const subjects: readonly Subject[] = [
     type: 'sospensioni',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Volumi morbidi in rete metallica rivestita, sospesi a quote diverse. Nate per un evento estivo, sono diventate un soggetto stabile del catalogo.',
+      'Volumi morbidi in rete metallica rivestita, sospesi a quote diverse. Nate per un evento estivo, ora sono a catalogo.',
     heights: 'Nuvole da 1,5 a 4 m di larghezza',
     source: 'Microled 24V bianco caldo su rete opalina',
     effects: 'Fisso · respiro lento · temporale (lampi)',
@@ -505,7 +505,7 @@ export const subjects: readonly Subject[] = [
     name: 'Cascata Sospesa',
     type: 'sospensioni',
     description:
-      'Fasci verticali di fili luminosi che scendono da un anello superiore fino a due metri da terra. Si attraversa, e dentro la luce avvolge.',
+      'Fasci verticali di fili luminosi che scendono da un anello fino a due metri da terra.',
     heights: 'Altezze di caduta 4 m · 6 m · 8 m',
     source: 'Microled 24V bianco caldo',
     effects: 'Fisso · caduta continua',
@@ -524,7 +524,7 @@ export const subjects: readonly Subject[] = [
     type: 'sospensioni',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Anelli luminosi di diametro crescente, sospesi sullo stesso asse. Accesi in sequenza danno l’impressione di un’onda che si allarga.',
+      'Anelli luminosi di diametro crescente, sospesi sullo stesso asse e accesi in sequenza.',
     heights: 'Diametri da 1 a 6 m',
     source: 'Tubo flessibile LED bianco caldo o RGB',
     effects: 'Fisso · onda che si allarga · alternanza',
@@ -544,7 +544,7 @@ export const subjects: readonly Subject[] = [
     name: 'Portale Reale',
     type: 'facciate-e-portali',
     description:
-      'Portale d’ingresso al corso: due montanti e una trave luminosa con corona centrale. Segna dove comincia l’allestimento e chiude la prospettiva della via.',
+      'Due montanti e una trave luminosa con corona centrale. Segna dove comincia l’allestimento e chiude la prospettiva della via.',
     heights: 'Luci 4 m · 6 m · 8 m · altezza 5-7 m',
     source: 'Microled 24V bianco caldo e ambra',
     effects: 'Fisso · scintillio sulla corona',
@@ -580,7 +580,7 @@ export const subjects: readonly Subject[] = [
     name: 'Facciata a Pioggia',
     type: 'facciate-e-portali',
     description:
-      'Fili verticali che coprono l’intera facciata seguendo il disegno delle aperture. Si adatta a qualsiasi geometria: il progetto si fa sulla foto raddrizzata.',
+      'Fili verticali che coprono l’intera facciata seguendo il disegno delle aperture. Il progetto si fa sulla foto raddrizzata, qualunque sia la geometria.',
     heights: 'Superfici da 40 a 500 m²',
     source: 'Microled 24V bianco caldo',
     effects: 'Fisso · pioggia · scintillio',
@@ -599,7 +599,7 @@ export const subjects: readonly Subject[] = [
     type: 'facciate-e-portali',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Arco autoportante su zavorra, da mettere dove non ci sono facciate a cui ancorarsi. Serve per i parcheggi, i piazzali e gli ingressi delle manifestazioni.',
+      'Arco autoportante, da mettere dove non ci sono facciate a cui ancorarsi: parcheggi, piazzali, ingressi delle manifestazioni.',
     heights: 'Luci 4 m · 6 m · altezza 4-5 m',
     source: 'Microled 24V bianco caldo',
     effects: 'Fisso · onda',
@@ -619,7 +619,7 @@ export const subjects: readonly Subject[] = [
     type: 'facciate-e-portali',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Profilo luminoso che segue il contorno di una vetrina, di un balcone o di un ingresso. È il soggetto dei negozi: si monta in un’ora e non ruba spazio.',
+      'Profilo luminoso lungo il contorno di una vetrina, di un balcone o di un ingresso. Per i negozi: si monta in un’ora e non ruba spazio.',
     heights: 'Perimetri da 4 a 40 m',
     source: 'Tubo flessibile LED bianco caldo',
     effects: 'Fisso · corsa lungo il perimetro',
@@ -637,7 +637,7 @@ export const subjects: readonly Subject[] = [
     name: 'Rosone',
     type: 'facciate-e-portali',
     description:
-      'Grande rosone luminoso a parete, con raggi e traforo interno. Nasce per le facciate delle chiese ma sta bene su qualsiasi muro cieco.',
+      'Rosone a parete, con raggi e traforo interno. Nasce per le facciate delle chiese, ma sta bene su qualsiasi muro cieco.',
     heights: 'Diametri 2 m · 3 m · 4,5 m',
     source: 'Microled 24V bianco caldo su struttura in alluminio',
     effects: 'Fisso · raggi in rotazione',
@@ -655,7 +655,7 @@ export const subjects: readonly Subject[] = [
     name: 'Portale Abete',
     type: 'facciate-e-portali',
     description:
-      'Portale rivestito di abete sintetico ignifugo con luce integrata e decori rossi. Ha materia anche di giorno, quindi funziona nei mercatini.',
+      'Portale rivestito di abete sintetico ignifugo con luce integrata e decori rossi. Sta bene all’ingresso dei mercatini.',
     heights: 'Luci 2,5 m · 4 m · altezza 3-4 m',
     source: 'Microled 24V bianco caldo su ghirlanda ignifuga',
     effects: 'Fisso',
@@ -675,7 +675,7 @@ export const subjects: readonly Subject[] = [
     name: 'Renna Aurora',
     type: 'soggetti-3d',
     description:
-      'Renna tridimensionale in filo di alluminio saldato, con testa orientabile e palco separato. Si può mettere a terra, su un tetto o su una rotonda.',
+      'Renna in filo di alluminio saldato, con testa orientabile e palco separato. Si mette a terra, su un tetto o su una rotonda.',
     heights: '1,2 m · 1,8 m · 2,4 m',
     source: 'Microled 24V bianco caldo su filo di alluminio',
     effects: 'Fisso · scintillio · testa animata',
@@ -694,7 +694,7 @@ export const subjects: readonly Subject[] = [
     type: 'soggetti-3d',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Sfera geodetica in alluminio con maglia luminosa: dentro si può camminare nelle misure grandi. È il soggetto che regge meglio sulle rotonde.',
+      'Sfera geodetica in alluminio con maglia luminosa: nelle misure grandi ci si cammina dentro. Regge bene sulle rotonde.',
     heights: 'Diametri 1 m · 2 m · 3 m · 4 m',
     source: 'Microled 24V bianco freddo o RGB',
     effects: 'Fisso · rotazione apparente · cambio colore',
@@ -712,7 +712,7 @@ export const subjects: readonly Subject[] = [
     name: 'Slitta di Babbo Natale',
     type: 'soggetti-3d',
     description:
-      'Slitta a grandezza reale, con o senza renne al traino: pensata per essere fotografata, quindi con una seduta rinforzata su cui si può salire.',
+      'Slitta a grandezza reale, con o senza renne al traino. La seduta è rinforzata: ci si può salire per le foto.',
     heights: 'Lunghezze 2 m · 3 m · 4,5 m con renne',
     source: 'Microled 24V bianco caldo e rosso',
     effects: 'Fisso · scintillio',
@@ -730,7 +730,7 @@ export const subjects: readonly Subject[] = [
     name: 'Pacchi Luminosi',
     type: 'soggetti-3d',
     description:
-      'Set di tre pacchi regalo di misura diversa, con fiocco luminoso. Si usano alla base degli alberi o da soli, per riempire gli angoli.',
+      'Set di tre pacchi regalo di misura diversa, con fiocco luminoso. Alla base degli alberi o da soli, negli angoli.',
     heights: 'Lati 40 · 60 · 90 cm',
     source: 'Microled 24V bianco caldo con nastri rossi',
     effects: 'Fisso · accensione alternata',
@@ -748,7 +748,7 @@ export const subjects: readonly Subject[] = [
     name: 'Stella Puntale',
     type: 'soggetti-3d',
     description:
-      'Stella a cinque o otto punte da mettere in cima agli alberi, o da sola su un palo. Struttura in alluminio, quindi leggera anche nelle misure grandi.',
+      'Stella a cinque o otto punte, in cima agli alberi o da sola su un palo. Struttura in alluminio, leggera anche nelle misure grandi.',
     heights: 'Diametri 60 cm · 1 m · 1,6 m · 2,2 m',
     source: 'Microled 24V bianco caldo con bordo ambra',
     effects: 'Fisso · scintillio · pulsazione',
@@ -766,7 +766,7 @@ export const subjects: readonly Subject[] = [
     name: 'Pupazzo di Neve',
     type: 'soggetti-3d',
     description:
-      'Pupazzo 3D con sciarpa e cappello, in tre misure. È il soggetto che funziona meglio con i bambini: si mette dove c’è passaggio a piedi.',
+      'Pupazzo con sciarpa e cappello, in tre misure. Piace ai bambini: va messo dove c’è passaggio a piedi.',
     heights: '1,2 m · 1,8 m · 2,5 m',
     source: 'Microled 24V bianco freddo con dettagli colorati',
     effects: 'Fisso · scintillio',
@@ -810,7 +810,6 @@ export const subjects: readonly Subject[] = [
     source: 'Microled 24V ambra con nucleo caldo',
     effects: 'Fisso · fiamma · lampeggio lento',
     power: '230V · assorbimento 0,15 kW (1 m)',
-    formula: 'Vendita o noleggio per la stagione di Halloween',
     photo: 'FOTO: zucca luminosa 3D per Halloween',
     hero: 'FOTO PRINCIPALE: Zucca Lanterna accesa davanti a un negozio, sera',
     installations: [
@@ -830,7 +829,6 @@ export const subjects: readonly Subject[] = [
     source: 'Microled 24V ambra',
     effects: 'Fisso · pulsazione',
     power: '230V · assorbimento 0,1 kW (80 cm)',
-    formula: 'Vendita o noleggio per la stagione di Halloween',
     photo: 'FOTO: zucca luminosa dal volto sorridente, festa di paese',
     hero: 'FOTO PRINCIPALE: Zucca Sorridente in mezzo ai bambini, sera',
     installations: [
@@ -850,7 +848,6 @@ export const subjects: readonly Subject[] = [
     source: 'Microled 24V viola e bianco freddo',
     effects: 'Fisso · accensione in sequenza',
     power: '230V · assorbimento 0,1 kW per gruppo di 5',
-    formula: 'Vendita o noleggio per la stagione di Halloween',
     photo: 'FOTO: sagome di pipistrelli luminosi in sequenza su una facciata',
     hero: 'FOTO PRINCIPALE: Pipistrelli in Volo su una facciata, notturna',
     installations: [
@@ -870,7 +867,6 @@ export const subjects: readonly Subject[] = [
     source: 'Microled 24V verde e ambra',
     effects: 'Fisso · occhi lampeggianti',
     power: '230V · assorbimento 0,08 kW',
-    formula: 'Vendita o noleggio per la stagione di Halloween',
     photo: 'FOTO: sagoma 3D di gatto nero luminoso',
     hero: 'FOTO PRINCIPALE: Gatto Nero acceso su un muretto, sera',
     installations: [
@@ -887,7 +883,7 @@ export const subjects: readonly Subject[] = [
     type: 'scritte-luminose',
     seasons: ['natalizie', 'eventi'],
     description:
-      'Scritta corsiva luminosa da tendere fra due facciate o da appoggiare a terra. Il carattere è disegnato da noi, quindi le lettere restano leggibili anche da lontano.',
+      'Scritta corsiva luminosa da tendere fra due facciate o da appoggiare a terra. Il carattere è disegnato da noi: le lettere si leggono anche da lontano.',
     heights: 'Lunghezze 3 m · 5 m · 8 m',
     source: 'Tubo flessibile LED bianco caldo',
     effects: 'Fisso · scrittura progressiva',
@@ -906,7 +902,7 @@ export const subjects: readonly Subject[] = [
     type: 'scritte-luminose',
     seasons: ['eventi'],
     description:
-      'Il nome del paese, di un evento o di un’azienda, nel carattere che ci mandi. Si parte dal file vettoriale e si arriva alla struttura in una decina di giorni.',
+      'Il nome del paese, di un evento o di un’azienda, nel carattere che ci mandi. Dal file vettoriale alla struttura in una decina di giorni.',
     heights: 'Lettere da 30 cm a 2 m',
     source: 'Tubo flessibile LED o microled, colore a scelta',
     effects: 'Fisso · scrittura progressiva · lampeggio',
@@ -926,7 +922,7 @@ export const subjects: readonly Subject[] = [
     type: 'scritte-luminose',
     seasons: ['eventi'],
     description:
-      'Cifre luminose alte fino a due metri, autoportanti su base zavorrata. Servono per gli anniversari dei comuni e per le feste aziendali.',
+      'Cifre luminose alte fino a due metri, autoportanti. Per gli anniversari dei comuni e le feste aziendali.',
     heights: 'Cifre 1 m · 1,5 m · 2 m',
     source: 'Microled 24V bianco caldo o RGB',
     effects: 'Fisso · cambio colore',
@@ -948,7 +944,7 @@ export const subjects: readonly Subject[] = [
     type: 'allestimenti-evento',
     seasons: ['eventi'],
     description:
-      'Arco leggero per cerimonie all’aperto, con luce calda molto bassa e possibilità di intreccio floreale. Si monta in un’ora e si alimenta anche a batteria.',
+      'Arco leggero per cerimonie all’aperto, con luce calda bassa: la struttura si può intrecciare con i fiori. Si monta in un’ora.',
     heights: 'Luce 2,5 m · altezza 3 m',
     source: 'Microled 24V bianco caldo dimmerabile',
     effects: 'Fisso · dimmerazione continua',

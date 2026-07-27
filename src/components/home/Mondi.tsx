@@ -50,10 +50,7 @@ export function Mondi({ locale }: { locale: Locale }) {
           <Display as="h2" className="max-w-620 text-30 leading-115 font-semibold text-balance md:text-42">
             {t.home.intro.title}
           </Display>
-          <p className="mt-18 max-w-620 font-body text-17 leading-160 font-medium text-ink">
-            {t.home.intro.lead}
-          </p>
-          <p className="mt-16 max-w-680 font-body text-16 leading-170 text-ink-2">
+          <p className="mt-18 max-w-680 font-body text-16 leading-170 text-ink-2">
             {t.home.intro.text}
           </p>
         </div>

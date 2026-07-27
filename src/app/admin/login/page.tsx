@@ -21,7 +21,6 @@ export default async function LoginPage() {
         <Display as="h1" className="mt-24 text-24 md:text-28">
           {t.admin.login.title}
         </Display>
-        <p className="mt-8 font-body text-14 font-medium text-ink-3">{t.admin.login.subtitle}</p>
 
         <LoginForm />
 
