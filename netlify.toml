@@ -1,17 +1,28 @@
 # Deploy su Netlify.
-#
-# Il runtime Next.js lo installa Netlify da solo riconoscendo il framework:
-# non serve dichiarare nessun plugin qui.
 
 [build]
   # Lo stesso di sempre: `prisma generate && next build`.
   command = "npm run build"
-  publish = ".next"
 
 [build.environment]
   # package.json chiede Node >= 20.9. Fissata per non dipendere dal default
   # di Netlify, che cambia nel tempo e cambierebbe la build sotto i piedi.
   NODE_VERSION = "22"
+
+# Il runtime che trasforma l'output di Next.js in funzioni e pagine servibili.
+# Netlify di norma lo installa da solo riconoscendo il framework, ma qui e'
+# dichiarato esplicitamente perche' la prima volta non e' scattato.
+#
+# La versione non va fissata: Netlify aggiorna l'adattatore a ogni build e
+# copre tutte le versioni di Next.js dalla 13.5 in avanti.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# `publish` NON va impostata. La documentazione e' esplicita: la decide il
+# runtime. Fissandola a mano su ".next" Netlify serve quella cartella come
+# fosse un sito statico qualsiasi: non avendo un index.html in radice, ogni
+# indirizzo risponde 404 — home, pagine, /robots.txt e persino i file dentro
+# public/. Il sintomo e' un deploy verde e un sito interamente irraggiungibile.
 
 # Le migrazioni non stanno nel comando di build, come su Vercel e per lo
 # stesso motivo: Netlify usa lo stesso comando per la produzione e per le
