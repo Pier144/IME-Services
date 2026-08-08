@@ -1,8 +1,27 @@
 # Deploy su Netlify.
+#
+# Le due righe che contano sono `publish` e il blocco [[plugins]]: servono
+# INSIEME, e togliendo l'una o l'altra si rompe in due modi diversi.
+#
+#   Senza il plugin dichiarato, il runtime non entra in gioco: Netlify serve
+#   .next come una cartella statica qualsiasi e, non trovando un index.html in
+#   radice, risponde 404 a ogni indirizzo. Home, pagine, /robots.txt e persino
+#   i file dentro public/. Il sintomo e' un deploy verde e un sito
+#   interamente irraggiungibile.
+#
+#   Senza `publish`, vince il valore impostato nell'interfaccia di Netlify,
+#   che per un progetto importato da Git e' la radice del repository. Il
+#   plugin si rifiuta di lavorare: "Your publish directory cannot be the same
+#   as the base directory of your site".
+#
+# Quello che sta qui ha la precedenza sull'interfaccia, quindi la
+# configurazione resta versionata e non dipende da come e' stato creato il
+# sito nel pannello.
 
 [build]
   # Lo stesso di sempre: `prisma generate && next build`.
   command = "npm run build"
+  publish = ".next"
 
 [build.environment]
   # package.json chiede Node >= 20.9. Fissata per non dipendere dal default
@@ -10,19 +29,10 @@
   NODE_VERSION = "22"
 
 # Il runtime che trasforma l'output di Next.js in funzioni e pagine servibili.
-# Netlify di norma lo installa da solo riconoscendo il framework, ma qui e'
-# dichiarato esplicitamente perche' la prima volta non e' scattato.
-#
 # La versione non va fissata: Netlify aggiorna l'adattatore a ogni build e
 # copre tutte le versioni di Next.js dalla 13.5 in avanti.
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# `publish` NON va impostata. La documentazione e' esplicita: la decide il
-# runtime. Fissandola a mano su ".next" Netlify serve quella cartella come
-# fosse un sito statico qualsiasi: non avendo un index.html in radice, ogni
-# indirizzo risponde 404 — home, pagine, /robots.txt e persino i file dentro
-# public/. Il sintomo e' un deploy verde e un sito interamente irraggiungibile.
 
 # Le migrazioni non stanno nel comando di build, come su Vercel e per lo
 # stesso motivo: Netlify usa lo stesso comando per la produzione e per le
