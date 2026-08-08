@@ -24,6 +24,9 @@ next-env.d.ts
 .env
 .env*.local
 
+# impostazioni locali degli agenti: possono contenere segreti (NEON_API_KEY)
+/.claude/settings.local.json
+
 # misc
 .DS_Store
 *.pem

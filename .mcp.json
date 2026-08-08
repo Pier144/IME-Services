@@ -2,7 +2,10 @@
   "mcpServers": {
     "neon": {
       "type": "http",
-      "url": "https://mcp.neon.tech/mcp?readonly=true"
+      "url": "https://mcp.neon.tech/mcp?readonly=true&projectId=steep-wildflower-26907178",
+      "headers": {
+        "Authorization": "Bearer ${NEON_API_KEY}"
+      }
     }
   }
 }
