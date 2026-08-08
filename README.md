@@ -190,15 +190,25 @@ configurazione. In produzione `smtp` (nodemailer) o `resend`. Se l'invio fallisc
 
 ---
 
-## Deploy su Vercel
+## Deploy
 
-Il progetto Vercel `ime-services` esiste già ed è collegato al repository GitHub. Database Neon e
-bucket R2 vanno creati: **poi restano lo schema da applicare, i contenuti da seminare e le
-variabili d'ambiente da configurare su Vercel.**
+**Netlify è la destinazione scelta**, per una ragione contrattuale prima che tecnica: il piano
+gratuito di Netlify consente l'uso commerciale, quello di Vercel (Hobby) lo vieta, e il sito di
+un'azienda ci ricade in pieno. Su Vercel servirebbe Pro, 20 $/mese. Netlify esegue Next.js in un
+ambiente Node completo, quindi Prisma gira senza modifiche: è lo stesso repository e la stessa
+build.
 
-1. **Variabili d'ambiente**: da impostare su *tutti e tre* gli ambienti (Production, Preview,
-   Development), non solo Production: sitemap e pagine articolo interrogano il database **durante
-   la build**, e senza `DIRECT_URL` la build si ferma prima ancora di partire.
+Il piano gratuito dà 300 crediti al mese: 20 per GB di banda, **15 per ogni deploy di produzione**,
+2 ogni 10.000 richieste. Il costo per deploy è la trappola meno ovvia — in sviluppo attivo venti
+deploy esauriscono la dotazione prima che arrivi un visitatore. Conviene non agganciare il deploy
+automatico a ogni commit. Se i crediti non bastano, Personal è 9 $/mese.
+
+La configurazione sta in `netlify.toml`. `vercel.json` resta nel repository: il progetto Vercel
+esiste già e può servire da alternativa finché la scelta non è consolidata.
+
+1. **Variabili d'ambiente**: da impostare su *tutti* gli ambienti, non solo la produzione: sitemap
+   e pagine articolo interrogano il database **durante la build**, e senza `DIRECT_URL` la build si
+   ferma prima ancora di partire.
 
    | Variabile | Valore |
    | --- | --- |
@@ -215,22 +225,31 @@ variabili d'ambiente da configurare su Vercel.**
    Il segreto di sessione si genera con:
    `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"`
 
-2. **Migrazioni**: si applicano a mano, prima del deploy: `npm run db:deploy`.
+2. **Regione delle funzioni**: da cambiare **a mano nel pannello**, non è configurabile da file.
+   *Project configuration → Build & deploy → Continuous deployment → Functions region → Frankfurt
+   (fra).*
 
-   Non stanno nel comando di build apposta. Vercel usa lo stesso comando per Production e per
-   Preview: se le Preview puntano al database di produzione, una migrazione su un branch ne
-   cambierebbe lo schema prima ancora della revisione. Con un branch Neon dedicato alle Preview il
-   rischio sparisce e `prisma migrate deploy` può tornare in `vercel.json`.
+   Il default di Netlify è `us-east-2` (Ohio). Ogni pagina che interroga Postgres paga il viaggio
+   di andata e ritorno: con il database a Francoforte e le funzioni in Ohio, ogni query
+   attraverserebbe l'Atlantico due volte. È il passaggio che si dimentica più facilmente e che si
+   paga su ogni singola visita.
 
-3. **Dominio**: collega `ime-service.it` e allinea `NEXT_PUBLIC_SITE_URL`, che alimenta URL
+3. **Migrazioni**: si applicano a mano, prima del deploy: `npm run db:deploy`.
+
+   Non stanno nel comando di build apposta. Netlify usa lo stesso comando per la produzione e per
+   le anteprime dei branch: se le anteprime puntano al database di produzione, una migrazione
+   partita da un branch ne cambierebbe lo schema prima ancora della revisione. Con un branch Neon
+   dedicato alle anteprime il rischio sparisce e `prisma migrate deploy` può entrare nella build.
+
+4. **Dominio**: collega `ime-service.it` e allinea `NEXT_PUBLIC_SITE_URL`, che alimenta URL
    canonici, Open Graph e sitemap.
 
-`vercel.json` fissa la regione delle funzioni e il comando di build `prisma generate && next build`.
+### Se invece si torna su Vercel
 
-**La regione va tenuta accanto al database.** Ogni pagina che interroga Postgres paga il viaggio di
-andata e ritorno, quindi Vercel e Neon devono stare nella stessa città: `fra1` qui, Neon su
-`eu-central-1` (Francoforte). Più vicina a Verona di quanto fosse Dublino, e i dati personali
-restano nell'UE. Se un giorno il database trasloca, questa riga va spostata con lui.
+`vercel.json` è già pronto: fissa la regione `fra1` — stessa città del database, stesso ragionamento
+del punto 2 — e il comando di build `prisma generate && next build`. Le variabili sono le stesse,
+da impostare su Production, Preview e Development. Resta il vincolo di partenza: il piano Hobby
+vieta l'uso commerciale, quindi servirebbe Pro.
 
 ### Cosa resta da sistemare prima del go-live
 

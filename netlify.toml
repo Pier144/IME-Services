@@ -1,0 +1,25 @@
+# Deploy su Netlify.
+#
+# Il runtime Next.js lo installa Netlify da solo riconoscendo il framework:
+# non serve dichiarare nessun plugin qui.
+
+[build]
+  # Lo stesso di sempre: `prisma generate && next build`.
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # package.json chiede Node >= 20.9. Fissata per non dipendere dal default
+  # di Netlify, che cambia nel tempo e cambierebbe la build sotto i piedi.
+  NODE_VERSION = "22"
+
+# Le migrazioni non stanno nel comando di build, come su Vercel e per lo
+# stesso motivo: Netlify usa lo stesso comando per la produzione e per le
+# anteprime dei branch. Finche' le anteprime puntano al database di
+# produzione, una migrazione partita da un'anteprima ne cambierebbe lo schema
+# prima ancora della revisione. Si applicano a mano con `npm run db:deploy`.
+#
+# Da fare una volta sola nel pannello, e non si puo' scrivere qui:
+# Project configuration > Build & deploy > Continuous deployment >
+# Functions region > Frankfurt (fra). Il default e' us-east-2 (Ohio), e con
+# il database a Francoforte ogni query attraverserebbe l'Atlantico.
