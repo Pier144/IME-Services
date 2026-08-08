@@ -1,14 +1,19 @@
 // IME Service: schema dati
 //
-// Postgres gestito da Supabase (progetto IME-Services, regione eu-west-1).
+// Postgres gestito da Neon (progetto Ime-Service, regione eu-central-1).
 //
-// Servono due stringhe di connessione, ed è importante non scambiarle:
-//   DATABASE_URL → il pooler (Supavisor, porta 6543). Lo usa l'applicazione:
-//                  su serverless le connessioni si moltiplicano e senza pooler
-//                  il database finisce i posti disponibili.
-//   DIRECT_URL   → la connessione diretta (porta 5432). La usano le migrazioni,
-//                  che hanno bisogno di una sessione vera e di poter prendere
-//                  i lock sullo schema.
+// Servono due stringhe di connessione, ed è importante non scambiarle. Su Neon
+// si distinguono dal nome host, non dalla porta:
+//   DATABASE_URL → host con `-pooler`. Lo usa l'applicazione: su serverless le
+//                  connessioni si moltiplicano e senza pooler il database
+//                  finisce i posti disponibili.
+//   DIRECT_URL   → host senza `-pooler`. La usano le migrazioni, che hanno
+//                  bisogno di una sessione vera e di poter prendere i lock
+//                  sullo schema.
+//
+// Il compute di Neon si sospende dopo 5 minuti di inattività e si risveglia da
+// solo alla prima query: la prima richiesta dopo una pausa paga qualche
+// centinaio di millisecondi in più. Non c'è niente da riattivare a mano.
 //
 // Le liste (tag, blocchi del corpo, allegati) restano serializzate in JSON
 // dentro colonne testuali: non le interroghiamo mai dall'interno, quindi il

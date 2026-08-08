@@ -3,9 +3,9 @@ import { createHash, createHmac } from 'node:crypto';
 import type { StorageDriver } from './types';
 
 /**
- * Driver S3, usato con lo Storage di Supabase, che espone un endpoint
- * S3-compatibile con firma SigV4. Funziona identico con R2, MinIO, Scaleway o
- * S3 vero.
+ * Driver S3, usato con Cloudflare R2, che espone un endpoint S3-compatibile
+ * con firma SigV4. Funziona identico con MinIO, Scaleway o S3 vero: cambiano
+ * solo le variabili `S3_*`. Su R2 la regione è sempre "auto".
  *
  * Firma le richieste a mano invece di trascinarsi dietro l'SDK AWS: servono
  * due sole operazioni, PutObject e la firma di un GET, e questo evita ~15 MB

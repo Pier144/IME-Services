@@ -17,14 +17,14 @@ npm run setup
 npm run dev
 ```
 
-Il database è **Postgres su Supabase**, quindi prima di `npm run setup` vanno incollate in `.env`
-le due stringhe di connessione (Supabase → Project Settings → Database → Connection string).
+Il database è **Postgres su Neon**, quindi prima di `npm run setup` vanno incollate in `.env`
+le due stringhe di connessione (Neon → Dashboard → Connect).
 `npm run setup` genera il client Prisma, applica le migrazioni e inserisce i 14 articoli del mockup.
 
-> **Attenzione:** in sviluppo si punta allo stesso database della produzione, perché il branching
-> di Supabase richiede un piano a pagamento. Finché è così, `npm run db:seed` scrive sui dati veri.
-> Per lavorare tranquilli conviene un secondo progetto Supabase gratuito da usare come sviluppo, e
-> tenere quello di produzione solo nelle variabili di Vercel.
+> **Per lo sviluppo conviene un branch.** Neon include 10 branch per progetto anche sul piano
+> gratuito: `main` resta la produzione, un branch `sviluppo` ne è una copia istantanea su cui
+> `npm run db:seed` non tocca niente di vero. Il branch ha stringhe di connessione proprie: sono
+> quelle che vanno nel `.env` locale, mentre quelle di `main` restano solo su Vercel.
 
 Area riservata: <http://localhost:3000/admin> · credenziali in `.env`
 (`redazione@ime-service.it` / `cambiami-subito`: **da cambiare** prima di qualunque uso reale).
@@ -48,7 +48,8 @@ Area riservata: <http://localhost:3000/admin> · credenziali in `.env`
 
 - **Next.js 16 (App Router) + React 19 + TypeScript**: SEO, i18n e rendering statico.
 - **Tailwind CSS v4** con i token del design in `src/app/globals.css`.
-- **Prisma + Postgres** su Supabase (progetto `IME-Services`, regione `eu-west-1`).
+- **Prisma + Postgres** su Neon (progetto `Ime-Service`, regione `eu-central-1`), con allegati
+  su Cloudflare R2.
 - **react-hook-form + zod** per i form, con gli stessi schemi lato client e lato server.
 - **next/font** per Archivo e Satisfy, self-hostati (nessuna chiamata al CDN di Google). Archivo è
   caricato come font variabile: due soli file, tondo e corsivo, e tutti i pesi disponibili.
@@ -138,17 +139,28 @@ Tutto passa da `.env` (vedi `.env.example`).
 
 ### Database
 
-Postgres gestito da Supabase. Servono **due** stringhe di connessione, e non vanno scambiate:
+Postgres gestito da Neon. Servono **due** stringhe di connessione, e non vanno scambiate. Su Neon
+la differenza sta nel nome host, non nella porta:
 
-- `DATABASE_URL` → *Transaction pooler*, porta **6543**. La usa l'applicazione: su serverless ogni
-  istanza aprirebbe connessioni proprie e senza pooler il database esaurisce i posti.
-- `DIRECT_URL` → *Direct connection*, porta **5432**. La usano le migrazioni, che hanno bisogno di
-  una sessione vera per prendere i lock sullo schema.
+- `DATABASE_URL` → host **con `-pooler`**. La usa l'applicazione: su serverless ogni istanza
+  aprirebbe connessioni proprie e senza pooler il database esaurisce i posti.
+- `DIRECT_URL` → host **senza `-pooler`**. La usano le migrazioni, che hanno bisogno di una
+  sessione vera per prendere i lock sullo schema.
 
-Le tabelle stanno nello schema `public`, che Supabase espone anche via Data API con la chiave
-`anon`: che è pubblica. La migrazione iniziale quindi **attiva RLS senza policy** e **revoca i
-privilegi** ai ruoli `anon` e `authenticated`: da lì non si legge niente. L'applicazione non è
-toccata perché Prisma si collega con il ruolo `postgres`, che ha `BYPASSRLS`.
+Entrambe vogliono `sslmode=require`: Neon rifiuta le connessioni in chiaro.
+
+Il compute si sospende dopo 5 minuti di inattività e si risveglia da solo alla prima query, senza
+niente da riattivare a mano. Si paga in latenza: la prima richiesta dopo una pausa è più lenta di
+qualche centinaio di millisecondi. Le pagine pubbliche sono rigenerate con `revalidatePath` e
+servite dalla cache, quindi il risveglio tocca quasi solo l'area riservata.
+
+La migrazione iniziale **attiva RLS senza policy** e **revoca i privilegi** ai ruoli `anon` e
+`authenticated`. Era una difesa contro la Data API di Supabase, che esponeva lo schema `public`
+con una chiave pubblica; Neon non ha niente del genere, quindi oggi è ridondante ma innocua. Le
+`REVOKE` sono dentro una guardia `IF EXISTS (SELECT 1 FROM pg_roles ...)`: su Neon quei ruoli non
+esistono e il blocco non fa nulla. RLS resta attiva senza conseguenze perché Prisma si collega con
+il ruolo proprietario delle tabelle, e in Postgres il proprietario non è soggetto a RLS (lo
+sarebbe solo con `FORCE ROW LEVEL SECURITY`, che non usiamo).
 
 Liste e blocchi restano serializzati in JSON dentro colonne testuali: non li interroghiamo mai
 dall'interno, quindi il tipo `Json` nativo non aggiungerebbe nulla.
@@ -156,8 +168,10 @@ dall'interno, quindi il tipo `Json` nativo non aggiungerebbe nulla.
 ### Allegati
 
 `STORAGE_DRIVER=local` (default in sviluppo) scrive in `./storage/uploads`, fuori da `public/`.
-`STORAGE_DRIVER=s3` usa Supabase Storage tramite il suo endpoint S3-compatibile: e funziona
-identico con R2, Scaleway, MinIO o S3 vero.
+`STORAGE_DRIVER=s3` usa **Cloudflare R2** tramite il suo endpoint S3-compatibile: e funziona
+identico con Scaleway, MinIO o S3 vero. Neon fa solo il database, lo storage è un servizio a parte.
+Il driver firma le richieste a mano (SigV4), quindi cambiare fornitore significa cambiare le
+cinque variabili `S3_*` e nient'altro. Su R2 `S3_REGION` è sempre `auto`.
 
 **Il bucket va creato privato.** Nessun allegato ha mai un indirizzo pubblico: si passa sempre da
 `/api/media/<chiave>`, che controlla chi sta chiedendo e poi rimanda a un link firmato valido
@@ -178,9 +192,9 @@ configurazione. In produzione `smtp` (nodemailer) o `resend`. Se l'invio fallisc
 
 ## Deploy su Vercel
 
-Progetto Supabase `IME-Services` (`eu-west-1`) e progetto Vercel `ime-services` esistono già,
-collegato quest'ultimo al repository GitHub. Schema applicato, contenuti seminati, bucket creato:
-**manca solo la configurazione delle variabili d'ambiente su Vercel.**
+Il progetto Vercel `ime-services` esiste già ed è collegato al repository GitHub. Database Neon e
+bucket R2 vanno creati: **poi restano lo schema da applicare, i contenuti da seminare e le
+variabili d'ambiente da configurare su Vercel.**
 
 1. **Variabili d'ambiente**: da impostare su *tutti e tre* gli ambienti (Production, Preview,
    Development), non solo Production: sitemap e pagine articolo interrogano il database **durante
@@ -188,14 +202,14 @@ collegato quest'ultimo al repository GitHub. Schema applicato, contenuti seminat
 
    | Variabile | Valore |
    | --- | --- |
-   | `DATABASE_URL` | transaction pooler, porta 6543 (vedi `.env.example`) |
-   | `DIRECT_URL` | session pooler, porta 5432 |
+   | `DATABASE_URL` | Neon, host **con** `-pooler` (vedi `.env.example`) |
+   | `DIRECT_URL` | Neon, host **senza** `-pooler` |
    | `AUTH_SECRET` | **da rigenerare**, mai riusare quello di sviluppo |
    | `ADMIN_EMAIL` · `ADMIN_PASSWORD` | credenziali vere dell'area riservata |
    | `NEXT_PUBLIC_SITE_URL` | `https://www.ime-service.it` |
    | `STORAGE_DRIVER` | `s3`: con `local` ogni caricamento fallisce, il disco è di sola lettura |
    | `S3_ENDPOINT` · `S3_REGION` · `S3_BUCKET` | vedi `.env.example` |
-   | `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` | *Supabase → Storage → S3 Access Keys* |
+   | `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` | *Cloudflare → R2 → Manage API tokens* |
    | `MAIL_DRIVER` + `SMTP_*` (o `RESEND_API_KEY`) | con `console` nessuno riceve le notifiche |
 
    Il segreto di sessione si genera con:
@@ -204,26 +218,32 @@ collegato quest'ultimo al repository GitHub. Schema applicato, contenuti seminat
 2. **Migrazioni**: si applicano a mano, prima del deploy: `npm run db:deploy`.
 
    Non stanno nel comando di build apposta. Vercel usa lo stesso comando per Production e per
-   Preview, e finché c'è un solo progetto Supabase le Preview puntano al database di produzione:
-   una migrazione su un branch ne cambierebbe lo schema prima ancora della revisione. Se un giorno
-   nascerà un progetto Supabase separato per le Preview, `prisma migrate deploy` potrà tornare in
-   `vercel.json`.
+   Preview: se le Preview puntano al database di produzione, una migrazione su un branch ne
+   cambierebbe lo schema prima ancora della revisione. Con un branch Neon dedicato alle Preview il
+   rischio sparisce e `prisma migrate deploy` può tornare in `vercel.json`.
 
 3. **Dominio**: collega `ime-service.it` e allinea `NEXT_PUBLIC_SITE_URL`, che alimenta URL
    canonici, Open Graph e sitemap.
 
-`vercel.json` fissa la regione `dub1` (Dublino, accanto al database) e il comando di build
-`prisma generate && next build`.
+`vercel.json` fissa la regione delle funzioni e il comando di build `prisma generate && next build`.
+
+**La regione va tenuta accanto al database.** Ogni pagina che interroga Postgres paga il viaggio di
+andata e ritorno, quindi Vercel e Neon devono stare nella stessa città: `fra1` qui, Neon su
+`eu-central-1` (Francoforte). Più vicina a Verona di quanto fosse Dublino, e i dati personali
+restano nell'UE. Se un giorno il database trasloca, questa riga va spostata con lui.
 
 ### Cosa resta da sistemare prima del go-live
 
-- **Piano Supabase**: sul gratuito i progetti vengono messi in pausa dopo 7 giorni di inattività.
-  Su un sito con traffico stagionale succede fuori stagione. Serve il piano Pro.
+- **Consumo Neon**: il piano gratuito dà 100 CU-ore al mese e 0,5 GB. Al compute minimo sono circa
+  400 ore di veglia: bastano larghe con le pagine pubbliche in cache, ma vanno guardate a
+  novembre-dicembre, quando il traffico è nella stagione buona. Il piano a pagamento parte da
+  5 $/mese. Nessun rischio di sospensione: il compute si risveglia da solo.
 - **Limite di frequenza dei form**: il contatore è in memoria, quindi vale per singola istanza
   serverless. I form restano protetti dal campo esca, ma per un limite vero serve un contatore
   condiviso (Upstash Redis o simile).
-- **DPA e informativa**: Vercel e Supabase sono responsabili del trattamento e vanno elencati
-  nell'informativa privacy, che è ancora una traccia.
+- **DPA e informativa**: Vercel, Neon e Cloudflare sono responsabili del trattamento e vanno
+  elencati nell'informativa privacy, che è ancora una traccia. Scegliendo le regioni europee di
+  Neon e R2 i dati personali (candidature, preventivi) restano nell'UE.
 
 ---
 
