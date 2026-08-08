@@ -225,6 +225,20 @@ esiste già e può servire da alternativa finché la scelta non è consolidata.
    Il segreto di sessione si genera con:
    `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"`
 
+   **Vanno generati davvero, non copiati da `.env.example`.** Netlify scandaglia il repository e
+   il risultato della build in cerca dei valori marcati come segreti: se `AUTH_SECRET` o
+   `ADMIN_PASSWORD` valgono quanto scritto nel file d'esempio, la build fallisce con
+   *"Secrets scanning found secrets in build"*. Non è una formalità da aggirare con
+   `SECRETS_SCAN_OMIT_KEYS`: `AUTH_SECRET` firma il cookie di sessione, e chi lo conosce può
+   fabbricarsi un JWT valido ed entrare nell'area riservata con pieni poteri. Quel valore è su
+   GitHub, quindi lo conoscono tutti.
+
+   Su Netlify vanno marcate come **secret** solo le credenziali che usa il server:
+   `DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `ADMIN_PASSWORD`, `S3_SECRET_ACCESS_KEY`,
+   `S3_ACCESS_KEY_ID`, `RESEND_API_KEY`. **Mai** quelle con prefisso `NEXT_PUBLIC_`: Next.js le
+   incorpora nel JavaScript servito al browser, quindi la scansione le troverebbe nel risultato
+   della build e la farebbe fallire ogni volta.
+
 2. **Regione delle funzioni**: da cambiare **a mano nel pannello**, non è configurabile da file.
    *Project configuration → Build & deploy → Continuous deployment → Functions region → Frankfurt
    (fra).*
