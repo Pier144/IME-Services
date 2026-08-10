@@ -20,15 +20,11 @@ export function AdminSidebar({ email }: { email: string }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const items = [
-    { href: `${adminRoutes.root}/dashboard`, label: t.admin.nav.dashboard },
-    { href: adminRoutes.news, label: t.admin.nav.news },
-    { href: `${adminRoutes.root}/soggetti`, label: t.admin.nav.subjects },
-    { href: `${adminRoutes.root}/preventivi`, label: t.admin.nav.quotes },
-    { href: `${adminRoutes.root}/candidature`, label: t.admin.nav.applications },
-    { href: `${adminRoutes.root}/media`, label: t.admin.nav.media },
-    { href: `${adminRoutes.root}/impostazioni`, label: t.admin.nav.settings },
-  ];
+  // Solo le pagine che esistono davvero. Le voci mancanti (soggetti, preventivi,
+  // candidature, media, impostazioni) erano scritte qui prima di essere
+  // costruite, e portavano tutte a un 404: chi entra per la prima volta trova
+  // uno strumento che sembra guasto. Torneranno insieme alle rispettive pagine.
+  const items = [{ href: adminRoutes.news, label: t.admin.nav.news }];
 
   async function signOut() {
     await fetch(apiRoutes.logout, { method: 'POST' });

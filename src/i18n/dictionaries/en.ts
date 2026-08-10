@@ -583,13 +583,7 @@ const en: Dictionary = {
   admin: {
     brandLabel: 'ADMIN',
     nav: {
-      dashboard: 'Dashboard',
       news: 'News',
-      subjects: 'Catalogue',
-      quotes: 'Quote requests',
-      applications: 'Applications',
-      media: 'Media',
-      settings: 'Settings',
     },
     signedInAs: 'Signed in as',
     signOut: 'Sign out',
@@ -640,6 +634,9 @@ const en: Dictionary = {
       unsaved: 'Unsaved changes',
       newArticle: 'New article',
       publishBlocked: 'Publishing needs a title, a category, a cover image and a summary.',
+      /** Like publishBlocked, but names the fields that are actually missing. */
+      publishMissing: 'Still missing before publishing: {fields}.',
+      draftHint: 'not visible on the site',
       labels: {
         title: 'TITLE',
         category: 'CATEGORY',

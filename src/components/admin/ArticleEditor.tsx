@@ -161,13 +161,30 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
     return () => window.clearTimeout(timer);
   }, [dirty, save]);
 
-  /* --- Avviso prima di chiudere con modifiche pendenti ------------------- */
+  /* --- Uscire senza perdere niente ----------------------------------------
+     Tre modi di lasciare l'editor, tre reti diverse. `beforeunload` copre solo
+     chiusura e ricaricamento: non scatta sulle navigazioni interne, ed è per
+     questo che il ritorno all'elenco salva da sé (vedi la topbar). */
   useEffect(() => {
     if (!dirty) return;
     const onBeforeUnload = (event: BeforeUnloadEvent) => event.preventDefault();
     window.addEventListener('beforeunload', onBeforeUnload);
     return () => window.removeEventListener('beforeunload', onBeforeUnload);
   }, [dirty]);
+
+  /* Cambio di finestra o di scheda: si salva subito, senza aspettare i 30 s. */
+  useEffect(() => {
+    if (!dirty) return;
+    const onBlur = () => void save();
+    window.addEventListener('blur', onBlur);
+    return () => window.removeEventListener('blur', onBlur);
+  }, [dirty, save]);
+
+  /** Ritorno all'elenco: prima si salva, poi si naviga. */
+  async function leave() {
+    if (dirty) await save();
+    router.push(adminRoutes.news);
+  }
 
   const missing = publishBlockers(draft);
   const canPublish = missing.length === 0;
@@ -194,18 +211,24 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
       {/* --- Topbar --------------------------------------------------------- */}
       <header className="flex flex-col gap-14 border-b border-hairline bg-admin-bg px-24 py-14 lg:flex-row lg:items-center lg:justify-between lg:px-26">
         <div className="flex flex-wrap items-center gap-14 font-body text-13">
-          <Link
-            href={adminRoutes.news}
-            className="text-ink-3 transition-colors duration-200 hover:text-gold"
+          <button
+            type="button"
+            onClick={() => void leave()}
+            disabled={saving}
+            className="text-ink-3 transition-colors duration-200 hover:text-gold disabled:opacity-60"
           >
             ← {t.admin.editor.back}
-          </Link>
+          </button>
           <span aria-hidden="true" className="hidden h-16 w-1 bg-rule-step lg:block" />
           <span className="max-w-360 truncate">{draft.title || t.admin.editor.newArticle}</span>
           <StatusBadge
             status={draft.status}
             label={draft.status === 'draft' ? t.admin.news.status.draft : t.admin.news.status.published}
           />
+          {/* Il colore da solo non dice cosa comporta essere una bozza. */}
+          {draft.status === 'draft' && (
+            <span className="text-ink-4">{t.admin.editor.draftHint}</span>
+          )}
         </div>
 
         <div className="flex flex-wrap items-center gap-12 font-body text-12-5 tracking-08">
@@ -263,7 +286,8 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
       )}
       {!canPublish && (
         <p className="border-b border-hairline px-24 py-10 font-body text-12-5 font-medium text-ink-4">
-          {t.admin.editor.publishBlocked}
+          {/* Non "manca qualcosa": manca *questo*. L'elenco lo sa già publishBlockers. */}
+          {t.admin.editor.publishMissing.replace('{fields}', missing.join(', '))}
         </p>
       )}
 

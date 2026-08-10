@@ -618,13 +618,7 @@ const it = {
   admin: {
     brandLabel: 'ADMIN',
     nav: {
-      dashboard: 'Dashboard',
       news: 'News',
-      subjects: 'Catalogo soggetti',
-      quotes: 'Richieste preventivo',
-      applications: 'Candidature',
-      media: 'Media',
-      settings: 'Impostazioni',
     },
     signedInAs: 'Accesso come',
     signOut: 'Esci',
@@ -677,6 +671,9 @@ const it = {
       newArticle: 'Nuovo articolo',
       publishBlocked:
         'Per pubblicare servono titolo, categoria, copertina e sommario.',
+      /** Come publishBlocked, ma nomina i campi che mancano davvero. */
+      publishMissing: 'Per pubblicare manca ancora: {fields}.',
+      draftHint: 'non visibile sul sito',
       labels: {
         title: 'TITOLO',
         category: 'CATEGORIA',
