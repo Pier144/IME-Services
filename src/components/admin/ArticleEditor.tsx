@@ -356,14 +356,18 @@ export function ArticleEditor({
       {/* --- Topbar --------------------------------------------------------- */}
       <header className="flex flex-wrap items-center justify-between gap-14 border-b border-hairline bg-admin-bg px-26 py-14">
         <div className="flex min-w-0 items-center gap-14 font-body text-13">
-          <button
-            type="button"
+          {/* Non è un link: prima salva e poi naviga. Sembrava testo, e un
+              testo non dice che tornare indietro è un'azione con un effetto. */}
+          <Button
+            variant="ghostSoft"
+            size="adminSm"
             onClick={() => void leave()}
             disabled={saving}
-            className="flex-none text-ink-3 transition-colors duration-200 ease-out hover:text-gold disabled:opacity-60"
+            className="flex-none"
           >
-            ← {t.admin.editor.back}
-          </button>
+            <span aria-hidden="true">←</span>
+            {t.admin.editor.back}
+          </Button>
           <span aria-hidden="true" className="block h-16 w-1 flex-none bg-rule-step" />
           <span className={cn('max-w-420 truncate', draft.title ? 'text-ink-2' : 'text-ink-4')}>
             {draft.title || t.admin.editor.newArticle}
@@ -395,13 +399,12 @@ export function ArticleEditor({
             {t.admin.editor.settings}
           </Button>
 
-          <Button
-            variant="ghostSoft"
-            size="adminSm"
-            onClick={() => void save('draft')}
-            disabled={saving}
-          >
-            {t.admin.editor.saveDraft}
+          {/* `save()` senza argomento tiene lo stato che c'è. Con `save('draft')`
+              questo pulsante spubblicava l'articolo di nascosto: su un articolo
+              online diceva «Salva bozza» e faceva la stessa cosa di «RIPORTA IN
+              BOZZA», che è lì accanto. */}
+          <Button variant="ghostSoft" size="adminSm" onClick={() => void save()} disabled={saving}>
+            {draft.status === 'published' ? t.admin.editor.save : t.admin.editor.saveDraft}
           </Button>
 
           {draft.status === 'published' ? (

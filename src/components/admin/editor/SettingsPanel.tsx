@@ -6,6 +6,7 @@ import { PhotoPicker, type UsedImage } from './PhotoPicker';
 import type { EditorArticle } from './draft';
 import { HelpHint } from './HelpHint';
 import { PhotoSlot } from '@/components/media/PhotoSlot';
+import { Button } from '@/components/ui/Button';
 import { FieldLabel, Input, Select, Toggle } from '@/components/ui/Field';
 import { newsCategories } from '@/data/news-categories';
 import { useI18n } from '@/i18n/provider';
@@ -101,13 +102,14 @@ export function SettingsPanel({
               className="h-130"
               sizes="320px"
             />
-            <button
-              type="button"
+            <Button
+              variant="ghostSoft"
+              size="adminXs"
               onClick={() => onChange({ coverImage: null })}
-              className="absolute top-8 right-8 rounded-soft border border-field-border bg-admin-bg px-10 py-6 font-body text-12 font-medium text-ink-3 transition-colors duration-200 ease-out hover:border-gold hover:text-gold"
+              className="absolute top-8 right-8 bg-admin-bg"
             >
               {t.admin.editor.photo.remove}
-            </button>
+            </Button>
           </div>
         ) : (
           <PhotoPicker

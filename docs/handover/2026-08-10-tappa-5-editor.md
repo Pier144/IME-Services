@@ -195,6 +195,16 @@ Sono già state discusse e approvate: non rimetterle in discussione senza motivo
   foto, che ora legge il token invece di ripetere il numero.
   Le caselle di spunta da 15px restano quadrate: su un controllo così piccolo 4px sono un quarto
   del lato, e si vedrebbero come un difetto invece che come una scelta.
+- **Le varianti dei pulsanti hanno un significato fisso**, scritto in testa a `ui/Button.tsx`:
+  `gold` è l'azione principale e ce n'è una sola per schermata, `ghostGold` tocca la pubblicazione,
+  `ghostSoft` è neutra e reversibile, `danger` è distruttiva e vive solo nelle finestre di conferma.
+  Un interruttore acceso è `ghostGold` **con** `bg-gold-rail`: il fondo pieno è ciò che lo distingue
+  da un'azione col contorno oro. `← Articoli` è diventato un pulsante vero: sembrava testo, e non
+  diceva che tornare indietro salva.
+- **`Salva bozza` spubblicava l'articolo di nascosto.** Chiamava `save('draft')`, cioè esattamente
+  la stessa cosa di `RIPORTA IN BOZZA`, che sul pubblicato gli sta accanto: due pulsanti diversi,
+  la stessa azione, e nessun avviso. Il difetto è precedente alla Tappa 5. Adesso chiama `save()`
+  senza argomento — che tiene lo stato che c'è — e su un articolo online si chiama `Salva`.
 
 ---
 

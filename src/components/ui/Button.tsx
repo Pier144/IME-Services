@@ -3,7 +3,18 @@ import { cn } from '@/lib/utils';
 
 /**
  * Un solo colore d'azione: l'oro. Blu e rosso sono colori di mondo, non di
- * bottone. Nessun raggio, nessuna ombra: la gerarchia la fa il riempimento.
+ * bottone. Nessuna ombra: la gerarchia la fa il riempimento.
+ *
+ * Nell'area riservata le varianti hanno un significato fisso, e conviene
+ * rispettarlo perché è quello che rende i pulsanti leggibili a colpo d'occhio:
+ *
+ *   gold       azione principale della schermata, una sola per volta
+ *   ghostGold  azione che tocca la pubblicazione (RIPORTA IN BOZZA)
+ *   ghostSoft  azione neutra e reversibile (salva, torna indietro, togli la foto)
+ *   danger     distruttiva, e solo nelle finestre di conferma
+ *
+ * Un interruttore acceso è `ghostGold` **con** `bg-gold-rail`: il fondo pieno è
+ * ciò che lo distingue da un'azione col contorno oro.
  */
 export type ButtonVariant = 'gold' | 'ghost' | 'ghostGold' | 'ghostSoft' | 'danger';
 
@@ -18,7 +29,8 @@ export type ButtonSize =
   | 'block' // scheda soggetto, azione principale a piena larghezza
   | 'compact' // scheda soggetto, azione secondaria
   | 'admin'
-  | 'adminSm';
+  | 'adminSm'
+  | 'adminXs'; // sovrapposto a una foto, dove adminSm ruberebbe l'immagine
 
 const variants: Record<ButtonVariant, string> = {
   gold: 'bg-gold text-gold-ink font-semibold hover:brightness-94',
@@ -39,6 +51,7 @@ const sizes: Record<ButtonSize, string> = {
   compact: 'px-20 py-14 text-12-5 tracking-10',
   admin: 'px-22 py-11 text-12-5 tracking-10',
   adminSm: 'px-18 py-9 text-12-5 tracking-08',
+  adminXs: 'px-12 py-6 text-12 tracking-08',
 };
 
 /**
@@ -47,7 +60,7 @@ const sizes: Record<ButtonSize, string> = {
  * usa soltanto `/admin`.
  */
 function radiusFor(size: ButtonSize) {
-  return size === 'admin' || size === 'adminSm' ? 'rounded-soft' : 'rounded-none';
+  return size.startsWith('admin') ? 'rounded-soft' : 'rounded-none';
 }
 
 export function buttonClasses(

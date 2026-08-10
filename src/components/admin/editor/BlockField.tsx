@@ -4,6 +4,7 @@ import { AddBlockMenu } from './AddBlockMenu';
 import { AutoTextarea } from './AutoTextarea';
 import { PhotoPicker, type UsedImage } from './PhotoPicker';
 import { PhotoSlot } from '@/components/media/PhotoSlot';
+import { Button } from '@/components/ui/Button';
 import type { EditorBlock, EditorBlockType } from '@/lib/articles/editor-blocks';
 import { useI18n } from '@/i18n/provider';
 
@@ -134,13 +135,14 @@ export function BlockField({
                 className="h-340"
                 sizes="(max-width: 1200px) 100vw, 740px"
               />
-              <button
-                type="button"
+              <Button
+                variant="ghostSoft"
+                size="adminXs"
                 onClick={() => onImage(index, { src: null })}
-                className="absolute top-8 right-8 rounded-soft border border-field-border bg-admin-bg px-10 py-6 font-body text-12 font-medium text-ink-3 transition-colors duration-200 ease-out hover:border-gold hover:text-gold"
+                className="absolute top-8 right-8 bg-admin-bg"
               >
                 {t.admin.editor.photo.remove}
-              </button>
+              </Button>
             </div>
           ) : (
             <PhotoPicker

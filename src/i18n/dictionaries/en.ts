@@ -663,6 +663,8 @@ const en: Dictionary = {
     editor: {
       back: 'Articles',
       saveDraft: 'Save draft',
+      /** On a published article «save draft» would be a lie. */
+      save: 'Save',
       publish: 'PUBLISH',
       unpublish: 'BACK TO DRAFT',
       saving: 'Saving…',

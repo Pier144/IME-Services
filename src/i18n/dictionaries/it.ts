@@ -708,6 +708,8 @@ const it = {
     editor: {
       back: 'Articoli',
       saveDraft: 'Salva bozza',
+      /** Su un articolo già online «salva bozza» sarebbe una bugia. */
+      save: 'Salva',
       publish: 'PUBBLICA',
       unpublish: 'RIPORTA IN BOZZA',
       saving: 'Salvataggio…',
