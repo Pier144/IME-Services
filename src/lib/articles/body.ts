@@ -21,6 +21,21 @@ export const blockTypes = ['lead', 'paragraph', 'heading', 'quote', 'list', 'ima
 
 const IMAGE_LINE = /^!\[([^\]]*)\]\(([^)\s]*)(?:\s+"([^"]*)")?\)$/;
 
+/**
+ * I marcatori inline ammessi, come sorgente di testo e non come espressione
+ * già costruita: chi la usa se ne fabbrica una propria, così il flag `g` di
+ * uno non sposta `lastIndex` dell'altro.
+ *
+ * Vale per il renderer pubblico (`inline.tsx`) e per l'editor (`tiptap.ts`).
+ * Le due cose devono leggere gli stessi marcatori, altrimenti quello che si
+ * vede nell'editor e quello che finisce in pagina divergono.
+ *
+ * Nota sul formato: i marcatori **non si annidano**. `[**testo**](url)` non è
+ * un link in grassetto, è un link il cui testo contiene due asterischi.
+ */
+export const INLINE_TOKEN_SOURCE = String.raw`\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\[[^\]]+\]\([^)\s]+\)`;
+export const INLINE_LINK_SOURCE = String.raw`^\[([^\]]+)\]\(([^)\s]+)\)$`;
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
