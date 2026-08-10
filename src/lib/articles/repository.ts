@@ -275,3 +275,54 @@ export async function updateArticle(id: string, input: ArticleInput): Promise<Ar
 export async function deleteArticle(id: string): Promise<void> {
   await prisma.article.delete({ where: { id } });
 }
+
+/* --------------------------------------------------------------------------
+ * Operazioni su più articoli (selezione multipla della lista)
+ * ----------------------------------------------------------------------- */
+
+export async function listByIds(ids: string[]): Promise<Article[]> {
+  if (ids.length === 0) return [];
+  const rows = await prisma.article.findMany({ where: { id: { in: ids } } });
+  return rows.map(toArticle);
+}
+
+/**
+ * Cambia stato e/o categoria di più articoli in una transazione sola.
+ *
+ * Non è `updateMany`: pubblicare richiede una decisione per riga — chi non ha
+ * mai avuto una data di pubblicazione la riceve adesso, chi ce l'ha se la
+ * tiene — e `updateMany` non sa fare scelte diverse riga per riga.
+ */
+export async function bulkUpdate(
+  ids: string[],
+  changes: { status?: ArticleStatus; category?: string },
+): Promise<void> {
+  if (ids.length === 0) return;
+  const existing = await listByIds(ids);
+  const now = new Date();
+
+  await prisma.$transaction(
+    existing.map((article) =>
+      prisma.article.update({
+        where: { id: article.id },
+        data: {
+          ...(changes.category ? { category: changes.category } : {}),
+          ...(changes.status
+            ? {
+                status: changes.status,
+                publishedAt:
+                  changes.status === 'published'
+                    ? (article.publishedAt ?? now)
+                    : article.publishedAt,
+              }
+            : {}),
+        },
+      }),
+    ),
+  );
+}
+
+export async function bulkDelete(ids: string[]): Promise<void> {
+  if (ids.length === 0) return;
+  await prisma.article.deleteMany({ where: { id: { in: ids } } });
+}

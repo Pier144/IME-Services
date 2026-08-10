@@ -629,8 +629,23 @@ const en: Dictionary = {
       empty: 'No article matches the search.',
       emptyAll: 'There are no articles yet. Create one.',
       deleteTitle: 'Delete this article?',
+      deleteTitleMany: 'Delete {count} articles?',
       deleteText: 'This cannot be undone. The article disappears from the site and the archive.',
+      deleteTextMany:
+        'This cannot be undone. The articles disappear from the site and the archive.',
+      deletePublishedMark: '· published',
+      deleteOnlineWarning: 'One of the selected articles is online: it will vanish from /news too.',
+      deleteOnlineWarningMany:
+        '{count} of the selected articles are online: they will vanish from /news too.',
       deleteConfirm: 'Delete permanently',
+      selected: 'SELECTED',
+      selectedOne: 'SELECTED',
+      selectAll: 'Select all',
+      bulkPublish: 'Publish',
+      bulkDraft: 'Back to draft',
+      bulkCategory: 'Change category',
+      bulkCancel: 'Cancel',
+      bulkFailed: 'The operation failed.',
       results: 'of',
     },
     editor: {

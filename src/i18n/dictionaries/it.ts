@@ -666,9 +666,25 @@ const it = {
       empty: 'Nessun articolo corrisponde alla ricerca.',
       emptyAll: 'Non c’è ancora nessun articolo. Creane uno.',
       deleteTitle: 'Eliminare questo articolo?',
+      deleteTitleMany: 'Eliminare {count} articoli?',
       deleteText:
         'L’operazione non si può annullare. L’articolo sparisce dal sito e dall’archivio.',
+      deleteTextMany:
+        'L’operazione non si può annullare. Gli articoli spariscono dal sito e dall’archivio.',
+      /** Accanto al titolo, nell'elenco della conferma. */
+      deletePublishedMark: '· pubblicato',
+      /** Avviso quando fra i selezionati c'è almeno un articolo online. */
+      deleteOnlineWarning: 'Uno dei selezionati è online: sparirà anche da /news.',
+      deleteOnlineWarningMany: '{count} dei selezionati sono online: spariranno anche da /news.',
       deleteConfirm: 'Elimina definitivamente',
+      selected: 'SELEZIONATI',
+      selectedOne: 'SELEZIONATO',
+      selectAll: 'Seleziona tutti',
+      bulkPublish: 'Pubblica',
+      bulkDraft: 'Riporta in bozza',
+      bulkCategory: 'Cambia categoria',
+      bulkCancel: 'Annulla',
+      bulkFailed: 'Operazione non riuscita.',
       results: 'di',
     },
     editor: {

@@ -1,12 +1,9 @@
 import Link from 'next/link';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
+import { ArticleList } from '@/components/admin/ArticleList';
 import { ArticleSearch } from '@/components/admin/ArticleSearch';
-import { DeleteArticleButton } from '@/components/admin/DeleteArticleButton';
 import { NewArticleButton } from '@/components/admin/NewArticleButton';
 import { PerPageSelect } from '@/components/admin/PerPageSelect';
-import { PhotoSlot } from '@/components/media/PhotoSlot';
-import { ArticleMeta } from '@/components/news/ArticleMeta';
-import { StatusBadge } from '@/components/ui/Badge';
 import { Display } from '@/components/ui/Typography';
 import { getDictionary } from '@/i18n';
 import { defaultLocale } from '@/i18n/config';
@@ -26,7 +23,13 @@ const PER_PAGE_DEFAULT = 8;
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
-/** Area riservata · lista articoli a righe (handoff 6a). */
+/**
+ * Area riservata · lista articoli (handoff 6a).
+ *
+ * Resta un componente server: interroga il database e costruisce gli
+ * indirizzi. Le righe e la selezione multipla vivono in `ArticleList`, che è
+ * client perché la selezione è stato dell'interfaccia.
+ */
 export default async function AdminNewsPage({ searchParams }: { searchParams: SearchParams }) {
   const session = await requireSession();
   const t = getDictionary(defaultLocale);
@@ -66,9 +69,19 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
   };
 
   const tabs = [
-    { key: 'all' as const, label: t.admin.news.tabs.all, count: counts.total },
-    { key: 'published' as const, label: t.admin.news.tabs.published, count: counts.published },
-    { key: 'draft' as const, label: t.admin.news.tabs.drafts, count: counts.drafts },
+    { key: 'all' as const, label: t.admin.news.tabs.all, count: counts.total, href: hrefFor('all') },
+    {
+      key: 'published' as const,
+      label: t.admin.news.tabs.published,
+      count: counts.published,
+      href: hrefFor('published'),
+    },
+    {
+      key: 'draft' as const,
+      label: t.admin.news.tabs.drafts,
+      count: counts.drafts,
+      href: hrefFor('draft'),
+    },
   ];
 
   return (
@@ -102,93 +115,21 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
           </div>
         </div>
 
-        {/* --- Tab di stato ------------------------------------------------- */}
-        <nav className="mt-26 flex gap-26 overflow-x-auto border-b border-hairline-strong font-body text-13 tracking-10">
-          {tabs.map((tab) => (
-            <Link
-              key={tab.key}
-              href={hrefFor(tab.key)}
-              aria-current={status === tab.key ? 'page' : undefined}
-              className={cn(
-                'flex-none pb-12 whitespace-nowrap transition-colors duration-200 ease-out',
-                status === tab.key ? 'text-gold shadow-tab-active' : 'text-ink-3 hover:text-gold',
-              )}
-            >
-              {tab.label} ({tab.count})
-            </Link>
-          ))}
-        </nav>
-
-        {page.items.length === 0 ? (
-          <p className="border-b border-hairline py-40 text-center font-body text-15 font-medium text-ink-3">
-            {counts.total === 0 ? t.admin.news.emptyAll : t.admin.news.empty}
-          </p>
-        ) : (
-          <ul>
-            {page.items.map((article) => (
-              <li
-                key={article.id}
-                className="group flex items-center gap-20 border-b border-hairline-soft py-16 transition-colors duration-200 hover:bg-white/2"
-              >
-                <PhotoSlot
-                  label="img"
-                  src={article.coverImage}
-                  alt=""
-                  className="h-58 w-88 flex-none"
-                  labelClassName="text-8 px-4 py-2"
-                  sizes="88px"
-                />
-
-                <span className="min-w-0 flex-1">
-                  <Link
-                    href={adminRoutes.article(article.id)}
-                    className="block font-body text-17 font-medium text-ink transition-colors duration-200 hover:text-gold"
-                  >
-                    {article.title || t.admin.editor.newArticle}
-                  </Link>
-                  <ArticleMeta
-                    category={article.category}
-                    date={article.publishedAt}
-                    noDateLabel={t.admin.news.noDate}
-                    featuredLabel={article.featured ? t.admin.news.featured : undefined}
-                    locale={defaultLocale}
-                    size="admin"
-                    className="mt-6"
-                  />
-                </span>
-
-                <StatusBadge
-                  status={article.status}
-                  label={
-                    article.status === 'draft'
-                      ? t.admin.news.status.draft
-                      : t.admin.news.status.published
-                  }
-                />
-
-                <span className="flex w-110 flex-none items-center justify-end gap-8 font-body text-12-5 tracking-06">
-                  <Link
-                    href={adminRoutes.article(article.id)}
-                    className="text-gold transition-colors duration-200 hover:text-gold-hover"
-                  >
-                    {t.admin.news.edit}
-                  </Link>
-                  {/* «Elimina» a riposo non si vede: è l'unica azione irreversibile
-                      della riga e non deve stare sotto il dito per sbaglio. */}
-                  <span className="flex items-center gap-8 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
-                    <span aria-hidden="true" className="text-ink-4">
-                      ·
-                    </span>
-                    <DeleteArticleButton
-                      id={article.id}
-                      title={article.title || t.admin.editor.newArticle}
-                    />
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
+        <ArticleList
+          articles={page.items.map((article) => ({
+            id: article.id,
+            title: article.title,
+            category: article.category,
+            publishedAt: article.publishedAt,
+            status: article.status,
+            featured: article.featured,
+            coverImage: article.coverImage,
+          }))}
+          tabs={tabs}
+          activeTab={status}
+          categories={newsCategories.map((c) => ({ slug: c.slug, name: c.name }))}
+          emptyLabel={counts.total === 0 ? t.admin.news.emptyAll : t.admin.news.empty}
+        />
 
         {/* --- Piede --------------------------------------------------------- */}
         <div className="mt-22 flex flex-wrap items-center justify-between gap-14 font-body text-13 font-medium text-ink-3">
