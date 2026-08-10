@@ -18,15 +18,22 @@ export function FieldLabel({
   tone = 'public',
   className,
 }: {
-  htmlFor: string;
+  /**
+   * Facoltativo perché `for` vale solo per i campi veri: un contenitore
+   * modificabile (l'area di scrittura dell'editor) non è fra questi, e
+   * puntarcelo sarebbe HTML non valido. Senza, l'etichetta è un semplice
+   * titolino e il nome accessibile lo porta l'elemento con `aria-label`.
+   */
+  htmlFor?: string;
   children: React.ReactNode;
   required?: boolean;
   requiredHint?: string;
   tone?: 'public' | 'admin';
   className?: string;
 }) {
+  const Tag = htmlFor ? 'label' : 'p';
   return (
-    <label
+    <Tag
       htmlFor={htmlFor}
       className={cn(
         'block font-body',
@@ -46,7 +53,7 @@ export function FieldLabel({
           {requiredHint && <span className="sr-only"> ({requiredHint})</span>}
         </>
       )}
-    </label>
+    </Tag>
   );
 }
 

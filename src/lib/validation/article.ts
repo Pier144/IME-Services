@@ -4,10 +4,11 @@ import { newsCategories } from '@/data/news-categories';
 /**
  * Payload dell'editor.
  *
- * Il corpo viaggia come testo (la stessa cosa che il redattore ha davanti) e
- * viene trasformato in blocchi da `textToBlocks`, sia nell'anteprima sia sul
- * server: una funzione sola, nessuna possibilità che anteprima e pagina
- * pubblicata divergano.
+ * Il corpo viaggia già come blocchi, la stessa forma in cui viene salvato.
+ * Qui se ne controlla solo l'involucro — che sia una lista e non sia enorme —
+ * perché la validazione vera è `parseBlock`, che conosce i sei tipi ammessi e
+ * scarta tutto il resto. Due controlli con due responsabilità distinte: la
+ * forma qui, il contenuto là.
  */
 
 const categorySlugs = newsCategories.map((category) => category.slug);
@@ -16,7 +17,7 @@ export const articlePayloadSchema = z.object({
   title: z.string().trim().max(200).default(''),
   slug: z.string().trim().max(90).default(''),
   excerpt: z.string().trim().max(600).default(''),
-  bodyText: z.string().max(60_000).default(''),
+  body: z.array(z.unknown()).max(500).default([]),
   category: z.string().trim().max(60).default(''),
   coverImage: z.string().max(500).nullable().default(null),
   coverAlt: z.string().trim().max(300).default(''),

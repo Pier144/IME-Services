@@ -86,6 +86,19 @@ describe('robustezza', () => {
     expect(docToBlocks(doc)).toEqual([{ type: 'paragraph', text: 'Questo resta.' }]);
   });
 
+  it('scarta i blocchi di testo vuoti', () => {
+    const doc = {
+      type: 'doc',
+      content: [
+        { type: 'paragraph', content: [{ type: 'text', text: 'Contenuto.' }] },
+        // Quello che l'editor tiene in fondo per poterci cliccare dentro.
+        { type: 'paragraph' },
+        { type: 'paragraph', content: [{ type: 'text', text: '   ' }] },
+      ],
+    };
+    expect(docToBlocks(doc)).toEqual([{ type: 'paragraph', text: 'Contenuto.' }]);
+  });
+
   it('un documento che non e un documento non esplode', () => {
     expect(docToBlocks(null)).toEqual([]);
     expect(docToBlocks({ type: 'doc' })).toEqual([]);

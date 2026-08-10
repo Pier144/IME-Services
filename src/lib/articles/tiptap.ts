@@ -219,9 +219,29 @@ function nodeToBlock(node: DocNode): BodyBlock | null {
   }
 }
 
+/**
+ * Un blocco di testo vuoto non è contenuto. L'editor ne tiene sempre uno in
+ * fondo per poterci cliccare dentro, e chi scrive ne lascia altri per aria:
+ * nessuno dei due deve finire nel database. `textToBlocks` faceva lo stesso
+ * scartando i pezzi vuoti.
+ */
+function vuoto(block: BodyBlock): boolean {
+  switch (block.type) {
+    case 'lead':
+    case 'paragraph':
+    case 'heading':
+    case 'quote':
+      return block.text.trim() === '';
+    case 'list':
+      return block.items.every((item) => item.trim() === '');
+    case 'image':
+      return false;
+  }
+}
+
 export function docToBlocks(doc: unknown): BodyBlock[] {
   if (!isRecord(doc) || !Array.isArray(doc.content)) return [];
   return (doc.content as DocNode[])
     .map(nodeToBlock)
-    .filter((block): block is BodyBlock => block !== null);
+    .filter((block): block is BodyBlock => block !== null && !vuoto(block));
 }

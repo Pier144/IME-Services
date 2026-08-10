@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getSession } from '@/lib/auth';
 import { deleteArticle, getById, updateArticle, uniqueSlug } from '@/lib/articles/repository';
-import { textToBlocks } from '@/lib/articles/body';
+import { parseBlock, type BodyBlock } from '@/lib/articles/body';
 import { articlePayloadSchema, isKnownCategory, publishBlockers } from '@/lib/validation/article';
 import { fromDateInputValue } from '@/lib/dates';
 import { slugify } from '@/lib/utils';
@@ -64,7 +64,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     title: data.title,
     slug,
     excerpt: data.excerpt,
-    body: textToBlocks(data.bodyText),
+    // Come nella creazione: `parseBlock` e' l'unica porta d'ingresso.
+    body: data.body.map(parseBlock).filter((block): block is BodyBlock => block !== null),
     category: data.category,
     coverImage: data.coverImage,
     coverAlt: data.coverAlt,

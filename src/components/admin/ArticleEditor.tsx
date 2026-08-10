@@ -1,10 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArticlePreview } from './ArticlePreview';
-import { EditorToolbar } from './EditorToolbar';
+import { RichEditor } from './RichEditor';
 import { Dropzone } from '@/components/forms/Dropzone';
 import { PhotoSlot } from '@/components/media/PhotoSlot';
 import { StatusBadge } from '@/components/ui/Badge';
@@ -14,7 +14,7 @@ import { useI18n } from '@/i18n/provider';
 import { localePath } from '@/i18n/config';
 import { adminRoutes, apiRoutes, routes } from '@/lib/routes';
 import { newsCategories } from '@/data/news-categories';
-import { textToBlocks } from '@/lib/articles/body';
+import type { BodyBlock } from '@/lib/articles/body';
 import { formatRelativeTime } from '@/lib/dates';
 import { publishBlockers } from '@/lib/validation/article';
 import type { StoredFile } from '@/lib/storage/types';
@@ -22,14 +22,13 @@ import { seoLimits, site } from '@/lib/site';
 import { cn, slugify } from '@/lib/utils';
 
 const AUTOSAVE_MS = 30_000;
-const PREVIEW_DEBOUNCE_MS = 200;
 
 export type EditorArticle = {
   id: string;
   title: string;
   slug: string;
   excerpt: string;
-  bodyText: string;
+  body: BodyBlock[];
   category: string;
   coverImage: string | null;
   coverAlt: string;
@@ -45,8 +44,9 @@ export type EditorArticle = {
 /**
  * Editor articolo con anteprima live (mockup 2j).
  *
- * - l'anteprima si ricalcola 200 ms dopo l'ultimo tasto, con gli stessi
- *   componenti della pagina pubblica;
+ * - l'anteprima usa gli stessi componenti della pagina pubblica e gli stessi
+ *   blocchi che l'editor consegna: non c'è nessuna conversione di mezzo che
+ *   possa farle divergere;
  * - la bozza si salva da sola ogni 30 secondi, ma solo se qualcosa è cambiato,
  *   e il timestamp mostrato è quello vero della risposta del server;
  * - PUBBLICA resta spento finché mancano titolo, categoria, copertina o
@@ -56,7 +56,6 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
   const { t } = useI18n();
   const router = useRouter();
   const uid = useId();
-  const textarea = useRef<HTMLTextAreaElement>(null);
 
   const [draft, setDraft] = useState<EditorArticle>(article);
   const [dirty, setDirty] = useState(false);
@@ -68,13 +67,9 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
   const [newTag, setNewTag] = useState('');
   const [slugTouched, setSlugTouched] = useState(Boolean(article.slug && article.title));
 
-  /* --- Anteprima: ricalcolo con attesa di 200 ms ------------------------ */
-  const [previewText, setPreviewText] = useState(article.bodyText);
-  useEffect(() => {
-    const timer = window.setTimeout(() => setPreviewText(draft.bodyText), PREVIEW_DEBOUNCE_MS);
-    return () => window.clearTimeout(timer);
-  }, [draft.bodyText]);
-  const previewBlocks = useMemo(() => textToBlocks(previewText), [previewText]);
+  /* --- Anteprima ----------------------------------------------------------
+     Non serve più attendere né riconvertire: l'editor consegna già i blocchi,
+     che sono la stessa cosa che legge la pagina pubblica. */
 
   /* --- "Salvato N minuti fa" ---------------------------------------------
      L'orologio parte solo dopo l'idratazione: calcolarlo durante il rendering
@@ -102,7 +97,7 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
         title: draft.title,
         slug: draft.slug || slugify(draft.title),
         excerpt: draft.excerpt,
-        bodyText: draft.bodyText,
+        body: draft.body,
         category: draft.category,
         coverImage: draft.coverImage,
         coverAlt: draft.coverAlt,
@@ -413,20 +408,14 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
 
           {/* Testo */}
           <div className="mt-20">
-            <FieldLabel htmlFor={`${uid}-body`} tone="admin">
-              {t.admin.editor.labels.body}
-            </FieldLabel>
-            <div className="border border-field-border">
-              <EditorToolbar textarea={textarea} onChange={(next) => update('bodyText', next)} />
-              <textarea
-                id={`${uid}-body`}
-                ref={textarea}
-                value={draft.bodyText}
-                onChange={(event) => update('bodyText', event.target.value)}
-                placeholder={t.admin.editor.bodyPlaceholder}
-                className="h-200 w-full resize-y bg-field-bg px-16 py-16 font-body text-15 leading-185 font-medium text-ink-2 outline-none placeholder:text-ink-4"
-              />
-            </div>
+            {/* Senza `htmlFor`: l'area di scrittura non è un campo con un id,
+                è un contenitore modificabile. L'etichetta gli arriva da
+                `aria-label`, dentro RichEditor. */}
+            <FieldLabel tone="admin">{t.admin.editor.labels.body}</FieldLabel>
+            {/* `article.body` e non `draft.body`: l'editor tiene il proprio
+                stato e va seminato una volta sola. Rialimentarlo a ogni tasto
+                gli sposterebbe il cursore sotto le dita. */}
+            <RichEditor blocks={article.body} onChange={(next) => update('body', next)} />
           </div>
 
           {/* Tag */}
@@ -520,7 +509,7 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
               coverImage={draft.coverImage}
               coverAlt={draft.coverAlt}
               date={draft.publishedAt ? new Date(`${draft.publishedAt}T12:00:00Z`) : new Date()}
-              blocks={previewBlocks}
+              blocks={draft.body}
               device={device}
               placeholderTitle={t.admin.editor.newArticle}
             />

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getSession } from '@/lib/auth';
 import { createArticle, uniqueSlug } from '@/lib/articles/repository';
-import { textToBlocks } from '@/lib/articles/body';
+import { parseBlock, type BodyBlock } from '@/lib/articles/body';
 import { articlePayloadSchema, isKnownCategory, publishBlockers } from '@/lib/validation/article';
 import { fromDateInputValue } from '@/lib/dates';
 import { slugify } from '@/lib/utils';
@@ -51,7 +51,9 @@ export async function POST(request: Request) {
     title: data.title,
     slug,
     excerpt: data.excerpt,
-    body: textToBlocks(data.bodyText),
+    // `parseBlock` scarta quello che non riconosce: quello che arriva dal
+    // client non finisce mai a database senza essere stato riconosciuto.
+    body: data.body.map(parseBlock).filter((block): block is BodyBlock => block !== null),
     category: data.category,
     coverImage: data.coverImage,
     coverAlt: data.coverAlt,

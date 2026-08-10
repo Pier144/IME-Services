@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import { ArticleEditor } from '@/components/admin/ArticleEditor';
 import { requireSession } from '@/lib/auth';
 import { getById } from '@/lib/articles/repository';
-import { blocksToText } from '@/lib/articles/body';
 import { toDateInputValue } from '@/lib/dates';
 
 /** Area riservata · editor articolo con anteprima live (mockup 2j). */
@@ -20,8 +19,8 @@ export default async function AdminArticlePage({ params }: { params: Promise<{ i
         title: article.title,
         slug: article.slug,
         excerpt: article.excerpt,
-        // Il corpo torna al redattore nella stessa forma in cui l'ha scritto.
-        bodyText: blocksToText(article.body),
+        // I blocchi vanno all'editor come sono: nessuna conversione di mezzo.
+        body: article.body,
         category: article.category,
         coverImage: article.coverImage,
         coverAlt: article.coverAlt,

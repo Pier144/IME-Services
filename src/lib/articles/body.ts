@@ -7,6 +7,11 @@
  *   **grassetto**  ·  *corsivo*  ·  __sottolineato__  ·  [testo](https://…)
  * Non si accetta HTML e non si inietta mai markup grezzo: quello che scrive il
  * redattore viene interpretato e trasformato in nodi React, uno per uno.
+ *
+ * Chi scrive non vede più questi marcatori: l'area di scrittura è un editor
+ * ricco, e `lib/articles/tiptap.ts` traduce nei due sensi. I marcatori restano
+ * però il formato salvato, perché è quello che tiene in piedi la garanzia qui
+ * sopra — nel database non finisce mai markup, solo testo da interpretare.
  */
 
 export type BodyBlock =
@@ -18,8 +23,6 @@ export type BodyBlock =
   | { type: 'image'; label: string; caption?: string; src?: string | null };
 
 export const blockTypes = ['lead', 'paragraph', 'heading', 'quote', 'list', 'image'] as const;
-
-const IMAGE_LINE = /^!\[([^\]]*)\]\(([^)\s]*)(?:\s+"([^"]*)")?\)$/;
 
 /**
  * I marcatori inline ammessi, come sorgente di testo e non come espressione
@@ -138,84 +141,4 @@ export function bodyIncipit(blocks: BodyBlock[], maxChars = 180): string {
   if (!first || (first.type !== 'paragraph' && first.type !== 'lead')) return '';
   const text = stripMarks(first.text).trim();
   return text.length > maxChars ? `${text.slice(0, maxChars).trimEnd()}…` : text;
-}
-
-/**
- * Converte il testo scritto nell'editor in blocchi.
- * Righe vuote separano i paragrafi; i prefissi replicano la barra strumenti.
- *   ## titolo   → titolo di sezione
- *   > citazione → citazione (una riga "-- Attribuzione" subito dopo la lega)
- *   - voce      → elenco
- *   ![etichetta](src "didascalia") → immagine
- */
-export function textToBlocks(input: string, { firstIsLead = true } = {}): BodyBlock[] {
-  const chunks = input
-    .replace(/\r\n/g, '\n')
-    .split(/\n{2,}/)
-    .map((chunk) => chunk.trim())
-    .filter(Boolean);
-
-  const blocks: BodyBlock[] = [];
-
-  for (const chunk of chunks) {
-    const lines = chunk.split('\n').map((line) => line.trim());
-
-    if (lines[0].startsWith('## ')) {
-      blocks.push({ type: 'heading', text: lines[0].slice(3).trim() });
-      continue;
-    }
-
-    if (lines[0].startsWith('> ')) {
-      const quoteLines = lines.filter((line) => line.startsWith('> ')).map((line) => line.slice(2));
-      const attributionLine = lines.find((line) => line.startsWith('-- '));
-      blocks.push({
-        type: 'quote',
-        text: quoteLines.join(' ').trim(),
-        attribution: attributionLine?.replace(/^--\s*/, '').trim() || undefined,
-      });
-      continue;
-    }
-
-    if (lines.every((line) => line.startsWith('- '))) {
-      blocks.push({ type: 'list', items: lines.map((line) => line.slice(2).trim()) });
-      continue;
-    }
-
-    const image = lines[0].match(IMAGE_LINE);
-    if (image) {
-      blocks.push({
-        type: 'image',
-        label: image[1] || 'FOTO: da definire',
-        src: image[2] || null,
-        caption: image[3] || undefined,
-      });
-      continue;
-    }
-
-    const isFirstText =
-      firstIsLead && !blocks.some((block) => block.type === 'lead' || block.type === 'paragraph');
-    blocks.push({ type: isFirstText ? 'lead' : 'paragraph', text: chunk.replace(/\n/g, ' ') });
-  }
-
-  return blocks;
-}
-
-/** Il percorso inverso: dai blocchi al testo dell'area di scrittura. */
-export function blocksToText(blocks: BodyBlock[]): string {
-  return blocks
-    .map((block) => {
-      switch (block.type) {
-        case 'heading':
-          return `## ${block.text}`;
-        case 'quote':
-          return block.attribution ? `> ${block.text}\n-- ${block.attribution}` : `> ${block.text}`;
-        case 'list':
-          return block.items.map((item) => `- ${item}`).join('\n');
-        case 'image':
-          return `![${block.label}](${block.src ?? ''}${block.caption ? ` "${block.caption}"` : ''})`;
-        default:
-          return block.text;
-      }
-    })
-    .join('\n\n');
 }
