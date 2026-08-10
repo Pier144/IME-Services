@@ -156,8 +156,10 @@ export function SettingsPanel({
       </div>
 
       {/* --- Data e in evidenza -------------------------------------------- */}
-      <div className="mt-16 flex items-end gap-12">
-        <div className="min-w-0 flex-1">
+      {/* Se le due etichette e i loro «?» non ci stanno in riga, «in evidenza»
+          va a capo invece di schiacciare il campo della data. */}
+      <div className="mt-16 flex flex-wrap items-end gap-12">
+        <div className="min-w-140 flex-1">
           <PanelLabel htmlFor={`${uid}-date`} hint={t.admin.editor.help.date}>
             {t.admin.editor.labels.date}
           </PanelLabel>
@@ -252,13 +254,13 @@ export function SettingsPanel({
 
       {/* --- SEO ------------------------------------------------------------ */}
       <div className="mt-22 border-t border-hairline-strong pt-18">
-        <div className="relative">
+        <div className="relative flex items-baseline gap-8">
           <p className="font-body text-10-5 font-medium tracking-20 text-ink-4">
             {t.admin.editor.seo}
           </p>
-          <span className="absolute top-0 right-0">
-            <HelpHint label={t.admin.editor.seo}>{t.admin.editor.help.seo}</HelpHint>
-          </span>
+          <HelpHint label={t.admin.editor.seo} align="stretch">
+            {t.admin.editor.help.seo}
+          </HelpHint>
         </div>
 
         <SeoCounter
@@ -316,12 +318,14 @@ function PanelLabel({
 
   if (!hint) return label;
 
+  // Il «?» in riga e non ancorato al bordo destro: in una colonna stretta come
+  // «IN EVIDENZA» finiva sopra l'etichetta e usciva dal pannello.
   return (
-    <div className="relative">
+    <div className="relative flex items-baseline gap-8">
       {label}
-      <span className="absolute top-0 right-0">
-        <HelpHint label={String(children)}>{hint}</HelpHint>
-      </span>
+      <HelpHint label={String(children)} align="stretch">
+        {hint}
+      </HelpHint>
     </div>
   );
 }

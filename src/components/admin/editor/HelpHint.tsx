@@ -22,7 +22,13 @@ export function HelpHint({
   /** Il campo che si sta spiegando: entra nel nome accessibile del pulsante. */
   label: string;
   placement?: 'below' | 'above';
-  align?: 'left' | 'right';
+  /**
+   * `stretch` fa larga la spiegazione quanto la riga che la contiene, invece
+   * di darle una larghezza sua. Serve nel pannello da 320px, dove un riquadro
+   * a misura fissa ancorato al «?» uscirebbe da un lato o dall'altro a seconda
+   * di dove capita l'etichetta. Chi la usa deve mettere `relative` sulla riga.
+   */
+  align?: 'left' | 'right' | 'stretch';
   children: React.ReactNode;
 }) {
   const { t } = useI18n();
@@ -53,8 +59,13 @@ export function HelpHint({
     };
   }, [open]);
 
+  const stretch = align === 'stretch';
+
   return (
-    <span ref={container} className="relative inline-block leading-100">
+    <span
+      ref={container}
+      className={cn('inline-block leading-100', !stretch && 'relative')}
+    >
       <button
         ref={trigger}
         type="button"
@@ -76,12 +87,17 @@ export function HelpHint({
           id={id}
           role="note"
           className={cn(
-            'absolute z-50 block w-260 border border-hairline-strong bg-panel-ime px-14 py-12',
+            'absolute z-50 block border border-hairline-strong bg-panel-ime px-14 py-12',
             // Le etichette attorno sono maiuscole e spaziate: la spiegazione no,
             // altrimenti diventa illeggibile proprio dove serve leggere.
             'font-body text-12-5 leading-170 font-normal tracking-0 text-ink-2 normal-case',
-            placement === 'below' ? 'top-20' : 'bottom-20',
-            align === 'right' ? 'right-0' : 'left-0',
+            stretch
+              ? 'top-full right-0 left-0 mt-8'
+              : cn(
+                  'w-260',
+                  placement === 'below' ? 'top-20' : 'bottom-20',
+                  align === 'right' ? 'right-0' : 'left-0',
+                ),
           )}
         >
           {children}
