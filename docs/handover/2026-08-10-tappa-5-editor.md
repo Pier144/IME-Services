@@ -1,14 +1,19 @@
 # Handover — l'area riservata dopo la Tappa 5
 
-**Data:** 10 agosto 2026 · **Ramo:** `redesign-admin` · **Tappe fatte:** 1, 2, 3, 4, 5 su 5
+**Data:** 10 agosto 2026 · **Ramo:** `main` · **Tappe fatte:** 1, 2, 3, 4, 5 su 5
 
 Questo documento serve a chi riprende il lavoro in una sessione nuova, senza il contesto della
 precedente. La specifica resta un'altra: sta in
 [`design/handoff-admin/README.md`](../../design/handoff-admin/README.md). Qui c'è solo quello che
 quella specifica non può sapere.
 
-**Le cinque tappe del ridisegno sono chiuse.** Il ramo non è però pronto per `main`: manca la
-verifica a video, che richiede una persona con una sessione vera (vedi «Cosa resta»).
+**Le cinque tappe del ridisegno sono chiuse e stanno su `main`.** Il ramo di lavoro
+`redesign-admin` è stato riassorbito in fast-forward e cancellato: la sua storia è quella di `main`.
+
+**Attenzione a una cosa**: il ridisegno è arrivato su `main` *prima* della prova a video, che
+richiede una persona con una sessione vera. È stata una scelta consapevole — il sito non è ancora
+pubblicato su un dominio vero — ma resta il primo lavoro da fare, e finché non è fatto `main` non è
+un ramo su cui contare. Vedi «Cosa resta».
 
 ---
 
@@ -51,9 +56,12 @@ problema.
 R2 funziona **in locale**: verificato con un caricamento vero attraverso `/api/upload`, file salvato
 nel bucket, riletto con link firmato, e `/api/media/…` che risponde 404 a chi non ha sessione.
 
-**Su Netlify le variabili `S3_*` non sono ancora impostate.** Finché non lo sono, in produzione ogni
+**Su Netlify le variabili dello storage non sono ancora impostate** — `STORAGE_DRIVER` va portato a
+`"s3"`, e servono `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`,
+`S3_SECRET_ACCESS_KEY` (l'elenco commentato sta in `.env.example`). Finché non ci sono, ogni
 caricamento fallisce — comprese le foto nel corpo dell'articolo, che nella Tappa 5 sono diventate
-una funzione centrale.
+una funzione centrale. `STORAGE_DRIVER` da solo non basta e viceversa: il driver locale scrive su
+disco, e sull'hosting il disco è di sola lettura.
 
 Attenzione all'endpoint: il bucket è nella **giurisdizione EU**, quindi l'indirizzo contiene `.eu.`
 (`https://<account>.eu.r2.cloudflarestorage.com`). Sull'endpoint normale R2 risponde `AccessDenied`
@@ -170,8 +178,8 @@ Sono già state discusse e approvate: non rimetterle in discussione senza motivo
 
 | | |
 | --- | --- |
-| Repository | `Pier144/IME-Services` |
-| Produzione | <https://imeservice.netlify.app> — segue `main`, **non** `redesign-admin` |
+| Repository | `Pier144/IME-Services` — due rami: `main` e `editor-ricco` (memoria, vedi §1) |
+| Anteprima | <https://imeservice.netlify.app> — segue `main`. Non è ancora il sito pubblicato: il dominio vero non punta qui |
 | Database | Neon, progetto `Ime-Service`, `steep-wildflower-26907178`, Francoforte, 14 articoli |
 | Storage | Cloudflare R2, bucket `allegati`, giurisdizione EU, privato |
 | MCP Neon | configurato in `.mcp.json`, **sola lettura**, vincolato al progetto |
@@ -192,14 +200,15 @@ notifica.
 
 ## Cosa resta
 
-1. **La prova a video dell'editor.** È la cosa che manca per poter portare il ramo su `main`. Le
-   pagine dell'area riservata richiedono una sessione, e chi lavora in una sessione automatica non
-   può inserire password nei form: Invio, Backspace, il fuoco che salta di blocco, il «+», il
+1. **La prova a video dell'editor.** È il primo lavoro, e il codice è già su `main`. Le pagine
+   dell'area riservata richiedono una sessione, e chi lavora in una sessione automatica non può
+   inserire password nei form: Invio, Backspace, il fuoco che salta di blocco, il «+», il
    trascinamento della foto e la barra sulla selezione **li deve provare una persona**. I test
    coprono la logica sotto, non il rendering.
-2. **Le variabili `S3_*` su Netlify.** Senza, in produzione le foto non si caricano.
-3. **Il passaggio su `main`**, quando 1 e 2 sono a posto.
-4. **Le sezioni ancora inesistenti** (Catalogo soggetti, Preventivi, Candidature, Impostazioni):
+2. **Le cinque variabili dello storage su Netlify** — `STORAGE_DRIVER="s3"`, `S3_ENDPOINT`,
+   `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`. Senza, sull'anteprima
+   nessuna foto si carica: né le copertine, né quelle nel corpo dell'articolo.
+3. **Le sezioni ancora inesistenti** (Catalogo soggetti, Preventivi, Candidature, Impostazioni):
    sono in barra laterale nel disegno ma le pagine non ci sono, e la barra oggi mostra solo
    `CONTENUTI · News`.
 
