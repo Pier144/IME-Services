@@ -49,3 +49,11 @@ yarn-error.log*
 # i collegamenti sotto .claude/skills/ sono symlink a percorsi assoluti
 # di questa macchina e vanno rigenerati con `npx skills add`
 /.claude/skills/
+
+# Foto dei prototipi di design: sono copie byte per byte di public/foto/,
+# servono solo perche' i .dc.html si aprano nel browser. Per ricrearle:
+#   cp public/foto/*.jpg design/handoff-admin/foto/
+/design/handoff-admin/foto/
+
+# Cartella di consegna dell'handoff: i file sono gia' in design/handoff-admin/
+/Ricreazione pagina admin/

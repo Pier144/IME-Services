@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#0a0e1c; color:#e9ecf6; font-family:'Archivo',system-ui,sans-serif; }
+  a { color:#f2c66d; text-decoration:none; }
+  a:hover { color:#ffd98a; }
+  textarea, input, select, button { font:inherit; color:inherit; border-radius:0; }
+  textarea { width:100%; box-sizing:border-box; display:block; border:0; background:transparent; resize:none; overflow:hidden; outline:none; padding:0; margin:0; }
+  ::placeholder { color:#5f6a86; opacity:1; }
+  :focus-visible { outline:2px solid #f2c66d; outline-offset:2px; }
+  ::selection { background:#f2c66d; color:#1a1405; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; display:flex; flex-direction:column; background:#0a0e1c;">
+
+  <header style="display:flex; align-items:center; justify-content:space-between; gap:14px; border-bottom:1px solid rgba(255,255,255,0.08); background:#080b16; padding:14px 26px;">
+    <div style="display:flex; align-items:center; gap:14px; font-size:13px; min-width:0;">
+      <a href="#" style="color:#8f9ab5; flex:none;">← Articoli</a>
+      <span style="display:block; width:1px; height:16px; background:rgba(255,255,255,0.14); flex:none;"></span>
+      <span style="max-width:420px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#c3cade;">{{ headerTitle }}</span>
+      <span style="display:inline-flex; align-items:center; border-radius:999px; padding:4px 10px; font-size:11px; letter-spacing:0.08em; border:1px solid #f2c66d; color:#f2c66d; flex:none;">BOZZA</span>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:12px; font-size:12.5px; letter-spacing:0.08em; flex:none;">
+      <span style="color:#5f6a86;">{{ saveLabel }}</span>
+      <button type="button" onClick="{{ togglePanel }}" style="border:1px solid rgba(255,255,255,0.2); background:transparent; padding:9px 18px; color:#e9ecf6; font-weight:500; cursor:pointer; white-space:nowrap;" style-hover="border-color:rgba(255,255,255,0.4);">Impostazioni</button>
+      <button type="button" onClick="{{ saveNow }}" style="border:1px solid rgba(255,255,255,0.2); background:transparent; padding:9px 18px; color:#e9ecf6; font-weight:500; cursor:pointer; white-space:nowrap;" style-hover="border-color:rgba(255,255,255,0.4);">Salva bozza</button>
+      <button type="button" onClick="{{ tryPublish }}" style="border:0; background:#f2c66d; padding:9px 18px; color:#1a1405; font-weight:600; cursor:pointer;" style-hover="filter:brightness(0.94);">PUBBLICA</button>
+    </div>
+  </header>
+
+  <sc-if value="{{ publishNoticeOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="border-bottom:1px solid rgba(242,198,109,0.4); background:rgba(242,198,109,0.08); padding:12px 26px; display:flex; align-items:center; gap:14px; font-size:13px; font-weight:500; color:#f2c66d;">
+      <span>{{ publishNotice }}</span>
+      <button type="button" onClick="{{ dismissNotice }}" style="margin-left:auto; border:0; background:transparent; color:#8f9ab5; cursor:pointer; font-size:13px;">✕</button>
+    </div>
+  </sc-if>
+
+  <div style="display:flex; flex:1; align-items:stretch;">
+
+    <div style="flex:1; min-width:0; display:flex; justify-content:center; padding:64px 124px 90px;">
+      <div style="width:100%; max-width:740px;">
+
+        <div style="position:relative;">
+          <span style="position:absolute; left:-104px; top:12px; font-size:9px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">TITOLO</span>
+          <textarea rows="1" placeholder="Titolo dell’articolo" value="{{ title }}" onChange="{{ onTitle }}" ref="{{ titleRef }}" style="font-size:42px; font-weight:500; line-height:1.12; color:#e9ecf6;"></textarea>
+        </div>
+
+        <div style="position:relative; margin-top:26px;">
+          <span style="position:absolute; left:-104px; top:6px; font-size:9px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">SOMMARIO</span>
+          <textarea rows="1" placeholder="Due righe che raccontano l’articolo. Compaiono negli elenchi e nelle anteprime condivise." value="{{ excerpt }}" onChange="{{ onExcerpt }}" ref="{{ excerptRef }}" style="font-size:20px; line-height:1.65; color:#e9ecf6;"></textarea>
+        </div>
+
+        <div style="margin-top:34px; height:1px; background:rgba(255,255,255,0.08);"></div>
+
+        <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="1">
+          <div style="position:relative; margin-top:26px;">
+
+            <span data-menu="1" onMouseDown="{{ b.toggleMenu }}" title="Aggiungi un blocco qui sotto" style="position:absolute; left:-46px; top:0; display:flex; width:26px; height:26px; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.16); color:#8f9ab5; font-size:15px; cursor:pointer; user-select:none;" style-hover="border-color:#f2c66d; color:#f2c66d;">+</span>
+
+            <sc-if value="{{ b.menuOpen }}" hint-placeholder-val="{{ false }}">
+              <div data-menu="1" style="position:absolute; left:-46px; top:34px; z-index:9; width:300px; border:1px solid rgba(255,255,255,0.14); background:#10162a; padding:8px 0;">
+                <p style="margin:0; padding:8px 18px 10px; font-size:9px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">AGGIUNGI</p>
+                <span onMouseDown="{{ b.addParagraph }}" style="display:block; padding:10px 18px; cursor:pointer;" style-hover="background:rgba(242,198,109,0.08);">
+                  <span style="display:block; font-size:14px; font-weight:500; color:#e9ecf6;">Testo</span>
+                  <span style="display:block; margin-top:2px; font-size:12px; color:#5f6a86;">Un paragrafo normale</span>
+                </span>
+                <span onMouseDown="{{ b.addHeading }}" style="display:block; padding:10px 18px; cursor:pointer;" style-hover="background:rgba(242,198,109,0.08);">
+                  <span style="display:block; font-size:14px; font-weight:500; color:#e9ecf6;">Titolo di sezione</span>
+                  <span style="display:block; margin-top:2px; font-size:12px; color:#5f6a86;">Divide l’articolo in parti</span>
+                </span>
+                <span onMouseDown="{{ b.addQuote }}" style="display:block; padding:10px 18px; cursor:pointer;" style-hover="background:rgba(242,198,109,0.08);">
+                  <span style="display:block; font-size:14px; font-weight:500; color:#e9ecf6;">Citazione</span>
+                  <span style="display:block; margin-top:2px; font-size:12px; color:#5f6a86;">Con attribuzione, filetto oro</span>
+                </span>
+                <span onMouseDown="{{ b.addList }}" style="display:block; padding:10px 18px; cursor:pointer;" style-hover="background:rgba(242,198,109,0.08);">
+                  <span style="display:block; font-size:14px; font-weight:500; color:#e9ecf6;">Elenco puntato</span>
+                  <span style="display:block; margin-top:2px; font-size:12px; color:#5f6a86;">Trattini oro, una voce per riga</span>
+                </span>
+                <span onMouseDown="{{ b.addImage }}" style="display:block; padding:10px 18px; cursor:pointer;" style-hover="background:rgba(242,198,109,0.08);">
+                  <span style="display:block; font-size:14px; font-weight:500; color:#e9ecf6;">Foto</span>
+                  <span style="display:block; margin-top:2px; font-size:12px; color:#5f6a86;">Immagine a tutta colonna con didascalia</span>
+                </span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ b.isParagraph }}" hint-placeholder-val="{{ true }}">
+              <textarea rows="1" placeholder="Scrivi. Il «+» qui a sinistra aggiunge un titolo di sezione, una citazione, un elenco o una foto." value="{{ b.text }}" onChange="{{ b.onText }}" onKeyDown="{{ b.onKey }}" ref="{{ b.ref }}" style="font-size:17px; line-height:1.85; color:#c3cade;"></textarea>
+            </sc-if>
+
+            <sc-if value="{{ b.isHeading }}" hint-placeholder-val="{{ false }}">
+              <textarea rows="1" placeholder="Titolo di sezione" value="{{ b.text }}" onChange="{{ b.onText }}" onKeyDown="{{ b.onKey }}" ref="{{ b.ref }}" style="margin-top:14px; font-size:28px; font-weight:500; line-height:1.22; color:#e9ecf6;"></textarea>
+            </sc-if>
+
+            <sc-if value="{{ b.isQuote }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:8px 0; border-left:2px solid #f2c66d; padding:6px 0 6px 26px;">
+                <textarea rows="1" placeholder="La frase da citare" value="{{ b.text }}" onChange="{{ b.onText }}" onKeyDown="{{ b.onKey }}" ref="{{ b.ref }}" style="font-size:24px; font-weight:500; line-height:1.5; color:#ffffff;"></textarea>
+                <div style="display:flex; align-items:center; gap:10px; margin-top:14px;">
+                  <span style="display:block; height:1px; width:16px; flex:none; background:#8f9ab5;"></span>
+                  <input placeholder="Chi l’ha detta" value="{{ b.attribution }}" onChange="{{ b.onAttr }}" style="flex:1; border:0; background:transparent; outline:none; padding:0; font-size:12px; letter-spacing:0.18em; color:#8f9ab5; text-transform:uppercase;">
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ b.isList }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <sc-for list="{{ b.items }}" as="it" hint-placeholder-count="1">
+                  <div style="display:flex; align-items:baseline; gap:12px;">
+                    <span style="position:relative; top:-5px; display:block; height:1px; width:12px; flex:none; background:#f2c66d;"></span>
+                    <input placeholder="Una voce dell’elenco" value="{{ it.text }}" onChange="{{ it.onText }}" onKeyDown="{{ it.onKey }}" ref="{{ it.ref }}" style="flex:1; border:0; background:transparent; outline:none; padding:0; font-size:17px; line-height:1.7; color:#c3cade;">
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ b.isImage }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <sc-if value="{{ b.hasSrc }}" hint-placeholder-val="{{ false }}">
+                  <img src="{{ b.src }}" alt="" style="display:block; width:100%; height:340px; object-fit:cover;">
+                </sc-if>
+                <sc-if value="{{ b.noSrc }}" hint-placeholder-val="{{ true }}">
+                  <label onDragOver="{{ b.onDragOver }}" onDrop="{{ b.onDrop }}" style="display:block; border:1px dashed rgba(242,198,109,0.55); background:rgba(242,198,109,0.05); padding:34px 20px; text-align:center; cursor:pointer;">
+                    <span style="display:block; font-size:24px; font-weight:500; color:#f2c66d;">＋</span>
+                    <span style="display:block; margin-top:6px; font-size:14px; font-weight:500; color:#e9ecf6;">Trascina qui la foto oppure <span style="color:#f2c66d; text-decoration:underline; text-underline-offset:2px;">sfoglia</span></span>
+                    <span style="display:block; margin-top:4px; font-size:13px; font-weight:500; color:#8f9ab5;">JPG, PNG, WEBP · massimo 8 MB</span>
+                    <input type="file" accept="image/*" onChange="{{ b.onFile }}" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
+                  </label>
+                </sc-if>
+                <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+                  <input placeholder="Didascalia (facoltativa)" value="{{ b.caption }}" onChange="{{ b.onCaption }}" style="width:100%; box-sizing:border-box; border:0; border-bottom:1px solid rgba(255,255,255,0.16); background:transparent; padding:8px 0; font-size:13px; color:#c3cade; outline:none;">
+                  <input placeholder="Descrizione per chi non vede la foto" value="{{ b.alt }}" onChange="{{ b.onAlt }}" style="width:100%; box-sizing:border-box; border:0; border-bottom:1px solid rgba(255,255,255,0.16); background:transparent; padding:8px 0; font-size:13px; color:#c3cade; outline:none;">
+                </div>
+              </div>
+            </sc-if>
+
+          </div>
+        </sc-for>
+
+      </div>
+    </div>
+
+    <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+      <aside style="flex:none; width:320px; box-sizing:border-box; background:#080b16; border-left:1px solid rgba(255,255,255,0.08); padding:22px 24px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; font-size:10.5px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">
+          <span>IMPOSTAZIONI</span>
+          <button type="button" onClick="{{ togglePanel }}" style="border:0; background:transparent; color:#8f9ab5; cursor:pointer; font-size:12px;">✕</button>
+        </div>
+
+        <div style="margin-top:20px;">
+          <p style="margin:0 0 8px; font-size:10.5px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">COPERTINA</p>
+          <sc-if value="{{ hasCover }}" hint-placeholder-val="{{ false }}">
+            <img src="{{ cover }}" alt="" style="display:block; width:100%; height:130px; object-fit:cover;">
+          </sc-if>
+          <sc-if value="{{ noCover }}" hint-placeholder-val="{{ true }}">
+            <label onDragOver="{{ onCoverDragOver }}" onDrop="{{ onCoverDrop }}" style="display:flex; align-items:center; justify-content:center; height:130px; border:1px dashed rgba(242,198,109,0.55); background-color:#131a30; background-image:repeating-linear-gradient(45deg, rgba(255,255,255,0.045) 0 10px, transparent 10px 20px); cursor:pointer;">
+              <span style="padding:4px 9px; border-radius:4px; background:rgba(8,12,24,0.72); color:#93a0c2; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10px; font-weight:500; letter-spacing:0.04em;">carica la copertina</span>
+              <input type="file" accept="image/*" onChange="{{ onCoverFile }}" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
+            </label>
+          </sc-if>
+        </div>
+
+        <div style="margin-top:22px;">
+          <p style="margin:0 0 8px; font-size:10.5px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">CATEGORIA</p>
+          <div style="position:relative;">
+            <select value="{{ category }}" onChange="{{ onCategory }}" style="width:100%; box-sizing:border-box; appearance:none; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.03); padding:11px 34px 11px 14px; font-size:14px; font-weight:500; color:#c3cade; outline:none; cursor:pointer;">
+              <option value="">Scegli…</option>
+              <option value="natale-in-citta">Natale in città</option>
+              <option value="collezioni">Collezioni</option>
+              <option value="progetti">Progetti</option>
+              <option value="la-fabbrica">La Fabbrica</option>
+              <option value="azienda">Azienda</option>
+            </select>
+            <span style="position:absolute; top:50%; right:14px; transform:translateY(-50%); font-size:10px; color:#8f9ab5; pointer-events:none;">▼</span>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; display:flex; gap:12px; align-items:flex-end;">
+          <div style="flex:1;">
+            <p style="margin:0 0 8px; font-size:10.5px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">DATA</p>
+            <input type="date" value="{{ date }}" onChange="{{ onDate }}" style="width:100%; box-sizing:border-box; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.03); padding:11px 14px; font-size:14px; font-weight:500; color:#c3cade; outline:none;">
+          </div>
+          <div style="flex:none;">
+            <p style="margin:0 0 8px; font-size:10.5px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">IN EVIDENZA</p>
+            <div style="display:flex; align-items:center; gap:9px; padding:9px 0;">
+              <button type="button" role="switch" onClick="{{ toggleFeatured }}" style="position:relative; display:block; height:19px; width:34px; flex:none; border:0; border-radius:999px; cursor:pointer; padding:0; background:rgba(255,255,255,0.16);">
+                <sc-if value="{{ featured }}" hint-placeholder-val="{{ false }}">
+                  <span style="position:absolute; inset:0; border-radius:999px; background:#f2c66d;"><span style="position:absolute; top:2px; left:17px; width:15px; height:15px; border-radius:50%; background:#1a1405;"></span></span>
+                </sc-if>
+                <sc-if value="{{ notFeatured }}" hint-placeholder-val="{{ true }}">
+                  <span style="position:absolute; top:2px; left:2px; width:15px; height:15px; border-radius:50%; background:#8f9ab5;"></span>
+                </sc-if>
+              </button>
+              <span style="font-size:13.5px; font-weight:500; color:#c3cade;">{{ featuredLabel }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:22px;">
+          <p style="margin:0 0 8px; font-size:10.5px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">TAG</p>
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:12.5px; font-weight:500;">
+            <sc-for list="{{ tags }}" as="tag" hint-placeholder-count="0">
+              <span style="display:inline-flex; align-items:center; gap:8px; border-radius:999px; border:1px solid rgba(255,255,255,0.16); padding:6px 12px; color:#c3cade;">{{ tag.text }}<span onClick="{{ tag.remove }}" style="color:#8f9ab5; cursor:pointer;">✕</span></span>
+            </sc-for>
+            <input placeholder="+ aggiungi tag" value="{{ tagDraft }}" onChange="{{ onTagDraft }}" onKeyDown="{{ onTagKey }}" style="width:130px; border:0; background:transparent; padding:6px 0; color:#c3cade; outline:none;">
+          </div>
+        </div>
+
+        <div style="margin-top:22px; border-top:1px solid rgba(255,255,255,0.1); padding-top:18px;">
+          <p style="margin:0; font-size:10.5px; font-weight:500; letter-spacing:0.2em; color:#5f6a86;">SEO</p>
+          <div style="margin-top:12px; font-size:13px; line-height:1.7; font-weight:500; color:#8f9ab5;">
+            Titolo pagina · {{ seoTitleCount }}
+            <span style="display:block; margin-top:6px; height:4px; background:rgba(255,255,255,0.1);"><span style="display:block; height:100%; background:#f2c66d; width:{{ seoTitleWidth }};"></span></span>
+          </div>
+          <div style="margin-top:12px; font-size:13px; line-height:1.7; font-weight:500; color:#8f9ab5;">
+            Descrizione · {{ seoDescCount }}
+            <span style="display:block; margin-top:6px; height:4px; background:rgba(255,255,255,0.1);"><span style="display:block; height:100%; background:#f2c66d; width:{{ seoDescWidth }};"></span></span>
+          </div>
+          <p style="margin:12px 0 0; font-size:13px; line-height:1.7; font-weight:500; color:#8f9ab5;">
+            URL<br>
+            <span style="color:#c3cade;">www.ime-service.it/news/<span style="color:#f2c66d;">{{ slug }}</span></span>
+          </p>
+        </div>
+      </aside>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ showChecklist }}" hint-placeholder-val="{{ true }}">
+    <div style="border-top:1px solid rgba(255,255,255,0.08); background:#080b16; padding:14px 26px; display:flex; align-items:center; gap:22px; font-size:12.5px; font-weight:500; color:#5f6a86;">
+      <sc-for list="{{ checks }}" as="c" hint-placeholder-count="4">
+        <span style="display:flex; align-items:center; gap:9px;">
+          <sc-if value="{{ c.done }}" hint-placeholder-val="{{ false }}">
+            <span style="display:flex; width:14px; height:14px; align-items:center; justify-content:center; border-radius:50%; background:#f2c66d; color:#1a1405; font-size:9px; font-weight:700;">✓</span>
+          </sc-if>
+          <sc-if value="{{ c.pending }}" hint-placeholder-val="{{ true }}">
+            <span style="display:block; width:14px; height:14px; border-radius:50%; border:1px solid rgba(255,255,255,0.16);"></span>
+          </sc-if>
+          {{ c.label }}
+        </span>
+      </sc-for>
+      <span style="margin-left:auto; color:#5f6a86;">{{ countLabel }}</span>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;panelOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;},&quot;showChecklist&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;},&quot;seedContent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;vuoto&quot;,&quot;esempio&quot;],&quot;default&quot;:&quot;vuoto&quot;,&quot;tsType&quot;:&quot;'vuoto' | 'esempio'&quot;,&quot;section&quot;:&quot;Comportamento&quot;}}">
+const STORE = 'ime-editor-3a-v1';
+
+const SEED = {
+  title: '',
+  excerpt: '',
+  blocks: [{ id: 1, type: 'paragraph', text: '', attribution: '' }],
+  category: '',
+  date: '',
+  featured: false,
+  tags: [],
+  cover: null,
+};
+
+const SEED_ESEMPIO = {
+  title: 'Natale 2026: si progetta già in primavera',
+  excerpt: 'Le richieste dei Comuni per la prossima stagione si raccolgono da marzo: chi arriva in autunno trova la produzione già piena.',
+  blocks: [
+    { id: 1, type: 'paragraph', text: 'In officina la stagione seguente comincia mentre quella in corso è ancora accesa. I disegni delle nuove sospensioni si chiudono entro aprile, la produzione parte a maggio e i collaudi si fanno d’estate, con le giornate lunghe.', attribution: '' },
+    { id: 2, type: 'heading', text: 'Come si prenota una piazza', attribution: '' },
+    { id: 3, type: 'list', items: ['Sopralluogo e misure entro marzo', 'Proposta grafica e preventivo in aprile', 'Produzione da maggio a settembre'] },
+    { id: 4, type: 'paragraph', text: 'È il motivo per cui conviene parlarne presto: a settembre si può ancora aggiungere un tratto di via, non un soggetto nuovo.', attribution: '' },
+  ],
+  category: '',
+  date: '',
+  featured: false,
+  tags: ['Progettazione'],
+  cover: null,
+};
+
+function slugify(value) {
+  return (value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const seed = (props && props.seedContent) === 'esempio' ? SEED_ESEMPIO : SEED;
+    this.uid = 100;
+    this.pendingFocus = null;
+    this.refsMap = {};
+    this.state = {
+      ...JSON.parse(JSON.stringify(seed)),
+      tagDraft: '',
+      panelOpen: false,
+      menuIndex: null,
+      savedAt: null,
+      dirty: false,
+      publishNotice: '',
+      now: Date.now(),
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ panelOpen: this.props.panelOpen === true });
+    try {
+      const raw = window.localStorage.getItem(STORE);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved && Array.isArray(saved.blocks) && saved.blocks.length) {
+          this.uid = saved.blocks.reduce((max, b) => Math.max(max, b.id || 0), 100);
+          this.setState({
+            title: saved.title || '',
+            excerpt: saved.excerpt || '',
+            blocks: saved.blocks,
+            category: saved.category || '',
+            date: saved.date || '',
+            featured: !!saved.featured,
+            tags: saved.tags || [],
+            cover: saved.cover || null,
+            savedAt: saved.savedAt || null,
+          });
+        }
+      }
+    } catch (e) { /* storage non disponibile */ }
+
+    this._clock = window.setInterval(() => this.setState({ now: Date.now() }), 20000);
+    this._away = (event) => {
+      if (this.state.menuIndex === null) return;
+      if (event.target && event.target.closest && event.target.closest('[data-menu]')) return;
+      this.setState({ menuIndex: null });
+    };
+    document.addEventListener('mousedown', this._away);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this._clock);
+    window.clearTimeout(this._save);
+    document.removeEventListener('mousedown', this._away);
+  }
+
+  /* --- salvataggio ---------------------------------------------------- */
+  touch(patch) {
+    this.setState({ ...patch, dirty: true }, () => {
+      window.clearTimeout(this._save);
+      this._save = window.setTimeout(() => this.save(), 1200);
+    });
+  }
+
+  save() {
+    const savedAt = new Date().toISOString();
+    this.setState({ dirty: false, savedAt }, () => {
+      try {
+        const { title, excerpt, blocks, category, date, featured, tags, cover } = this.state;
+        window.localStorage.setItem(
+          STORE,
+          JSON.stringify({ title, excerpt, blocks, category, date, featured, tags, cover, savedAt }),
+        );
+      } catch (e) { /* niente */ }
+    });
+  }
+
+  saveLabel() {
+    if (this.state.dirty) return 'Modifiche non salvate';
+    if (!this.state.savedAt) return 'Non ancora salvato';
+    const seconds = Math.max(0, Math.round((this.state.now - new Date(this.state.savedAt).getTime()) / 1000));
+    if (seconds < 60) return 'Salvato ora';
+    const minutes = Math.round(seconds / 60);
+    if (minutes === 1) return 'Salvato un minuto fa';
+    if (minutes < 60) return `Salvato ${minutes} minuti fa`;
+    const hours = Math.round(minutes / 60);
+    return hours === 1 ? 'Salvato un’ora fa' : `Salvato ${hours} ore fa`;
+  }
+
+  /* --- misure dei campi ------------------------------------------------ */
+  grow(el) {
+    if (!el || el.tagName !== 'TEXTAREA') return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }
+
+  mount(el, key) {
+    if (!el) return;
+    this.grow(el);
+    if (this.pendingFocus === key) {
+      this.pendingFocus = null;
+      el.focus();
+    }
+  }
+
+  /* --- blocchi --------------------------------------------------------- */
+  setBlock(index, patch, el) {
+    const blocks = this.state.blocks.map((b, i) => (i === index ? { ...b, ...patch } : b));
+    this.touch({ blocks });
+    this.grow(el);
+  }
+
+  insert(afterIndex, type) {
+    const id = ++this.uid;
+    const created =
+      type === 'list'
+        ? { id, type, items: [''] }
+        : type === 'image'
+          ? { id, type, src: null, caption: '', alt: '' }
+          : { id, type, text: '', attribution: '' };
+    const blocks = this.state.blocks.slice();
+    blocks.splice(afterIndex + 1, 0, created);
+    this.pendingFocus = type === 'list' ? `${id}:0` : `${id}`;
+    this.touch({ blocks, menuIndex: null });
+  }
+
+  removeAt(index) {
+    if (this.state.blocks.length <= 1) return;
+    const blocks = this.state.blocks.slice();
+    blocks.splice(index, 1);
+    const previous = blocks[Math.max(0, index - 1)];
+    if (previous) this.pendingFocus = previous.type === 'list' ? `${previous.id}:0` : `${previous.id}`;
+    this.touch({ blocks });
+  }
+
+  onKey(event, index) {
+    const block = this.state.blocks[index];
+    if (event.key === 'Enter' && !event.shiftKey && (block.type === 'paragraph' || block.type === 'heading')) {
+      event.preventDefault();
+      this.insert(index, 'paragraph');
+      return;
+    }
+    if (event.key === 'Backspace' && !event.target.value) {
+      event.preventDefault();
+      this.removeAt(index);
+    }
+  }
+
+  setItem(index, itemIndex, value) {
+    const blocks = this.state.blocks.map((b, i) => {
+      if (i !== index) return b;
+      const items = b.items.slice();
+      items[itemIndex] = value;
+      return { ...b, items };
+    });
+    this.touch({ blocks });
+  }
+
+  onItemKey(event, index, itemIndex) {
+    const block = this.state.blocks[index];
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const items = block.items.slice();
+      items.splice(itemIndex + 1, 0, '');
+      this.pendingFocus = `${block.id}:${itemIndex + 1}`;
+      this.setBlock(index, { items });
+      return;
+    }
+    if (event.key === 'Backspace' && !event.target.value) {
+      event.preventDefault();
+      if (block.items.length <= 1) {
+        this.removeAt(index);
+        return;
+      }
+      const items = block.items.slice();
+      items.splice(itemIndex, 1);
+      this.pendingFocus = `${block.id}:${Math.max(0, itemIndex - 1)}`;
+      this.setBlock(index, { items });
+    }
+  }
+
+  readFile(file, done) {
+    if (!file || !file.type || file.type.indexOf('image/') !== 0) return;
+    const reader = new FileReader();
+    reader.onload = () => done(reader.result);
+    reader.readAsDataURL(file);
+  }
+
+  /* --- controlli di pubblicazione -------------------------------------- */
+  checks() {
+    const { title, excerpt, category, cover } = this.state;
+    return [
+      { label: 'Titolo', done: !!title.trim() },
+      { label: 'Sommario', done: !!excerpt.trim() },
+      { label: 'Categoria', done: !!category },
+      { label: 'Copertina', done: !!cover },
+    ];
+  }
+
+  words() {
+    const fromBlocks = this.state.blocks
+      .map((b) => (b.type === 'list' ? (b.items || []).join(' ') : b.text || ''))
+      .join(' ');
+    const all = `${this.state.title} ${this.state.excerpt} ${fromBlocks}`.trim();
+    return all ? all.split(/\s+/).length : 0;
+  }
+
+  renderVals() {
+    const { title, excerpt, blocks, category, date, featured, tags, tagDraft, cover, panelOpen, menuIndex, publishNotice } = this.state;
+
+    const checks = this.checks();
+    const missing = checks.filter((c) => !c.done);
+    const words = this.words();
+    const minutes = Math.max(1, Math.round(words / 200));
+
+    const titleLength = title.length;
+    const descLength = excerpt.length;
+
+    return {
+      title,
+      excerpt,
+      headerTitle: title.trim() || 'Nuovo articolo',
+      saveLabel: this.saveLabel(),
+      showChecklist: this.props.showChecklist !== false,
+      panelOpen,
+      publishNoticeOpen: !!publishNotice,
+      publishNotice,
+      dismissNotice: () => this.setState({ publishNotice: '' }),
+
+      onTitle: (e) => { this.touch({ title: e.target.value }); this.grow(e.target); },
+      onExcerpt: (e) => { this.touch({ excerpt: e.target.value }); this.grow(e.target); },
+      titleRef: (el) => this.grow(el),
+      excerptRef: (el) => this.grow(el),
+
+      togglePanel: () => this.setState((s) => ({ panelOpen: !s.panelOpen })),
+      saveNow: () => this.save(),
+      tryPublish: () => {
+        if (!missing.length) {
+          this.setState({ publishNotice: 'Articolo pubblicato. Comparirà in /news entro pochi secondi.' });
+          return;
+        }
+        this.setState({
+          panelOpen: true,
+          publishNotice: `Prima di pubblicare manca: ${missing.map((c) => c.label.toLowerCase()).join(', ')}.`,
+        });
+      },
+
+      blocks: blocks.map((b, i) => ({
+        ...b,
+        isParagraph: b.type === 'paragraph',
+        isHeading: b.type === 'heading',
+        isQuote: b.type === 'quote',
+        isList: b.type === 'list',
+        isImage: b.type === 'image',
+        hasSrc: b.type === 'image' && !!b.src,
+        noSrc: b.type === 'image' && !b.src,
+        menuOpen: menuIndex === i,
+        toggleMenu: () => this.setState((s) => ({ menuIndex: s.menuIndex === i ? null : i })),
+        addParagraph: () => this.insert(i, 'paragraph'),
+        addHeading: () => this.insert(i, 'heading'),
+        addQuote: () => this.insert(i, 'quote'),
+        addList: () => this.insert(i, 'list'),
+        addImage: () => this.insert(i, 'image'),
+        onText: (e) => this.setBlock(i, { text: e.target.value }, e.target),
+        onAttr: (e) => this.setBlock(i, { attribution: e.target.value }),
+        onKey: (e) => this.onKey(e, i),
+        onCaption: (e) => this.setBlock(i, { caption: e.target.value }),
+        onAlt: (e) => this.setBlock(i, { alt: e.target.value }),
+        onFile: (e) => this.readFile(e.target.files && e.target.files[0], (src) => this.setBlock(i, { src })),
+        onDragOver: (e) => e.preventDefault(),
+        onDrop: (e) => {
+          e.preventDefault();
+          this.readFile(e.dataTransfer.files && e.dataTransfer.files[0], (src) => this.setBlock(i, { src }));
+        },
+        ref: (el) => this.mount(el, `${b.id}`),
+        items: (b.items || []).map((text, j) => ({
+          text,
+          onText: (e) => this.setItem(i, j, e.target.value),
+          onKey: (e) => this.onItemKey(e, i, j),
+          ref: (el) => this.mount(el, `${b.id}:${j}`),
+        })),
+      })),
+
+      cover,
+      hasCover: !!cover,
+      noCover: !cover,
+      onCoverFile: (e) => this.readFile(e.target.files && e.target.files[0], (src) => this.touch({ cover: src })),
+      onCoverDragOver: (e) => e.preventDefault(),
+      onCoverDrop: (e) => {
+        e.preventDefault();
+        this.readFile(e.dataTransfer.files && e.dataTransfer.files[0], (src) => this.touch({ cover: src }));
+      },
+
+      category,
+      onCategory: (e) => this.touch({ category: e.target.value }),
+      date,
+      onDate: (e) => this.touch({ date: e.target.value }),
+      featured,
+      notFeatured: !featured,
+      featuredLabel: featured ? 'Sì' : 'No',
+      toggleFeatured: () => this.touch({ featured: !featured }),
+
+      tags: tags.map((text) => ({
+        text,
+        remove: () => this.touch({ tags: tags.filter((t) => t !== text) }),
+      })),
+      tagDraft,
+      onTagDraft: (e) => this.setState({ tagDraft: e.target.value }),
+      onTagKey: (e) => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        const value = tagDraft.trim();
+        if (!value || tags.indexOf(value) > -1) return;
+        this.setState({ tagDraft: '' });
+        this.touch({ tags: [...tags, value] });
+      },
+
+      seoTitleCount: `${titleLength}/70 caratteri`,
+      seoDescCount: `${descLength}/160 caratteri`,
+      seoTitleWidth: `${Math.min(100, Math.round((titleLength / 70) * 100))}%`,
+      seoDescWidth: `${Math.min(100, Math.round((descLength / 160) * 100))}%`,
+      slug: slugify(title) || 'nuovo-articolo',
+
+      checks: checks.map((c) => ({ ...c, pending: !c.done })),
+      countLabel: words ? `${words} parole · ${minutes} minuti di lettura` : 'Nessuna parola ancora',
+    };
+  }
+}
+</script>
+</body>
+</html>
