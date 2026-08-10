@@ -7,7 +7,18 @@ import typescript from 'eslint-config-next/typescript';
  */
 const eslintConfig = [
   {
-    ignores: ['.next/**', 'node_modules/**', 'design/**', 'storage/**'],
+    // `design/` contiene i prototipi HTML dell'handoff con il loro runtime:
+    // sono riferimenti di disegno, non codice di produzione, e analizzarli
+    // segnalerebbe problemi veri su codice che non spediamo.
+    // `Ricreazione pagina admin/` è la cartella di consegna, gli stessi file
+    // di `design/handoff-admin/`: si può cancellare.
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      'design/**',
+      'storage/**',
+      'Ricreazione pagina admin/**',
+    ],
   },
   ...coreWebVitals,
   ...typescript,

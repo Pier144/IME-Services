@@ -584,6 +584,9 @@ const en: Dictionary = {
     brandLabel: 'ADMIN',
     nav: {
       news: 'News',
+      groups: {
+        content: 'CONTENT',
+      },
     },
     signedInAs: 'Signed in as',
     signOut: 'Sign out',
@@ -600,6 +603,13 @@ const en: Dictionary = {
       title: 'News',
       newArticle: '+ NEW ARTICLE',
       search: 'Search by title…',
+      filterCategory: 'Filter by category',
+      filterYear: 'Filter by year',
+      allCategories: 'All categories',
+      allYears: 'All years',
+      noDate: 'NO DATE',
+      featured: 'FEATURED',
+      perPage: 'per page',
       searchLabel: 'Search the articles',
       countArticles: 'articles',
       countArticle: 'article',

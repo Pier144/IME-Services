@@ -185,6 +185,10 @@ export async function listPublishedSlugs(): Promise<{ slug: string; updatedAt: D
 export type AdminListOptions = {
   query?: string;
   status?: ArticleStatus | 'all';
+  /** Slug di categoria, vedi src/data/news-categories.ts. */
+  category?: string;
+  /** Anno di pubblicazione. Gli articoli senza data non compaiono se filtrato. */
+  year?: number;
 };
 
 /**
@@ -201,10 +205,33 @@ export async function listForAdmin(options: AdminListOptions = {}): Promise<Arti
       ...(options.query
         ? { title: { contains: options.query, mode: 'insensitive' as const } }
         : {}),
+      ...(options.category ? { category: options.category } : {}),
+      // Intervallo invece di estrarre l'anno con una funzione SQL: così
+      // l'indice su publishedAt resta utilizzabile.
+      ...(options.year
+        ? {
+            publishedAt: {
+              gte: new Date(Date.UTC(options.year, 0, 1)),
+              lt: new Date(Date.UTC(options.year + 1, 0, 1)),
+            },
+          }
+        : {}),
     },
     orderBy: [{ status: 'asc' }, { publishedAt: 'desc' }, { updatedAt: 'desc' }],
   });
   return rows.map(toArticle);
+}
+
+/** Gli anni presenti fra gli articoli, decrescenti: alimenta il filtro. */
+export async function publishedYears(): Promise<number[]> {
+  const rows = await prisma.article.findMany({
+    where: { publishedAt: { not: null } },
+    select: { publishedAt: true },
+    orderBy: { publishedAt: 'desc' },
+  });
+  const anni = new Set<number>();
+  for (const row of rows) if (row.publishedAt) anni.add(row.publishedAt.getUTCFullYear());
+  return [...anni];
 }
 
 export async function countByStatus() {

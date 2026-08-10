@@ -14,19 +14,26 @@ import { cn } from '@/lib/utils';
 export function ArticleMeta({
   category,
   date,
+  noDateLabel,
   locale,
   readingMinutes,
   readingLabel,
+  featuredLabel,
   size = 'card',
   tone = 'world',
   className,
 }: {
   category: string;
-  date: Date;
+  /** Null solo nell'area riservata: una bozza può non avere ancora una data. */
+  date: Date | null;
+  /** Cosa scrivere al posto della data quando manca. */
+  noDateLabel?: string;
   locale: Locale;
   readingMinutes?: number;
   readingLabel?: string;
-  size?: 'card' | 'featured' | 'hero' | 'preview';
+  /** «IN EVIDENZA», in oro. Solo nella lista dell'area riservata. */
+  featuredLabel?: string;
+  size?: 'card' | 'featured' | 'hero' | 'preview' | 'admin';
   tone?: 'world' | 'gold';
   className?: string;
 }) {
@@ -37,6 +44,7 @@ export function ArticleMeta({
     featured: 'text-11 tracking-16 gap-14',
     hero: 'text-11 tracking-18 gap-14',
     preview: 'text-10 tracking-16 gap-10',
+    admin: 'text-11 tracking-16 gap-12',
   }[size];
 
   const categoryColor =
@@ -45,12 +53,17 @@ export function ArticleMeta({
   return (
     <p className={cn('flex flex-wrap items-center font-body font-normal', sizes, className)}>
       <span className={categoryColor}>{categoryDisplay(category)}</span>
-      <time dateTime={date.toISOString()} className="text-ink-3">
-        {size === 'hero' ? formatLongDate(date, locale) : formatShortDate(date, locale)}
-        {size === 'hero' && readingMinutes && readingLabel
-          ? ` · ${readingMinutes} ${readingLabel}`
-          : null}
-      </time>
+      {date ? (
+        <time dateTime={date.toISOString()} className="text-ink-3">
+          {size === 'hero' ? formatLongDate(date, locale) : formatShortDate(date, locale)}
+          {size === 'hero' && readingMinutes && readingLabel
+            ? ` · ${readingMinutes} ${readingLabel}`
+            : null}
+        </time>
+      ) : (
+        noDateLabel && <span className="text-ink-4">{noDateLabel}</span>
+      )}
+      {featuredLabel && <span className="text-gold">{featuredLabel}</span>}
     </p>
   );
 }

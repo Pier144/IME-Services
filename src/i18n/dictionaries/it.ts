@@ -619,6 +619,11 @@ const it = {
     brandLabel: 'ADMIN',
     nav: {
       news: 'News',
+      // Solo i gruppi che hanno voci vive. RICHIESTE e SISTEMA arrivano
+      // insieme alle pagine che li riempiono.
+      groups: {
+        content: 'CONTENUTI',
+      },
     },
     signedInAs: 'Accesso come',
     signOut: 'Esci',
@@ -636,6 +641,13 @@ const it = {
       newArticle: '+ NUOVO ARTICOLO',
       search: 'Cerca per titolo…',
       searchLabel: 'Cerca fra gli articoli',
+      filterCategory: 'Filtra per categoria',
+      filterYear: 'Filtra per anno',
+      allCategories: 'Tutte le categorie',
+      allYears: 'Tutti gli anni',
+      noDate: 'NESSUNA DATA',
+      featured: 'IN EVIDENZA',
+      perPage: 'per pagina',
       countArticles: 'articoli',
       countArticle: 'articolo',
       countDrafts: 'bozze',
