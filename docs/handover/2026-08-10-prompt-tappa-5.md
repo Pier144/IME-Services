@@ -43,12 +43,14 @@ corpi in `scale="article"`, così quello che si scrive è quello che si legge.
 abbandonata, perché il design approvato è l'editor a blocchi e le alternative sono già state
 valutate e scartate. L'handover spiega perché.
 
-**Due cose vanno decise con me prima di progettare la struttura**, e il design non le copre:
+**Due cose che il design non copriva sono già state decise**, non serve richiedermele:
 
-1. il responsive sotto i 1200px, oltre alla regola del pannello Impostazioni;
-2. se fare davvero la libreria Media, o lasciare solo «Carica».
-
-Chiedimele all'inizio, non a metà lavoro.
+1. **Responsive:** l'editor è per schermi grandi. Sotto i **900px** si mostra un avviso invece
+   dell'editor. Sopra i 900 si implementa quello che il README descrive, pannello Impostazioni
+   incluso — il disegno quelle larghezze le copre già. Le pagine di elenco restano usabili ovunque.
+2. **Media:** nessuna pagina dedicata. Nell'editor, accanto a «Carica», un elenco delle foto già
+   presenti negli articoli, riutilizzabili con un clic. Si ricavano dai blocchi `image` degli
+   articoli esistenti: la sorgente è il database, non il bucket, e non serve nessun modello nuovo.
 
 **Come procedere.** La tappa è grossa: spezzala tu in sotto-tappe e **fermati dopo ciascuna** perché
 io guardi. Un ordine che ha senso, ma decidi tu:

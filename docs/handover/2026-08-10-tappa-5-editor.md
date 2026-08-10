@@ -27,17 +27,30 @@ Il ramo resta su GitHub come memoria. Da lì può valere la pena guardare una co
 `src/lib/articles/tiptap.test.ts`, che documenta un errore reale trovato dai test (l'ordine delle
 chiavi nella serializzazione, vedi «Trappole» più sotto).
 
-### 2. Due domande vanno decise con il committente, prima di cominciare
+### 2. Le due domande aperte hanno una risposta
 
-Il prompt originale le indica esplicitamente come «cose che il design non copre e che vanno decise
-insieme»:
+Il prompt originale indicava due cose come «non coperte dal design e da decidere insieme».
+**Decise il 10 agosto 2026:**
 
-1. **Il responsive sotto i 1200px**, a parte la regola del pannello Impostazioni che il README
-   descrive.
-2. **La libreria Media**: farla davvero, oppure lasciare solo «Carica».
+**Responsive — l'editor è per schermi grandi, con un avviso sotto la soglia.**
 
-Alla data di questo handover **non hanno ancora risposta**. Chiederle prima di progettare la
-struttura, non dopo.
+La soglia è **900px**, e non è arbitraria: l'handoff dimensiona il margine sinistro della colonna
+`px-124` proprio perché «deve ospitare etichette e «+» senza tagliarli sotto i 1200px», e descrive
+il comportamento del pannello Impostazioni fino sotto i 900. Il disegno quindi **funziona già fra
+900 e 1200**, ed è sotto i 900 che si ferma. L'avviso va lì, non più in alto: sopra i 900 si
+implementa quello che il README descrive.
+
+Le pagine di **elenco** (tappe 1–4) restano usabili a ogni larghezza. Si consulta da qualsiasi
+schermo, si scrive da una scrivania.
+
+**Media — nessuna pagina dedicata, ma le foto già usate si riusano.**
+
+Nell'editor, accanto a «Carica», un elenco delle immagini già presenti negli articoli, riutilizzabili
+con un clic. Risolve il problema vero — ricaricare la stessa foto e moltiplicarla nel bucket — senza
+aprire una pagina `/admin/media` da costruire e mantenere, e senza riportare una voce nel menù.
+
+Le immagini già usate si ricavano dai blocchi `image` degli articoli esistenti: la sorgente è il
+database, non un elenco del bucket. Nessun nuovo modello dati.
 
 ### 3. Le foto trascinabili dipendono da R2, che è configurato ma non in produzione
 
