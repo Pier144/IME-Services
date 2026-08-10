@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getSession } from '@/lib/auth';
 import { deleteArticle, getById, updateArticle, uniqueSlug } from '@/lib/articles/repository';
-import { textToBlocks } from '@/lib/articles/body';
 import { articlePayloadSchema, isKnownCategory, publishBlockers } from '@/lib/validation/article';
 import { fromDateInputValue } from '@/lib/dates';
 import { slugify } from '@/lib/utils';
@@ -64,7 +63,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     title: data.title,
     slug,
     excerpt: data.excerpt,
-    body: textToBlocks(data.bodyText),
+    body: data.body,
     category: data.category,
     coverImage: data.coverImage,
     coverAlt: data.coverAlt,

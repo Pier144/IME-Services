@@ -81,6 +81,34 @@ export function serializeBody(blocks: BodyBlock[]): string {
   return JSON.stringify(blocks);
 }
 
+/**
+ * L'unica porta d'ingresso delle scritture: rimette ogni blocco nella forma
+ * canonica di `parseBlock` e riapplica la regola del `lead`.
+ *
+ * Serve perché la colonna `body` conserva `JSON.stringify(blocks)`: due liste
+ * con gli stessi dati ma le chiavi in ordine diverso danno stringhe diverse, e
+ * l'articolo si riscriverebbe a ogni salvataggio — `updatedAt` sporcato e
+ * pagine rigenerate per niente. Un ordine solo esiste solo se tutte le
+ * scritture passano di qui.
+ *
+ * È idempotente: `normalizeBody(normalizeBody(x))` dà `normalizeBody(x)`.
+ */
+export function normalizeBody(blocks: readonly unknown[]): BodyBlock[] {
+  let leadTaken = false;
+
+  return blocks
+    .map(parseBlock)
+    .filter((block): block is BodyBlock => block !== null)
+    .map((block) => {
+      // Il primo blocco di testo è il sommario d'apertura, gli altri no. Nella
+      // colonna di scrittura i due non si distinguono: la differenza vive qui.
+      if (block.type !== 'lead' && block.type !== 'paragraph') return block;
+      if (leadTaken) return { type: 'paragraph', text: block.text };
+      leadTaken = true;
+      return { type: 'lead', text: block.text };
+    });
+}
+
 export function stripMarks(text: string): string {
   return text
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')

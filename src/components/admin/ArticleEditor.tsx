@@ -1,85 +1,95 @@
 'use client';
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArticlePreview } from './ArticlePreview';
-import { EditorToolbar } from './EditorToolbar';
-import { Dropzone } from '@/components/forms/Dropzone';
-import { PhotoSlot } from '@/components/media/PhotoSlot';
+import { AutoTextarea } from './editor/AutoTextarea';
+import { BlockField } from './editor/BlockField';
+import { SelectionToolbar } from './editor/SelectionToolbar';
+import { SettingsPanel } from './editor/SettingsPanel';
+import type { UsedImage } from './editor/PhotoPicker';
+import type { EditorArticle } from './editor/draft';
+import { useBlockFocus } from './editor/useBlockFocus';
 import { StatusBadge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { FieldLabel, Input, Select, Textarea, Toggle } from '@/components/ui/Field';
 import { useI18n } from '@/i18n/provider';
-import { localePath } from '@/i18n/config';
-import { adminRoutes, apiRoutes, routes } from '@/lib/routes';
-import { newsCategories } from '@/data/news-categories';
-import { textToBlocks } from '@/lib/articles/body';
+import { adminRoutes, apiRoutes } from '@/lib/routes';
+import { bodyToPlainText, readingMinutes } from '@/lib/articles/body';
+import {
+  backspaceInBlock,
+  backspaceInListItem,
+  convertBlock,
+  enterInBlock,
+  enterInListItem,
+  insertAfter,
+  setAttribution,
+  setImage,
+  setListItem,
+  setText,
+  toBody,
+  toEditorBlocks,
+  type BlocksChange,
+  type EditorBlock,
+  type EditorBlockType,
+} from '@/lib/articles/editor-blocks';
+import { applyLink, toggleMark, type InlineMark } from '@/lib/articles/inline-marks';
 import { formatRelativeTime } from '@/lib/dates';
 import { publishBlockers } from '@/lib/validation/article';
-import type { StoredFile } from '@/lib/storage/types';
-import { seoLimits, site } from '@/lib/site';
 import { cn, slugify } from '@/lib/utils';
 
-const AUTOSAVE_MS = 30_000;
-const PREVIEW_DEBOUNCE_MS = 200;
+/**
+ * Si scrive in un foglio: 1,2 s di silenzio e la bozza è salvata. Trenta
+ * secondi erano giusti per un modulo, non per un foglio.
+ */
+const AUTOSAVE_MS = 1_200;
 
-export type EditorArticle = {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  bodyText: string;
-  category: string;
-  coverImage: string | null;
-  coverAlt: string;
-  tags: string[];
-  status: 'draft' | 'published';
-  featured: boolean;
-  publishedAt: string;
-  seoTitle: string;
-  seoDescription: string;
-  updatedAt: string;
-};
+export type { EditorArticle };
 
 /**
- * Editor articolo con anteprima live (mockup 2j).
+ * Editor articolo a blocchi (mockup 3a).
  *
- * - l'anteprima si ricalcola 200 ms dopo l'ultimo tasto, con gli stessi
- *   componenti della pagina pubblica;
- * - la bozza si salva da sola ogni 30 secondi, ma solo se qualcosa è cambiato,
- *   e il timestamp mostrato è quello vero della risposta del server;
- * - PUBBLICA resta spento finché mancano titolo, categoria, copertina o
- *   sommario. Lo stesso controllo gira anche lato server.
+ * Non c'è più un testo con i marcatori da convertire, né un'anteprima di
+ * fianco: si modificano direttamente i `BodyBlock[]` che il database salva, e
+ * i corpi tipografici sono quelli di `ArticleBody`, quindi la colonna di
+ * scrittura **è** l'anteprima.
+ *
+ * Tutto quello che si può sbagliare in silenzio — Invio, Backspace, l'ordine
+ * delle chiavi al salvataggio — sta in `lib/articles/editor-blocks.ts`, sotto
+ * test. Qui restano lo stato, il salvataggio e il disegno.
  */
-export function ArticleEditor({ article }: { article: EditorArticle }) {
+export function ArticleEditor({
+  article,
+  usedImages,
+}: {
+  article: EditorArticle;
+  /** Le foto già presenti negli altri articoli: si riusano invece di ricaricarle. */
+  usedImages: UsedImage[];
+}) {
   const { t } = useI18n();
   const router = useRouter();
   const uid = useId();
-  const textarea = useRef<HTMLTextAreaElement>(null);
 
   const [draft, setDraft] = useState<EditorArticle>(article);
+  const [blocks, setBlocks] = useState<EditorBlock[]>(() => toEditorBlocks(article.body));
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<Date>(new Date(article.updatedAt));
   const [now, setNow] = useState<Date | null>(null);
-  const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
   const [error, setError] = useState<string | null>(null);
-  const [newTag, setNewTag] = useState('');
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [publishAttempted, setPublishAttempted] = useState(false);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [used, setUsed] = useState<UsedImage[]>(usedImages);
   const [slugTouched, setSlugTouched] = useState(Boolean(article.slug && article.title));
 
-  /* --- Anteprima: ricalcolo con attesa di 200 ms ------------------------ */
-  const [previewText, setPreviewText] = useState(article.bodyText);
-  useEffect(() => {
-    const timer = window.setTimeout(() => setPreviewText(draft.bodyText), PREVIEW_DEBOUNCE_MS);
-    return () => window.clearTimeout(timer);
-  }, [draft.bodyText]);
-  const previewBlocks = useMemo(() => textToBlocks(previewText), [previewText]);
+  const nextId = useRef(blocks.length);
+  const { register, getField, request } = useBlockFocus();
+
+  const body = useMemo(() => toBody(blocks), [blocks]);
+  const missing = publishBlockers(draft);
 
   /* --- "Salvato N minuti fa" ---------------------------------------------
      L'orologio parte solo dopo l'idratazione: calcolarlo durante il rendering
-     sul server darebbe un valore diverso da quello del browser. È una scrittura
-     di stato voluta e non ricorsiva, quindi la regola qui non si applica. */
+     sul server darebbe un valore diverso da quello del browser. */
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- lettura dell'ora locale dopo l'idratazione
     setNow(new Date());
@@ -87,9 +97,38 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
     return () => window.clearInterval(timer);
   }, []);
 
-  const update = useCallback(<K extends keyof EditorArticle>(key: K, value: EditorArticle[K]) => {
-    setDraft((current) => ({ ...current, [key]: value }));
+  const update = useCallback((patch: Partial<EditorArticle>) => {
+    setDraft((current) => ({ ...current, ...patch }));
     setDirty(true);
+  }, []);
+
+  /**
+   * Modifiche al contenuto, una battuta alla volta.
+   *
+   * Forma funzionale e non `setBlocks(nuovo)`: chi scrive veloce può produrre
+   * due battute prima che React abbia riportato lo stato nel componente, e
+   * partire da una lista vecchia farebbe sparire il carattere in mezzo.
+   */
+  const editBlocks = useCallback((edit: (current: EditorBlock[]) => EditorBlock[]) => {
+    setBlocks(edit);
+    setDirty(true);
+  }, []);
+
+  /** Modifiche alla struttura: si portano dietro anche il cursore. */
+  const applyChange = useCallback(
+    (change: BlocksChange) => {
+      setBlocks(change.blocks);
+      request(change.focus);
+      setDirty(true);
+    },
+    [request],
+  );
+
+  /** Una foto appena scelta entra subito fra quelle riusabili, senza ricaricare. */
+  const remember = useCallback((src: string, label: string) => {
+    setUsed((current) =>
+      current.some((image) => image.src === src) ? current : [{ src, label }, ...current],
+    );
   }, []);
 
   /* --- Salvataggio ------------------------------------------------------- */
@@ -102,7 +141,7 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
         title: draft.title,
         slug: draft.slug || slugify(draft.title),
         excerpt: draft.excerpt,
-        bodyText: draft.bodyText,
+        body,
         category: draft.category,
         coverImage: draft.coverImage,
         coverAlt: draft.coverAlt,
@@ -122,8 +161,8 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
         });
 
         if (!response.ok) {
-          const body = (await response.json().catch(() => null)) as { error?: string } | null;
-          setError(body?.error ?? 'Salvataggio non riuscito.');
+          const errorBody = (await response.json().catch(() => null)) as { error?: string } | null;
+          setError(errorBody?.error ?? 'Salvataggio non riuscito.');
           return false;
         }
 
@@ -134,6 +173,8 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
           publishedAt: string | null;
         };
 
+        const moved = saved.slug !== draft.slug || saved.status !== draft.status;
+
         setDraft((current) => ({
           ...current,
           slug: saved.slug,
@@ -142,7 +183,9 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
         }));
         setLastSavedAt(new Date(saved.updatedAt));
         setDirty(false);
-        router.refresh();
+        // A 1,2 s di attesa il salvataggio è frequente: la lista si rilegge solo
+        // quando è cambiato qualcosa che la lista mostra davvero.
+        if (moved) router.refresh();
         return true;
       } catch {
         setError('Salvataggio non riuscito.');
@@ -151,10 +194,10 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
         setSaving(false);
       }
     },
-    [draft, router],
+    [draft, body, router],
   );
 
-  /* --- Autosalvataggio ogni 30 s, solo se c'è qualcosa da salvare -------- */
+  /* --- Autosalvataggio 1,2 s dopo l'ultimo tasto ------------------------- */
   useEffect(() => {
     if (!dirty) return;
     const timer = window.setTimeout(() => void save(), AUTOSAVE_MS);
@@ -162,9 +205,8 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
   }, [dirty, save]);
 
   /* --- Uscire senza perdere niente ----------------------------------------
-     Tre modi di lasciare l'editor, tre reti diverse. `beforeunload` copre solo
-     chiusura e ricaricamento: non scatta sulle navigazioni interne, ed è per
-     questo che il ritorno all'elenco salva da sé (vedi la topbar). */
+     `beforeunload` copre solo chiusura e ricaricamento: non scatta sulle
+     navigazioni interne, ed è per questo che il ritorno all'elenco salva da sé. */
   useEffect(() => {
     if (!dirty) return;
     const onBeforeUnload = (event: BeforeUnloadEvent) => event.preventDefault();
@@ -172,7 +214,6 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
     return () => window.removeEventListener('beforeunload', onBeforeUnload);
   }, [dirty]);
 
-  /* Cambio di finestra o di scheda: si salva subito, senza aspettare i 30 s. */
   useEffect(() => {
     if (!dirty) return;
     const onBlur = () => void save();
@@ -180,414 +221,390 @@ export function ArticleEditor({ article }: { article: EditorArticle }) {
     return () => window.removeEventListener('blur', onBlur);
   }, [dirty, save]);
 
-  /** Ritorno all'elenco: prima si salva, poi si naviga. */
   async function leave() {
     if (dirty) await save();
     router.push(adminRoutes.news);
   }
 
-  const missing = publishBlockers(draft);
-  const canPublish = missing.length === 0;
+  /* --- Tastiera ----------------------------------------------------------- */
+  function onKeyDown(event: React.KeyboardEvent, index: number) {
+    const field = event.target as HTMLTextAreaElement;
 
-  const seoTitle = draft.seoTitle || draft.title;
-  const seoDescription = draft.seoDescription || draft.excerpt;
-  const slug = draft.slug || slugify(draft.title) || 'nuovo-articolo';
+    if (event.key === 'Enter') {
+      const change = enterInBlock(blocks, index, `n${nextId.current}`, event.shiftKey);
+      if (!change) return; // Maiusc+Invio, o citazione: va a capo dentro il blocco.
+      event.preventDefault();
+      nextId.current += 1;
+      applyChange(change);
+      return;
+    }
 
-  const coverFiles: StoredFile[] = draft.coverImage
-    ? [
-        {
-          name: draft.coverAlt || 'copertina',
-          size: 0,
-          mimeType: 'image/*',
-          key: draft.coverImage,
-          url: draft.coverImage,
-          uploadedAt: draft.updatedAt,
-        },
-      ]
-    : [];
+    if (event.key === 'Backspace') {
+      const change = backspaceInBlock(blocks, index, field.value === '');
+      if (!change) return;
+      event.preventDefault();
+      applyChange(change);
+    }
+  }
+
+  function onListKeyDown(event: React.KeyboardEvent, index: number, item: number) {
+    const field = event.target as HTMLInputElement;
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const change = enterInListItem(blocks, index, item);
+      if (change) applyChange(change);
+      return;
+    }
+
+    if (event.key === 'Backspace') {
+      const change = backspaceInListItem(blocks, index, item, field.value === '');
+      if (!change) return;
+      event.preventDefault();
+      applyChange(change);
+    }
+  }
+
+  function addBlock(index: number, type: EditorBlockType) {
+    const change = insertAfter(blocks, index, type, `n${nextId.current}`);
+    nextId.current += 1;
+    applyChange(change);
+  }
+
+  /* --- Barra di formattazione sulla selezione ----------------------------- */
+  function readSelection(index: number) {
+    const block = blocks[index];
+    const field = getField(block.id);
+    setSelected(field && field.selectionStart !== field.selectionEnd ? index : null);
+  }
+
+  function withSelection(run: (field: HTMLTextAreaElement, index: number) => void) {
+    if (selected === null) return;
+    const block = blocks[selected];
+    const field = getField(block.id);
+    if (field instanceof HTMLTextAreaElement) run(field, selected);
+  }
+
+  function onMark(mark: InlineMark) {
+    withSelection((field, index) => {
+      const result = toggleMark(field.value, field.selectionStart, field.selectionEnd, mark);
+      editBlocks((current) => setText(current, index, result.value));
+      // Il testo cambia lunghezza: la selezione va rimessa dove è finita.
+      requestAnimationFrame(() => {
+        field.focus();
+        field.setSelectionRange(result.start, result.end);
+      });
+    });
+  }
+
+  function onLinkApply(href: string) {
+    withSelection((field, index) => {
+      const result = applyLink(field.value, field.selectionStart, field.selectionEnd, href);
+      editBlocks((current) => setText(current, index, result.value));
+      requestAnimationFrame(() => {
+        field.focus();
+        field.setSelectionRange(result.start, result.end);
+      });
+    });
+    setSelected(null);
+  }
+
+  function onConvert(type: EditorBlockType) {
+    if (selected === null) return;
+    applyChange(convertBlock(blocks, selected, type));
+    setSelected(null);
+  }
+
+  /* --- Pubblicazione ------------------------------------------------------ */
+  function tryPublish() {
+    if (missing.length === 0) {
+      setPublishAttempted(false);
+      void save('published');
+      return;
+    }
+    // Il pulsante resta acceso: non è un errore di chi scrive, è una cosa da
+    // finire, e spegnerlo lascerebbe senza sapere cosa manca.
+    setPublishAttempted(true);
+    setPanelOpen(true);
+  }
+
+  const showMissing = publishAttempted && missing.length > 0;
+
+  const words = useMemo(() => {
+    const testo = bodyToPlainText(body).trim();
+    return testo ? testo.split(/\s+/).length : 0;
+  }, [body]);
+
+  const checks = [
+    { label: t.admin.editor.checklist.title, done: !missing.includes('titolo') },
+    { label: t.admin.editor.checklist.excerpt, done: !missing.includes('sommario') },
+    { label: t.admin.editor.checklist.category, done: !missing.includes('categoria') },
+    { label: t.admin.editor.checklist.cover, done: !missing.includes('copertina') },
+  ];
+
+  const savedLabel = saving
+    ? t.admin.editor.saving
+    : dirty
+      ? t.admin.editor.unsaved
+      : now
+        ? t.admin.editor.savedAgo.replace('{time}', formatRelativeTime(lastSavedAt, now, 'it'))
+        : null;
 
   return (
     <div className="flex min-h-screen flex-col">
       {/* --- Topbar --------------------------------------------------------- */}
-      <header className="flex flex-col gap-14 border-b border-hairline bg-admin-bg px-24 py-14 lg:flex-row lg:items-center lg:justify-between lg:px-26">
-        <div className="flex flex-wrap items-center gap-14 font-body text-13">
+      <header className="flex flex-wrap items-center justify-between gap-14 border-b border-hairline bg-admin-bg px-26 py-14">
+        <div className="flex min-w-0 items-center gap-14 font-body text-13">
           <button
             type="button"
             onClick={() => void leave()}
             disabled={saving}
-            className="text-ink-3 transition-colors duration-200 hover:text-gold disabled:opacity-60"
+            className="flex-none text-ink-3 transition-colors duration-200 ease-out hover:text-gold disabled:opacity-60"
           >
             ← {t.admin.editor.back}
           </button>
-          <span aria-hidden="true" className="hidden h-16 w-1 bg-rule-step lg:block" />
-          <span className="max-w-360 truncate">{draft.title || t.admin.editor.newArticle}</span>
+          <span aria-hidden="true" className="block h-16 w-1 flex-none bg-rule-step" />
+          <span className={cn('max-w-420 truncate', draft.title ? 'text-ink-2' : 'text-ink-4')}>
+            {draft.title || t.admin.editor.newArticle}
+          </span>
           <StatusBadge
             status={draft.status}
-            label={draft.status === 'draft' ? t.admin.news.status.draft : t.admin.news.status.published}
+            label={
+              draft.status === 'draft' ? t.admin.news.status.draft : t.admin.news.status.published
+            }
           />
-          {/* Il colore da solo non dice cosa comporta essere una bozza. */}
-          {draft.status === 'draft' && (
-            <span className="text-ink-4">{t.admin.editor.draftHint}</span>
-          )}
         </div>
 
-        <div className="flex flex-wrap items-center gap-12 font-body text-12-5 tracking-08">
-          <span className="text-ink-4">
-            {saving
-              ? t.admin.editor.saving
-              : dirty
-                ? t.admin.editor.unsaved
-                : now
-                  ? t.admin.editor.savedAgo.replace('{time}', formatRelativeTime(lastSavedAt, now, 'it'))
-                  : null}
-          </span>
+        <div className="flex flex-none items-center gap-12 font-body text-12-5 tracking-08">
+          <span className="text-ink-4">{savedLabel}</span>
 
-          {draft.status === 'published' ? (
-            <Link
-              href={localePath('it', routes.article(slug))}
-              target="_blank"
-              rel="noreferrer"
-              className="border border-ghost-soft px-18 py-9 text-ink transition-colors duration-200 hover:border-ghost"
-            >
-              {t.admin.editor.preview}
-            </Link>
-          ) : (
-            <Button variant="ghostSoft" size="adminSm" disabled>
-              {t.admin.editor.preview}
-            </Button>
-          )}
+          <Button
+            variant={panelOpen ? 'ghostGold' : 'ghostSoft'}
+            size="adminSm"
+            aria-expanded={panelOpen}
+            className={panelOpen ? 'bg-gold-rail' : undefined}
+            onClick={() => setPanelOpen((current) => !current)}
+          >
+            {t.admin.editor.settings}
+          </Button>
 
-          <Button variant="ghostSoft" size="adminSm" onClick={() => void save('draft')} disabled={saving}>
+          <Button
+            variant="ghostSoft"
+            size="adminSm"
+            onClick={() => void save('draft')}
+            disabled={saving}
+          >
             {t.admin.editor.saveDraft}
           </Button>
 
           {draft.status === 'published' ? (
-            <Button variant="ghostGold" size="adminSm" onClick={() => void save('draft')} disabled={saving}>
+            <Button
+              variant="ghostGold"
+              size="adminSm"
+              onClick={() => void save('draft')}
+              disabled={saving}
+            >
               {t.admin.editor.unpublish}
             </Button>
           ) : (
-            <Button
-              variant="gold"
-              size="adminSm"
-              onClick={() => void save('published')}
-              disabled={saving || !canPublish}
-              title={canPublish ? undefined : t.admin.editor.publishBlocked}
-            >
+            <Button variant="gold" size="adminSm" onClick={tryPublish} disabled={saving}>
               {t.admin.editor.publish}
             </Button>
           )}
         </div>
       </header>
 
+      {/* Rosso solo per gli errori veri: il salvataggio fallito è uno di quelli. */}
       {error && (
-        <p role="alert" className="border-b border-red bg-panel-ime px-24 py-12 font-body text-13 text-red">
+        <p
+          role="alert"
+          className="border-b border-red bg-panel-ime px-26 py-12 font-body text-13 text-red"
+        >
           {error}
         </p>
       )}
-      {!canPublish && (
-        <p className="border-b border-hairline px-24 py-10 font-body text-12-5 font-medium text-ink-4">
-          {/* Non "manca qualcosa": manca *questo*. L'elenco lo sa già publishBlockers. */}
-          {t.admin.editor.publishMissing.replace('{fields}', missing.join(', '))}
+
+      {showMissing && (
+        <p
+          role="status"
+          className="flex items-center gap-14 border-b border-gold/40 bg-gold-rail px-26 py-12 font-body text-13 font-medium text-gold"
+        >
+          <span>{t.admin.editor.publishNotice.replace('{fields}', missing.join(', '))}</span>
+          <button
+            type="button"
+            onClick={() => setPublishAttempted(false)}
+            className="ml-auto text-ink-3 transition-colors duration-200 ease-out hover:text-gold"
+          >
+            <span aria-hidden="true">✕</span>
+            <span className="sr-only">{t.admin.editor.dismissNotice}</span>
+          </button>
         </p>
       )}
 
-      <div className="flex flex-1 flex-col items-stretch lg:flex-row">
-        {/* --- Colonna editor ---------------------------------------------- */}
-        <div className="min-w-0 flex-1 border-hairline px-24 py-24 lg:px-34 lg:py-30 lg:border-r">
-          <FieldLabel htmlFor={`${uid}-title`} tone="admin">
-            {t.admin.editor.labels.title}
-          </FieldLabel>
-          <input
-            id={`${uid}-title`}
-            value={draft.title}
-            onChange={(event) => {
-              update('title', event.target.value);
-              if (!slugTouched) update('slug', slugify(event.target.value));
-            }}
-            className="w-full border border-field-border bg-field-bg px-16 py-14 font-display text-22 font-medium text-ink outline-none focus:border-gold"
-          />
+      {/* Sotto i 900px si legge e si correggono i refusi; si scrive da una
+          scrivania. Avvisare e lasciar fare, non sbarrare la porta. */}
+      <p className="border-b border-hairline bg-panel-ime px-26 py-12 font-body text-12-5 text-ink-3 md:hidden">
+        {t.admin.editor.smallScreen}
+      </p>
 
-          <div className="mt-20 flex flex-col gap-16 md:flex-row">
-            <div className="flex-1">
-              <FieldLabel htmlFor={`${uid}-category`} tone="admin">
-                {t.admin.editor.labels.category}
-              </FieldLabel>
-              <Select
-                id={`${uid}-category`}
-                tone="admin"
-                value={draft.category}
-                onChange={(event) => update('category', event.target.value)}
-              >
-                <option value="">{t.forms.placeholders.choose}</option>
-                {newsCategories.map((category) => (
-                  <option key={category.slug} value={category.slug}>
-                    {category.name}
-                  </option>
-                ))}
-              </Select>
-            </div>
-
-            <div className="flex-1">
-              <FieldLabel htmlFor={`${uid}-date`} tone="admin">
-                {t.admin.editor.labels.date}
-              </FieldLabel>
-              <Input
-                id={`${uid}-date`}
-                tone="admin"
-                type="date"
-                value={draft.publishedAt}
-                onChange={(event) => update('publishedAt', event.target.value)}
-              />
-            </div>
-
-            <div className="flex-none md:w-130">
-              <FieldLabel htmlFor={`${uid}-featured`} tone="admin">
-                {t.admin.editor.labels.featured}
-              </FieldLabel>
-              <Toggle
-                id={`${uid}-featured`}
-                checked={draft.featured}
-                onChange={(next) => update('featured', next)}
-                labelOn={t.admin.editor.featuredYes}
-                labelOff={t.admin.editor.featuredNo}
-              />
-            </div>
-          </div>
-
-          {/* Copertina */}
-          <div className="mt-20">
-            <FieldLabel htmlFor={`${uid}-cover`} tone="admin">
-              {t.admin.editor.labels.cover}
-            </FieldLabel>
-            <div className="flex flex-col items-stretch gap-12 sm:flex-row">
-              <PhotoSlot
-                label={draft.coverAlt || 'copertina'}
-                src={draft.coverImage}
-                alt={draft.coverAlt}
-                className="h-110 flex-none sm:w-190"
-                labelClassName="text-9"
-                sizes="190px"
-              />
-              <div className="flex-1">
-                <Dropzone
-                  id={`${uid}-cover`}
-                  kind="cover"
-                  label={t.admin.editor.labels.cover}
-                  compact
-                  files={coverFiles}
-                  onChange={(files) => {
-                    const file = files[files.length - 1] ?? null;
-                    update('coverImage', file ? file.url : null);
-                    if (file && !draft.coverAlt) update('coverAlt', file.name);
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="mt-12">
-              <FieldLabel htmlFor={`${uid}-cover-alt`} tone="admin">
-                {t.admin.editor.labels.coverAlt}
-              </FieldLabel>
-              <Input
-                id={`${uid}-cover-alt`}
-                tone="admin"
-                value={draft.coverAlt}
-                onChange={(event) => update('coverAlt', event.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Sommario */}
-          <div className="mt-20">
-            <FieldLabel htmlFor={`${uid}-excerpt`} tone="admin">
-              {t.admin.editor.labels.excerpt}
-            </FieldLabel>
-            <Textarea
-              id={`${uid}-excerpt`}
-              tone="admin"
-              className="h-76"
-              value={draft.excerpt}
-              onChange={(event) => update('excerpt', event.target.value)}
-            />
-          </div>
-
-          {/* Testo */}
-          <div className="mt-20">
-            <FieldLabel htmlFor={`${uid}-body`} tone="admin">
-              {t.admin.editor.labels.body}
-            </FieldLabel>
-            <div className="border border-field-border">
-              <EditorToolbar textarea={textarea} onChange={(next) => update('bodyText', next)} />
-              <textarea
-                id={`${uid}-body`}
-                ref={textarea}
-                value={draft.bodyText}
-                onChange={(event) => update('bodyText', event.target.value)}
-                placeholder={t.admin.editor.bodyPlaceholder}
-                className="h-200 w-full resize-y bg-field-bg px-16 py-16 font-body text-15 leading-185 font-medium text-ink-2 outline-none placeholder:text-ink-4"
-              />
-            </div>
-          </div>
-
-          {/* Tag */}
-          <div className="mt-20">
-            <FieldLabel htmlFor={`${uid}-tag`} tone="admin">
-              {t.admin.editor.labels.tags}
-            </FieldLabel>
-            <div className="flex flex-wrap items-center gap-8 font-body text-12-5 font-medium text-ink-2">
-              {draft.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-8 rounded-pill border border-field-border px-12 py-6"
-                >
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => update('tags', draft.tags.filter((item) => item !== tag))}
-                    className="text-ink-3 transition-colors duration-200 hover:text-red"
-                  >
-                    <span aria-hidden="true">✕</span>
-                    <span className="sr-only">
-                      {t.common.remove} {tag}
-                    </span>
-                  </button>
-                </span>
-              ))}
-              <input
-                id={`${uid}-tag`}
-                value={newTag}
-                onChange={(event) => setNewTag(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key !== 'Enter') return;
-                  event.preventDefault();
-                  const value = newTag.trim();
-                  if (!value || draft.tags.includes(value)) return;
-                  update('tags', [...draft.tags, value]);
-                  setNewTag('');
+      <div className="flex flex-1 items-stretch">
+        {/* --- Colonna di scrittura ---------------------------------------- */}
+        <div className="min-w-0 flex-1 px-56 pt-64 pb-90 md:px-124">
+          <div className="mx-auto w-full max-w-740">
+            <div className="relative">
+              <MarginLabel top="top-12" missing={showMissing && missing.includes('titolo')}>
+                {t.admin.editor.labels.title}
+              </MarginLabel>
+              <AutoTextarea
+                value={draft.title}
+                aria-label={t.admin.editor.labels.title}
+                placeholder={t.admin.editor.placeholders.title}
+                onChange={(event) => {
+                  const title = event.target.value;
+                  // Finché nessuno ha toccato lo slug a mano, segue il titolo.
+                  update(slugTouched ? { title } : { title, slug: slugify(title) });
                 }}
-                placeholder={t.admin.editor.addTag}
-                className="w-160 bg-transparent py-6 text-ink-4 outline-none placeholder:text-ink-4 focus:text-ink-2"
+                className="font-display text-42 leading-112 font-medium text-ink"
               />
             </div>
-          </div>
 
-          {/* Slug */}
-          <div className="mt-20">
-            <FieldLabel htmlFor={`${uid}-slug`} tone="admin">
-              {t.admin.editor.labels.slug}
-            </FieldLabel>
-            <Input
-              id={`${uid}-slug`}
-              tone="admin"
-              value={draft.slug}
-              onChange={(event) => {
-                setSlugTouched(true);
-                update('slug', slugify(event.target.value));
-              }}
-            />
+            <div className="relative mt-26">
+              <MarginLabel top="top-6" missing={showMissing && missing.includes('sommario')}>
+                {t.admin.editor.labels.excerpt}
+              </MarginLabel>
+              <AutoTextarea
+                value={draft.excerpt}
+                aria-label={t.admin.editor.labels.excerpt}
+                placeholder={t.admin.editor.placeholders.excerpt}
+                onChange={(event) => update({ excerpt: event.target.value })}
+                className="font-body text-20 leading-165 text-ink"
+              />
+            </div>
+
+            <div aria-hidden="true" className="mt-34 h-1 bg-hairline" />
+
+            {blocks.map((block, index) => (
+              <BlockField
+                key={block.id}
+                block={block}
+                index={index}
+                register={register}
+                used={used}
+                onAdd={addBlock}
+                onText={(i, text) => editBlocks((current) => setText(current, i, text))}
+                onAttribution={(i, value) =>
+                  editBlocks((current) => setAttribution(current, i, value))
+                }
+                onListItem={(i, item, text) =>
+                  editBlocks((current) => setListItem(current, i, item, text))
+                }
+                onImage={(i, patch) => {
+                  editBlocks((current) => setImage(current, i, patch));
+                  // Una foto appena messa è già riusabile: la si è appena vista.
+                  if (patch.src) {
+                    remember(patch.src, patch.label ?? (block.type === 'image' ? block.label : ''));
+                  }
+                }}
+                onKeyDown={onKeyDown}
+                onListKeyDown={onListKeyDown}
+                onSelect={readSelection}
+                onLeave={() => setSelected(null)}
+                toolbar={
+                  selected === index ? (
+                    <SelectionToolbar onMark={onMark} onConvert={onConvert} onLink={onLinkApply} />
+                  ) : undefined
+                }
+              />
+            ))}
           </div>
         </div>
 
-        {/* --- Colonna anteprima ------------------------------------------- */}
-        <aside className="flex-none bg-admin-bg px-24 py-22 lg:w-430">
-          <div className="flex items-center justify-between font-body text-10-5 font-medium tracking-20 text-ink-4">
-            <span>{t.admin.editor.previewTitle}</span>
-            <span className="flex items-center gap-8">
-              {(['desktop', 'mobile'] as const).map((value, index) => (
-                <span key={value} className="flex items-center gap-8">
-                  {index > 0 && <span aria-hidden="true">·</span>}
-                  <button
-                    type="button"
-                    onClick={() => setDevice(value)}
-                    aria-pressed={device === value}
-                    className={cn(
-                      'transition-colors duration-200',
-                      device === value ? 'text-gold' : 'text-ink-4 hover:text-gold',
-                    )}
-                  >
-                    {value === 'desktop' ? t.admin.editor.desktop : t.admin.editor.mobile}
-                  </button>
-                </span>
-              ))}
-            </span>
-          </div>
-
-          <div className="mt-12">
-            <ArticlePreview
-              title={draft.title}
-              excerpt={draft.excerpt}
-              category={draft.category}
-              coverImage={draft.coverImage}
-              coverAlt={draft.coverAlt}
-              date={draft.publishedAt ? new Date(`${draft.publishedAt}T12:00:00Z`) : new Date()}
-              blocks={previewBlocks}
-              device={device}
-              placeholderTitle={t.admin.editor.newArticle}
+        {/* --- Pannello Impostazioni ---------------------------------------- */}
+        {panelOpen && (
+          <>
+            <button
+              type="button"
+              aria-label={t.admin.editor.closeSettings}
+              onClick={() => setPanelOpen(false)}
+              className="fixed inset-0 z-30 bg-night/80 lg:hidden"
             />
-          </div>
-
-          {/* SEO */}
-          <div className="mt-22 border-t border-hairline-strong pt-18">
-            <p className="font-body text-10-5 font-medium tracking-20 text-ink-4">
-              {t.admin.editor.seo}
-            </p>
-
-            <SeoCounter
-              label={t.admin.editor.seoTitle}
-              value={seoTitle.length}
-              limit={seoLimits.title}
-              unit={t.admin.editor.characters}
+            <SettingsPanel
+              uid={uid}
+              draft={draft}
+              missing={showMissing ? missing : []}
+              used={used}
+              onChange={(patch) => {
+                update(patch);
+                if (patch.coverImage) remember(patch.coverImage, patch.coverAlt ?? draft.coverAlt);
+              }}
+              onSlug={(value) => {
+                setSlugTouched(true);
+                update({ slug: slugify(value) });
+              }}
+              onClose={() => setPanelOpen(false)}
             />
-            <SeoCounter
-              label={t.admin.editor.seoDescription}
-              value={seoDescription.length}
-              limit={seoLimits.description}
-              unit={t.admin.editor.characters}
-            />
-
-            <p className="mt-12 font-body text-13 leading-170 font-medium text-ink-3">
-              {t.admin.editor.url}
-              <br />
-              <span className="text-ink-2">
-                {site.url.replace(/^https?:\/\//, '')}
-                {routes.news}/<span className="text-gold">{slug}</span>
-              </span>
-            </p>
-          </div>
-        </aside>
+          </>
+        )}
       </div>
+
+      {/* --- Riga di controllo -------------------------------------------- */}
+      <footer className="flex flex-wrap items-center gap-22 border-t border-hairline bg-admin-bg px-26 py-14 font-body text-12-5 font-medium text-ink-4">
+        {checks.map((check) => (
+          <span key={check.label} className="flex items-center gap-9">
+            {check.done ? (
+              <span
+                aria-hidden="true"
+                className="flex size-14 items-center justify-center rounded-pill bg-gold text-9 font-semibold text-gold-ink"
+              >
+                ✓
+              </span>
+            ) : (
+              <span
+                aria-hidden="true"
+                className="block size-14 rounded-pill border border-field-border"
+              />
+            )}
+            {check.label}
+          </span>
+        ))}
+        <span className="ml-auto">
+          {words > 0
+            ? t.admin.editor.words
+                .replace('{words}', String(words))
+                .replace('{minutes}', String(readingMinutes(body)))
+            : t.admin.editor.noWords}
+        </span>
+      </footer>
     </div>
   );
 }
 
-/** Contatore SEO con barra: oltre il limite passa in rosso. */
-function SeoCounter({
-  label,
-  value,
-  limit,
-  unit,
+/**
+ * Le etichette dei campi stanno nel margine, non dentro riquadri: dicono cosa
+ * si sta scrivendo senza trasformare il foglio in un modulo. Sono decorative —
+ * il nome accessibile del campo arriva da `aria-label` — e sotto i 900px, dove
+ * il margine non c'è, spariscono.
+ */
+function MarginLabel({
+  top,
+  missing,
+  children,
 }: {
-  label: string;
-  value: number;
-  limit: number;
-  unit: string;
+  top: string;
+  missing?: boolean;
+  children: React.ReactNode;
 }) {
-  const over = value > limit;
-  const width = Math.min(100, Math.round((value / limit) * 100));
-
   return (
-    <div className="mt-12 font-body text-13 leading-170 font-medium text-ink-3">
-      {label} ·{' '}
-      <span className={over ? 'text-red' : undefined}>
-        {value}/{limit}
-      </span>{' '}
-      {unit}
-      <span className="mt-6 block h-4 bg-track">
-        <span
-          className={cn('block h-full transition-[width] duration-200', over ? 'bg-red' : 'bg-gold')}
-          style={{ width: `${width}%` }}
-        />
-      </span>
-    </div>
+    <span
+      aria-hidden="true"
+      className={cn(
+        'absolute -left-104 hidden items-center gap-6 font-body text-9 font-medium tracking-20 md:flex',
+        top,
+        missing ? 'text-gold' : 'text-ink-4',
+      )}
+    >
+      {missing && <span className="block size-6 rounded-pill bg-gold" />}
+      {children}
+    </span>
   );
 }

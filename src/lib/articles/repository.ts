@@ -2,6 +2,7 @@ import 'server-only';
 import type { Article as ArticleRow, Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { parseBody, readingMinutes, serializeBody, type BodyBlock } from './body';
+import type { UsedImage } from './editor-blocks';
 
 /**
  * Unico punto di accesso agli articoli.
@@ -241,6 +242,37 @@ export async function countByStatus() {
     prisma.article.count({ where: { status: 'draft' } }),
   ]);
   return { total, published, drafts };
+}
+
+/**
+ * Le foto già usate negli articoli, dalla più recente.
+ *
+ * È la libreria Media senza la pagina Media: la sorgente è il database, non un
+ * elenco del bucket, quindi non c'è un modello dati nuovo da tenere allineato.
+ * Risolve il problema vero — la stessa foto ricaricata tre volte perché nessuno
+ * si ricorda di averla già messa — senza una sezione da costruire e mantenere.
+ */
+export async function listUsedImages(): Promise<UsedImage[]> {
+  const rows = await prisma.article.findMany({
+    select: { body: true, coverImage: true, coverAlt: true },
+    orderBy: { updatedAt: 'desc' },
+  });
+
+  // Una foto sola anche se compare in dieci articoli: la chiave è l'indirizzo.
+  const images = new Map<string, string>();
+
+  for (const row of rows) {
+    if (row.coverImage && !images.has(row.coverImage)) {
+      images.set(row.coverImage, row.coverAlt);
+    }
+    for (const block of parseBody(row.body)) {
+      if (block.type === 'image' && block.src && !images.has(block.src)) {
+        images.set(block.src, block.label);
+      }
+    }
+  }
+
+  return [...images].map(([src, label]) => ({ src, label }));
 }
 
 export async function getById(id: string): Promise<Article | null> {

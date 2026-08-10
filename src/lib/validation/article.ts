@@ -1,22 +1,39 @@
 import { z } from 'zod';
 import { newsCategories } from '@/data/news-categories';
+import { normalizeBody, parseBlock } from '@/lib/articles/body';
 
 /**
  * Payload dell'editor.
  *
- * Il corpo viaggia come testo (la stessa cosa che il redattore ha davanti) e
- * viene trasformato in blocchi da `textToBlocks`, sia nell'anteprima sia sul
- * server: una funzione sola, nessuna possibilità che anteprima e pagina
- * pubblicata divergano.
+ * Il corpo viaggia come lista di blocchi — la stessa forma che il database
+ * conserva e che la pagina pubblica rende — non più come testo con marcatori.
+ * Un blocco malformato non viene scartato in silenzio: la richiesta è
+ * rifiutata, perché scartarlo vorrebbe dire perdere un pezzo di articolo senza
+ * dirlo a chi l'ha scritto.
  */
 
 const categorySlugs = newsCategories.map((category) => category.slug);
+
+/** Un articolo lunghissimo sta ampiamente sotto: è un tetto contro gli abusi. */
+const maxBlocks = 500;
 
 export const articlePayloadSchema = z.object({
   title: z.string().trim().max(200).default(''),
   slug: z.string().trim().max(90).default(''),
   excerpt: z.string().trim().max(600).default(''),
-  bodyText: z.string().max(60_000).default(''),
+  body: z
+    .array(z.unknown())
+    .max(maxBlocks)
+    .default([])
+    .superRefine((blocks, ctx) => {
+      blocks.forEach((block, index) => {
+        if (parseBlock(block) !== null) return;
+        ctx.addIssue({ code: 'custom', path: [index], message: 'Blocco del corpo non valido.' });
+      });
+    })
+    // Normalizzare qui e non nella rotta significa che nessuna scrittura può
+    // saltare il passaggio: la validazione è anche la porta.
+    .transform(normalizeBody),
   category: z.string().trim().max(60).default(''),
   coverImage: z.string().max(500).nullable().default(null),
   coverAlt: z.string().trim().max(300).default(''),
