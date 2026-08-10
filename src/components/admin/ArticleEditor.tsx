@@ -4,6 +4,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { AutoTextarea } from './editor/AutoTextarea';
 import { BlockField } from './editor/BlockField';
+import { HelpHint } from './editor/HelpHint';
 import { SelectionToolbar } from './editor/SelectionToolbar';
 import { SettingsPanel } from './editor/SettingsPanel';
 import type { UsedImage } from './editor/PhotoPicker';
@@ -373,6 +374,12 @@ export function ArticleEditor({
               draft.status === 'draft' ? t.admin.news.status.draft : t.admin.news.status.published
             }
           />
+          <HelpHint
+            label={draft.status === 'draft' ? t.admin.news.status.draft : t.admin.news.status.published}
+            align="left"
+          >
+            {t.admin.editor.help.status}
+          </HelpHint>
         </div>
 
         <div className="flex flex-none items-center gap-12 font-body text-12-5 tracking-08">
@@ -549,6 +556,10 @@ export function ArticleEditor({
 
       {/* --- Riga di controllo -------------------------------------------- */}
       <footer className="flex flex-wrap items-center gap-22 border-t border-hairline bg-admin-bg px-26 py-14 font-body text-12-5 font-medium text-ink-4">
+        {/* L'aiuto sta in fondo alla pagina, quindi si apre verso l'alto. */}
+        <HelpHint label={t.admin.editor.publish} placement="above" align="left">
+          {t.admin.editor.help.checklist}
+        </HelpHint>
         {checks.map((check) => (
           <span key={check.label} className="flex items-center gap-9">
             {check.done ? (

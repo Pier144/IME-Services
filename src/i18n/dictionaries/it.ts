@@ -792,6 +792,21 @@ const it = {
         category: 'Categoria',
         cover: 'Copertina',
       },
+      /* Gli aiuti dicono cosa fa il codice, non cosa fanno di solito questi
+         campi altrove. Se cambia il comportamento, cambiano anche loro. */
+      help: {
+        open: 'Aiuto',
+        slug: 'È la parte finale dell’indirizzo della pagina: ime-service.it/news/questo-pezzo-qui. Si scrive da sé mentre digiti il titolo, ma puoi accorciarlo a mano. Cambiarlo su un articolo già pubblicato ne rompe il vecchio indirizzo: chi l’aveva condiviso o salvato non lo trova più.',
+        featured:
+          'L’articolo in evidenza è quello grande in cima alla pagina /news. Se ne segni più d’uno vince il più recente; se non ne segni nessuno, in cima va comunque l’ultimo pubblicato.',
+        date: 'Decide l’ordine: gli articoli si mostrano dal più recente. Una data futura non rimanda la pubblicazione — l’articolo esce subito e si piazza in cima all’elenco.',
+        tags: 'Compaiono in fondo all’articolo e fra le parole chiave per i motori di ricerca. Non filtrano niente: gli elenchi si filtrano per categoria.',
+        seo: 'Il titolo e la descrizione che compaiono su Google e nelle anteprime condivise. Se li lasci vuoti si usano il titolo e il sommario dell’articolo. I due limiti sono la lunghezza oltre la quale il testo viene tagliato.',
+        checklist:
+          'Servono tutti e quattro per pubblicare. Se ne manca uno, PUBBLICA non si spegne: apre le Impostazioni e dice cosa manca.',
+        status:
+          'Una bozza esiste solo qui: non compare in /news e non si raggiunge nemmeno dal suo indirizzo. Pubblicandola va online entro pochi secondi, e si può sempre riportare in bozza.',
+      },
       words: '{words} parole · {minutes} minuti di lettura',
       noWords: 'Nessuna parola ancora',
       featuredYes: 'Sì',

@@ -745,6 +745,21 @@ const en: Dictionary = {
         category: 'Category',
         cover: 'Cover',
       },
+      /* The hints describe what the code does, not what these fields usually
+         do elsewhere. If the behaviour changes, they change too. */
+      help: {
+        open: 'Help',
+        slug: 'The last part of the page address: ime-service.it/news/this-bit-here. It writes itself as you type the title, but you can shorten it by hand. Changing it on a published article breaks the old address: anyone who shared or bookmarked it will not find it again.',
+        featured:
+          'The featured article is the large one at the top of /news. Mark more than one and the most recent wins; mark none and the latest published one goes there anyway.',
+        date: 'It sets the order: articles are listed newest first. A future date does not delay publication — the article goes out straight away and lands at the top.',
+        tags: 'They appear at the foot of the article and among the keywords for search engines. They filter nothing: listings are filtered by category.',
+        seo: 'The title and description shown on Google and in shared previews. Leave them empty and the article title and summary are used instead. The two limits are the length beyond which the text gets cut.',
+        checklist:
+          'All four are needed to publish. If one is missing, PUBLISH does not go dark: it opens the settings and says what is missing.',
+        status:
+          'A draft exists only here: it does not appear in /news and cannot be reached at its address either. Publishing puts it online within seconds, and it can always go back to draft.',
+      },
       words: '{words} words · {minutes} min read',
       noWords: 'No words yet',
       featuredYes: 'Yes',

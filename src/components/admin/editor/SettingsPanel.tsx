@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { PhotoPicker, type UsedImage } from './PhotoPicker';
 import type { EditorArticle } from './draft';
+import { HelpHint } from './HelpHint';
 import { PhotoSlot } from '@/components/media/PhotoSlot';
 import { FieldLabel, Input, Select, Toggle } from '@/components/ui/Field';
 import { newsCategories } from '@/data/news-categories';
@@ -157,7 +158,9 @@ export function SettingsPanel({
       {/* --- Data e in evidenza -------------------------------------------- */}
       <div className="mt-16 flex items-end gap-12">
         <div className="min-w-0 flex-1">
-          <PanelLabel htmlFor={`${uid}-date`}>{t.admin.editor.labels.date}</PanelLabel>
+          <PanelLabel htmlFor={`${uid}-date`} hint={t.admin.editor.help.date}>
+            {t.admin.editor.labels.date}
+          </PanelLabel>
           <Input
             id={`${uid}-date`}
             tone="admin"
@@ -167,7 +170,9 @@ export function SettingsPanel({
           />
         </div>
         <div className="flex-none">
-          <PanelLabel htmlFor={`${uid}-featured`}>{t.admin.editor.labels.featured}</PanelLabel>
+          <PanelLabel htmlFor={`${uid}-featured`} hint={t.admin.editor.help.featured}>
+            {t.admin.editor.labels.featured}
+          </PanelLabel>
           <Toggle
             id={`${uid}-featured`}
             checked={draft.featured}
@@ -180,7 +185,9 @@ export function SettingsPanel({
 
       {/* --- Tag ------------------------------------------------------------ */}
       <div className="mt-22">
-        <PanelLabel htmlFor={`${uid}-tag`}>{t.admin.editor.labels.tags}</PanelLabel>
+        <PanelLabel htmlFor={`${uid}-tag`} hint={t.admin.editor.help.tags}>
+          {t.admin.editor.labels.tags}
+        </PanelLabel>
         <div className="flex flex-wrap items-center gap-8 font-body text-12-5 font-medium text-ink-2">
           {draft.tags.map((tag) => (
             <span
@@ -220,7 +227,9 @@ export function SettingsPanel({
 
       {/* --- Slug ----------------------------------------------------------- */}
       <div className="mt-22">
-        <PanelLabel htmlFor={`${uid}-slug`}>{t.admin.editor.labels.slug}</PanelLabel>
+        <PanelLabel htmlFor={`${uid}-slug`} hint={t.admin.editor.help.slug}>
+          {t.admin.editor.labels.slug}
+        </PanelLabel>
         <Input
           id={`${uid}-slug`}
           tone="admin"
@@ -243,9 +252,14 @@ export function SettingsPanel({
 
       {/* --- SEO ------------------------------------------------------------ */}
       <div className="mt-22 border-t border-hairline-strong pt-18">
-        <p className="font-body text-10-5 font-medium tracking-20 text-ink-4">
-          {t.admin.editor.seo}
-        </p>
+        <div className="relative">
+          <p className="font-body text-10-5 font-medium tracking-20 text-ink-4">
+            {t.admin.editor.seo}
+          </p>
+          <span className="absolute top-0 right-0">
+            <HelpHint label={t.admin.editor.seo}>{t.admin.editor.help.seo}</HelpHint>
+          </span>
+        </div>
 
         <SeoCounter
           label={t.admin.editor.seoTitle}
@@ -273,23 +287,42 @@ export function SettingsPanel({
   );
 }
 
-/** Etichetta del pannello: quando il campo manca per pubblicare, passa in oro. */
+/**
+ * Etichetta del pannello: quando il campo manca per pubblicare passa in oro, e
+ * quando ha una spiegazione porta il «?» all'altro capo della riga.
+ *
+ * Il «?» sta **fuori** dal `<label>`: dentro, un clic sull'aiuto attiverebbe
+ * anche il campo a cui l'etichetta è legata.
+ */
 function PanelLabel({
   htmlFor,
   missing,
+  hint,
   children,
 }: {
   htmlFor: string;
   missing?: boolean;
+  hint?: React.ReactNode;
   children: React.ReactNode;
 }) {
-  return (
+  const label = (
     <FieldLabel htmlFor={htmlFor} tone="admin" className={missing ? 'text-gold' : undefined}>
       <span className="inline-flex items-center gap-6">
         {missing && <span aria-hidden="true" className="block size-6 rounded-pill bg-gold" />}
         {children}
       </span>
     </FieldLabel>
+  );
+
+  if (!hint) return label;
+
+  return (
+    <div className="relative">
+      {label}
+      <span className="absolute top-0 right-0">
+        <HelpHint label={String(children)}>{hint}</HelpHint>
+      </span>
+    </div>
   );
 }
 
