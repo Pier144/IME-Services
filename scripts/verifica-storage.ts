@@ -16,21 +16,21 @@ async function main() {
   const driver = process.env.STORAGE_DRIVER ?? 'local';
   console.log(`STORAGE_DRIVER = ${driver}`);
 
-  if (driver !== 's3') {
-    console.log(
-      '\nDriver locale: i file finiscono in ' +
-        (process.env.STORAGE_LOCAL_DIR ?? './storage/uploads') +
-        '.\nVa bene in sviluppo, ma NON in produzione: su Netlify il disco e di sola\n' +
-        'lettura e ogni caricamento fallisce. Metti STORAGE_DRIVER="s3" e riprova.',
-    );
-    return;
-  }
-
   const attese = ['S3_ENDPOINT', 'S3_REGION', 'S3_BUCKET', 'S3_ACCESS_KEY_ID', 'S3_SECRET_ACCESS_KEY'];
   const mancanti = attese.filter((nome) => !process.env[nome]);
+
+  // La configurazione si prova se c'e', a prescindere dal driver attivo: il
+  // senso di questo controllo e' dire se si puo' passare a "s3", non
+  // pretendere che ci si sia gia' passati.
   if (mancanti.length > 0) {
-    console.error(`\nMancano le variabili: ${mancanti.join(', ')}`);
-    process.exit(1);
+    console.log(
+      `\nConfigurazione S3 incompleta, mancano: ${mancanti.join(', ')}.\n` +
+        'Con il driver locale i file finiscono in ' +
+        (process.env.STORAGE_LOCAL_DIR ?? './storage/uploads') +
+        ': va bene in sviluppo, ma NON in produzione, perche su Netlify il\n' +
+        'disco e di sola lettura e ogni caricamento fallisce.',
+    );
+    process.exit(driver === 's3' ? 1 : 0);
   }
 
   console.log(`endpoint = ${process.env.S3_ENDPOINT}`);
@@ -44,6 +44,19 @@ async function main() {
   const contenuto = `verifica storage ${randomUUID()}`;
   const nome = `verifica-${randomUUID()}.txt`;
 
+  // I tre esiti che R2 distingue, e che vale la pena saper leggere:
+  //   SignatureDoesNotMatch → S3_SECRET_ACCESS_KEY sbagliata
+  //   InvalidAccessKeyId    → S3_ACCESS_KEY_ID sbagliata o token revocato
+  //   AccessDenied          → chiavi valide, ma il token non ha i permessi su
+  //                           QUESTO bucket: o e' in sola lettura, o e'
+  //                           limitato a un bucket diverso, o il nome in
+  //                           S3_BUCKET non coincide (conta anche il maiuscolo)
+  //   NoSuchKey in lettura   → tutto a posto, manca solo il file
+  //
+  // Su R2 c'e' anche una trappola di endpoint: un bucket creato nella
+  // giurisdizione EU risponde AccessDenied sull'endpoint normale, e va
+  // interrogato su <account>.eu.r2.cloudflarestorage.com. La giurisdizione e'
+  // un'altra cosa dal "location hint", che invece non cambia l'endpoint.
   console.log('\n1. scrittura...');
   const { key } = await s3Driver.put({
     folder: 'articoli',
@@ -84,6 +97,14 @@ async function main() {
   console.log(`   si: senza firma risponde ${senzaFirma ? senzaFirma.status : 'errore di rete'}`);
 
   console.log(`\nOK — lo storage funziona.\nPuoi cancellare l'oggetto di prova: ${key}`);
+
+  if (driver !== 's3') {
+    console.log(
+      '\nResta un passo: STORAGE_DRIVER e ancora "' +
+        driver +
+        '". Mettilo a "s3" per usare davvero il bucket.',
+    );
+  }
 }
 
 main().catch((errore: unknown) => {
