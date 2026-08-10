@@ -30,7 +30,13 @@ export async function POST(request: Request) {
 
   if (!verifyCredentials(email, password)) {
     // Messaggio unico: non si dice se a sbagliare è l'email o la password.
-    return NextResponse.json({ error: 'Credenziali non valide.' }, { status: 401 });
+    // `remaining` sì: sapere che restano due tentativi non aiuta chi attacca
+    // (il limite è pubblico e misurabile provando) ma evita a chi ha diritto
+    // di entrare di ritrovarsi bloccato senza preavviso.
+    return NextResponse.json(
+      { error: 'Credenziali non valide.', remaining: limiter.remaining },
+      { status: 401 },
+    );
   }
 
   await createSession(email);

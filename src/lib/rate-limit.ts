@@ -24,7 +24,7 @@ function sweep(now: number) {
 export function rateLimit(
   key: string,
   { limit, windowMs }: { limit: number; windowMs: number },
-): { allowed: boolean; retryAfterSeconds: number } {
+): { allowed: boolean; retryAfterSeconds: number; remaining: number } {
   const now = Date.now();
   sweep(now);
 
@@ -32,7 +32,7 @@ export function rateLimit(
 
   if (!bucket || bucket.resetAt <= now) {
     buckets.set(key, { count: 1, resetAt: now + windowMs });
-    return { allowed: true, retryAfterSeconds: 0 };
+    return { allowed: true, retryAfterSeconds: 0, remaining: limit - 1 };
   }
 
   bucket.count += 1;
@@ -40,10 +40,13 @@ export function rateLimit(
     return {
       allowed: false,
       retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+      remaining: 0,
     };
   }
 
-  return { allowed: true, retryAfterSeconds: 0 };
+  // Quanti ne restano dopo questo. Serve al modulo di accesso per dirlo a chi
+  // sta sbagliando la password: senza, ci si trova bloccati senza preavviso.
+  return { allowed: true, retryAfterSeconds: 0, remaining: limit - bucket.count };
 }
 
 /** Identifica il chiamante dietro un eventuale reverse proxy. */

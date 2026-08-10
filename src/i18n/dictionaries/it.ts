@@ -634,6 +634,14 @@ const it = {
       submit: 'ACCEDI',
       submitting: 'ACCESSO IN CORSO…',
       error: 'Email o password non corretti.',
+      /** Quanti tentativi restano prima del blocco. */
+      remaining: 'Restano {count} tentativi.',
+      remainingOne: 'Resta un solo tentativo.',
+      /** Ultimo errore consentito: «restano 0 tentativi» non aiuterebbe nessuno. */
+      remainingNone: 'Al prossimo errore l’accesso si blocca per dieci minuti.',
+      /** Blocco del limitatore: in oro, non in rosso — non è un errore di chi scrive. */
+      blocked: 'Troppi tentativi. Riprova fra qualche minuto.',
+      retryAt: 'Puoi riprovare alle {time}.',
       backToSite: 'Torna al sito',
     },
     news: {
@@ -663,8 +671,18 @@ const it = {
       edit: 'Modifica',
       delete: 'Elimina',
       status: { draft: 'BOZZA', published: 'PUBBLICATO' },
-      empty: 'Nessun articolo corrisponde alla ricerca.',
-      emptyAll: 'Non c’è ancora nessun articolo. Creane uno.',
+      /** Ricerca senza esiti: il termine cercato va fra virgolette basse. */
+      emptySearch: 'Nessun articolo corrisponde a «{term}».',
+      emptySearchHint: 'Prova con meno parole, oppure',
+      emptySearchReset: 'azzera la ricerca',
+      /** Filtri attivi ma nessuna ricerca testuale. */
+      emptyFilters: 'Nessun articolo con questi filtri.',
+      emptyFiltersReset: 'azzera i filtri',
+      /** Archivio davvero vuoto: nessun articolo esiste. */
+      emptyArchive: 'Non c’è ancora nessun articolo.',
+      emptyArchiveText:
+        'Le news compaiono in home e nella pagina /news. Il primo articolo può restare in bozza finché non è pronto.',
+      countNone: 'Nessun articolo',
       deleteTitle: 'Eliminare questo articolo?',
       deleteTitleMany: 'Eliminare {count} articoli?',
       deleteText:

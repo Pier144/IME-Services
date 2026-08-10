@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
-import { ArticleList } from '@/components/admin/ArticleList';
+import { ArticleList, type StatoVuoto } from '@/components/admin/ArticleList';
 import { ArticleSearch } from '@/components/admin/ArticleSearch';
 import { NewArticleButton } from '@/components/admin/NewArticleButton';
 import { PerPageSelect } from '@/components/admin/PerPageSelect';
@@ -68,6 +68,33 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
     return suffix ? `${adminRoutes.news}?${suffix}` : adminRoutes.news;
   };
 
+  /** Come `hrefFor`, ma togliendo un filtro e lasciando gli altri al loro posto. */
+  const hrefSenza = ({ q }: { q?: boolean }) => {
+    const params = new URLSearchParams();
+    if (search && !q) params.set('q', search);
+    if (status !== 'all') params.set('stato', status);
+    if (category) params.set('categoria', category);
+    if (yearParam) params.set('anno', yearParam);
+    if (perPage !== PER_PAGE_DEFAULT) params.set('perPagina', String(perPage));
+    const suffix = params.toString();
+    return suffix ? `${adminRoutes.news}?${suffix}` : adminRoutes.news;
+  };
+
+  /**
+   * Tre modi diversi di essere vuoti, tre risposte diverse: chi non ha ancora
+   * scritto niente va invitato a cominciare, chi ha cercato male va aiutato a
+   * cercare meglio. «Azzera» toglie solo il filtro in questione e lascia gli
+   * altri dove sono.
+   */
+  const emptyState: StatoVuoto | null =
+    page.items.length > 0
+      ? null
+      : counts.total === 0
+        ? { kind: 'archivio' }
+        : search
+          ? { kind: 'ricerca', term: search, resetHref: hrefSenza({ q: true }) }
+          : { kind: 'filtri', resetHref: adminRoutes.news };
+
   const tabs = [
     { key: 'all' as const, label: t.admin.news.tabs.all, count: counts.total, href: hrefFor('all') },
     {
@@ -95,7 +122,14 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
               {t.admin.news.title}
             </Display>
             <p className="mt-5 font-body text-13-5 font-medium text-ink-3">
-              {counts.total} {counts.total === 1 ? t.admin.news.countArticle : t.admin.news.countArticles}
+              {counts.total === 0 ? (
+                <span className="text-ink-4">{t.admin.news.countNone}</span>
+              ) : (
+                <>
+                  {counts.total}{' '}
+                  {counts.total === 1 ? t.admin.news.countArticle : t.admin.news.countArticles}
+                </>
+              )}
               {counts.drafts > 0 && (
                 <>
                   {' · '}
@@ -128,10 +162,13 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
           tabs={tabs}
           activeTab={status}
           categories={newsCategories.map((c) => ({ slug: c.slug, name: c.name }))}
-          emptyLabel={counts.total === 0 ? t.admin.news.emptyAll : t.admin.news.empty}
+          empty={emptyState}
         />
 
-        {/* --- Piede --------------------------------------------------------- */}
+        {/* --- Piede -----------------------------------------------------------
+            Archivio vuoto: niente piede. «0-0 di 0 · 8 per pagina» sotto un
+            invito a scrivere il primo articolo è rumore. */}
+        {emptyState?.kind !== 'archivio' && (
         <div className="mt-22 flex flex-wrap items-center justify-between gap-14 font-body text-13 font-medium text-ink-3">
           <span className="flex items-center gap-12">
             <span>
@@ -163,6 +200,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
             </div>
           )}
         </div>
+        )}
       </main>
     </div>
   );

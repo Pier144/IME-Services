@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DeleteArticleButton } from './DeleteArticleButton';
 import { DeleteArticlesDialog } from './DeleteArticlesDialog';
+import { NewArticleButton } from './NewArticleButton';
 import { PhotoSlot } from '@/components/media/PhotoSlot';
 import { ArticleMeta } from '@/components/news/ArticleMeta';
 import { StatusBadge } from '@/components/ui/Badge';
@@ -43,18 +44,29 @@ export type SchedaStato = {
   href: string;
 };
 
+/**
+ * Perché la lista è vuota. Sono situazioni diverse e vogliono risposte
+ * diverse: chi ha cercato male va aiutato a cercare meglio, chi non ha
+ * ancora scritto niente va invitato a cominciare.
+ */
+export type StatoVuoto =
+  | { kind: 'archivio' }
+  | { kind: 'ricerca'; term: string; resetHref: string }
+  | { kind: 'filtri'; resetHref: string };
+
 export function ArticleList({
   articles,
   tabs,
   activeTab,
   categories,
-  emptyLabel,
+  empty,
 }: {
   articles: RigaArticolo[];
   tabs: SchedaStato[];
   activeTab: 'all' | 'published' | 'draft';
   categories: Array<{ slug: string; name: string }>;
-  emptyLabel: string;
+  /** Null quando ci sono articoli da mostrare. */
+  empty: StatoVuoto | null;
 }) {
   const { t } = useI18n();
   const router = useRouter();
@@ -183,7 +195,9 @@ export function ArticleList({
             </button>
           </span>
         </div>
-      ) : (
+      ) : empty?.kind === 'archivio' ? null : (
+        // Archivio vuoto: niente schede. Filtrare per stato quando non esiste
+        // nessun articolo è un invito a girare a vuoto.
         <nav className="mt-26 flex items-center justify-between gap-20 border-b border-hairline-strong">
           <span className="flex gap-26 overflow-x-auto font-body text-13 tracking-10">
             {tabs.map((tab) => (
@@ -216,10 +230,38 @@ export function ArticleList({
         </p>
       )}
 
-      {articles.length === 0 ? (
-        <p className="border-b border-hairline py-40 text-center font-body text-15 font-medium text-ink-3">
-          {emptyLabel}
-        </p>
+      {empty ? (
+        empty.kind === 'archivio' ? (
+          <div className="border-t border-hairline-strong py-76 text-center">
+            <p className="font-display text-22 font-medium text-ink">{t.admin.news.emptyArchive}</p>
+            <p className="mx-auto mt-10 max-w-440 font-body text-15 leading-175 font-medium text-ink-3">
+              {t.admin.news.emptyArchiveText}
+            </p>
+            <span className="mt-26 inline-flex">
+              <NewArticleButton size="cta" />
+            </span>
+          </div>
+        ) : (
+          <div className="border-b border-hairline py-56 text-center">
+            <p className="font-body text-15 font-medium text-ink-2">
+              {empty.kind === 'ricerca'
+                ? t.admin.news.emptySearch.replace('{term}', empty.term)
+                : t.admin.news.emptyFilters}
+            </p>
+            <p className="mt-8 font-body text-13-5 font-medium text-ink-3">
+              {empty.kind === 'ricerca' && <>{t.admin.news.emptySearchHint} </>}
+              <Link
+                href={empty.resetHref}
+                className="text-gold transition-colors duration-200 hover:text-gold-hover"
+              >
+                {empty.kind === 'ricerca'
+                  ? t.admin.news.emptySearchReset
+                  : t.admin.news.emptyFiltersReset}
+              </Link>
+              .
+            </p>
+          </div>
+        )
       ) : (
         <ul>
           {articles.map((article) => {

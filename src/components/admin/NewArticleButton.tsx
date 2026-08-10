@@ -11,7 +11,7 @@ import { adminRoutes, apiRoutes } from '@/lib/routes';
  * Così l'articolo ha un id fin dal primo istante e l'autosalvataggio può
  * partire senza casi particolari per "non ancora salvato".
  */
-export function NewArticleButton() {
+export function NewArticleButton({ size = 'admin' }: { size?: 'admin' | 'cta' }) {
   const { t } = useI18n();
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -33,7 +33,7 @@ export function NewArticleButton() {
   }
 
   return (
-    <Button variant="gold" size="admin" onClick={create} disabled={busy}>
+    <Button variant="gold" size={size} onClick={create} disabled={busy}>
       {t.admin.news.newArticle}
     </Button>
   );
