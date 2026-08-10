@@ -51,17 +51,25 @@ ed è chiamata dentro `articlePayloadSchema`, non dalle rotte: così nessuna scr
 `parseBlock` — e i test in `body.test.ts` vanno estesi.** Qualunque altra strada rimette in piedi il
 problema.
 
-### 3. Le foto dipendono da R2, che è configurato ma non in produzione
+### 3. Le foto dipendono da R2, che ora è configurato anche su Netlify
 
 R2 funziona **in locale**: verificato con un caricamento vero attraverso `/api/upload`, file salvato
 nel bucket, riletto con link firmato, e `/api/media/…` che risponde 404 a chi non ha sessione.
 
-**Su Netlify le variabili dello storage non sono ancora impostate** — `STORAGE_DRIVER` va portato a
-`"s3"`, e servono `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`,
-`S3_SECRET_ACCESS_KEY` (l'elenco commentato sta in `.env.example`). Finché non ci sono, ogni
-caricamento fallisce — comprese le foto nel corpo dell'articolo, che nella Tappa 5 sono diventate
-una funzione centrale. `STORAGE_DRIVER` da solo non basta e viceversa: il driver locale scrive su
-disco, e sull'hosting il disco è di sola lettura.
+**Su Netlify le variabili ci sono e sono valide** (verificato il 10 agosto 2026). Non esiste uno
+strumento che le legga da qui, ma il comportamento del sito le dimostra tutte: chiedendo una
+copertina inesistente a `/api/media/copertine/…`, l'anteprima risponde `307` e non `404` — quindi
+`STORAGE_DRIVER="s3"` — senza sollevare l'errore di `readConfig()`, quindi tutte e cinque le `S3_*`
+sono presenti; il redirect punta a `<account>.eu.r2.cloudflarestorage.com/allegati/…`, quindi
+l'endpoint ha la giurisdizione giusta; e R2 risponde `NoSuchKey`, non `SignatureDoesNotMatch`,
+quindi la firma è stata accettata e le chiavi sono buone.
+
+**È la stessa sonda da rifare se un giorno le foto smettono di funzionare**: distingue in una
+richiesta sola fra driver sbagliato (404), variabile mancante (500), endpoint sbagliato
+(`AccessDenied`) e chiavi sbagliate (`SignatureDoesNotMatch`).
+
+Attenzione se un giorno vanno rigenerate: `STORAGE_DRIVER` da solo non basta e viceversa. Il driver
+locale scrive su disco, e sull'hosting il disco è di sola lettura.
 
 Attenzione all'endpoint: il bucket è nella **giurisdizione EU**, quindi l'indirizzo contiene `.eu.`
 (`https://<account>.eu.r2.cloudflarestorage.com`). Sull'endpoint normale R2 risponde `AccessDenied`
@@ -188,9 +196,10 @@ Tutto sta su **account personali** e andrà spostato su account intestati a IME 
 go-live.
 
 Restano aperti, indipendenti da questo lavoro: la regione delle funzioni Netlify da portare a
-Francoforte (il default è Ohio, e il database è a Francoforte), le variabili `S3_*` su Netlify, il
-dominio vero con `NEXT_PUBLIC_SITE_URL` allineata, e le notifiche email (oggi `MAIL_DRIVER=console`,
-quindi nessuno riceve niente).
+Francoforte (girano a Columbus, Ohio, e il database è a Francoforte), il dominio vero con
+`NEXT_PUBLIC_SITE_URL` da riallineare — oggi vale `https://imeservice.netlify.app`, che è giusto
+per l'anteprima — e le notifiche email, se `MAIL_DRIVER` è ancora `console`: in quel caso nessuno
+riceve niente. Lo storage invece è a posto su entrambi gli ambienti (vedi §3).
 
 **Fuori perimetro ma più grave di tutto il resto:** le richieste di preventivo e le candidature
 finiscono nel database e **nessuno le vede**. Non esiste una pagina per leggerle e non parte nessuna
@@ -205,9 +214,8 @@ notifica.
    inserire password nei form: Invio, Backspace, il fuoco che salta di blocco, il «+», il
    trascinamento della foto e la barra sulla selezione **li deve provare una persona**. I test
    coprono la logica sotto, non il rendering.
-2. **Le cinque variabili dello storage su Netlify** — `STORAGE_DRIVER="s3"`, `S3_ENDPOINT`,
-   `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`. Senza, sull'anteprima
-   nessuna foto si carica: né le copertine, né quelle nel corpo dell'articolo.
+2. **La regione delle funzioni**: girano a Columbus, Ohio (`cmh`) mentre il database è a
+   Francoforte. Ogni query attraversa l'oceano due volte.
 3. **Le sezioni ancora inesistenti** (Catalogo soggetti, Preventivi, Candidature, Impostazioni):
    sono in barra laterale nel disegno ma le pagine non ci sono, e la barra oggi mostra solo
    `CONTENUTI · News`.
