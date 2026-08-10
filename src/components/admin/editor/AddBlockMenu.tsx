@@ -72,7 +72,7 @@ export function AddBlockMenu({ onAdd }: { onAdd: (type: EditorBlockType) => void
         onClick={() => setOpen((current) => !current)}
         onKeyDown={(event) => event.key === 'Escape' && setOpen(false)}
         className={cn(
-          'flex size-26 items-center justify-center border font-body text-15',
+          'flex size-26 items-center justify-center rounded-soft border font-body text-15',
           'transition-colors duration-200 ease-out',
           open
             ? 'border-gold text-gold'
@@ -86,7 +86,7 @@ export function AddBlockMenu({ onAdd }: { onAdd: (type: EditorBlockType) => void
         <div
           role="menu"
           aria-label={t.admin.editor.add.title}
-          className="absolute top-34 left-0 w-300 border border-hairline-strong bg-panel-ime py-8"
+          className="absolute top-34 left-0 w-300 rounded-soft border border-hairline-strong bg-panel-ime py-8"
         >
           <p className="px-18 py-8 font-body text-9 font-medium tracking-20 text-ink-4">
             {t.admin.editor.add.title}

@@ -160,8 +160,14 @@
   /* unico letter-spacing in px del design: dentro la pill del logo */
   --tracking-logo: 0.5px;
 
-  /* --- Geometria: raggio 0 ovunque, tondo solo su pill e bullet ---------- */
+  /* --- Geometria: raggio 0 ovunque, tondo solo su pill e bullet ----------
+     `soft` è l'eccezione, e vale **solo per l'area riservata**: campi,
+     pulsanti, pannelli e menù di `/admin`. Il sito pubblico resta a spigoli
+     vivi, com'è stato approvato.
+     Non è un valore nuovo: 4px è già il raggio della pastiglia del segnaposto
+     foto qui sotto, che infatti ora legge da qui. */
   --radius-none: 0px;
+  --radius-soft: 4px;
   --radius-pill: 999px;
 
   /* --- Filetti "inset" (non sono ombre: sono righe) ---------------------- */
@@ -280,7 +286,7 @@
     z-index: 1;
     max-width: 82%;
     padding: 4px 9px;
-    border-radius: 4px;
+    border-radius: var(--radius-soft);
     background: var(--color-photo-label-bg);
     color: var(--color-photo-label);
     font-family: var(--font-mono);

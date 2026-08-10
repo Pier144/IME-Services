@@ -87,7 +87,7 @@ export function HelpHint({
           id={id}
           role="note"
           className={cn(
-            'absolute z-50 block border border-hairline-strong bg-panel-ime px-14 py-12',
+            'absolute z-50 block rounded-soft border border-hairline-strong bg-panel-ime px-14 py-12',
             // Le etichette attorno sono maiuscole e spaziate: la spiegazione no,
             // altrimenti diventa illeggibile proprio dove serve leggere.
             'font-body text-12-5 leading-170 font-normal tracking-0 text-ink-2 normal-case',

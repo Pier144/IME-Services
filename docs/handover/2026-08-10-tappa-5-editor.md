@@ -180,6 +180,22 @@ Sono già state discusse e approvate: non rimetterle in discussione senza motivo
 - **«Non ancora salvato» non è implementato**: la riga esiste già quando l'editor si apre — la crea
   il `POST` del pulsante «nuovo articolo» — quindi lo stato è irraggiungibile. Non è una svista.
 
+### Dopo la Tappa 5, su richiesta del committente
+
+- **Gli aiuti «?»** su slug, data, in evidenza, tag, SEO, riga di controllo e stato dell'articolo.
+  Si aprono al clic e non al passaggio del mouse: su un telefono il passaggio del mouse non esiste,
+  da tastiera nemmeno. I testi dicono cosa fa **questo** codice — verificato prima di scriverli — e
+  vanno riletti se cambia il comportamento: oggi dicono che i tag non filtrano niente, che una data
+  futura non rimanda la pubblicazione, e che i campi SEO vuoti ricadono su titolo e sommario.
+- **`--radius-soft: 4px`, e vale solo per `/admin`.** Il design system dice «raggio 0 ovunque
+  tranne `rounded-pill`», e il sito pubblico continua a rispettarlo: campi, pulsanti e pannelli
+  dell'area riservata hanno l'angolo appena smussato, il resto no. La distinzione è meccanica e non
+  richiede di ricordarsela: nei pulsanti la decidono le taglie `admin`/`adminSm`, nei campi il
+  `tone="admin"`. **Il valore non è nuovo**: 4px era già il raggio della pastiglia del segnaposto
+  foto, che ora legge il token invece di ripetere il numero.
+  Le caselle di spunta da 15px restano quadrate: su un controllo così piccolo 4px sono un quarto
+  del lato, e si vedrebbero come un difetto invece che come una scelta.
+
 ---
 
 ## Infrastruttura

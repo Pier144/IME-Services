@@ -96,7 +96,7 @@ export function PhotoPicker({
       <div
         {...dropProps}
         className={cn(
-          'border border-dashed text-center transition-colors duration-200 ease-out',
+          'rounded-soft border border-dashed text-center transition-colors duration-200 ease-out',
           bordo,
           variant === 'cover' ? 'photo-slot h-130' : 'bg-gold-veil px-20 py-34',
         )}
@@ -160,7 +160,7 @@ export function PhotoPicker({
                   type="button"
                   title={image.label}
                   onClick={() => onPick(image)}
-                  className="block border border-field-border transition-colors duration-200 ease-out hover:border-gold"
+                  className="block overflow-hidden rounded-soft border border-field-border transition-colors duration-200 ease-out hover:border-gold"
                 >
                   <PhotoSlot
                     label={image.label}

@@ -74,7 +74,7 @@ export function DeleteArticlesDialog({
         aria-modal="true"
         aria-labelledby={uid}
         tabIndex={-1}
-        className="w-full max-w-460 border border-hairline bg-panel-ime px-24 py-28 md:px-32"
+        className="w-full max-w-460 rounded-soft border border-hairline bg-panel-ime px-24 py-28 md:px-32"
       >
         <Display as="h2" id={uid} className="text-21 md:text-24">
           {titolo}

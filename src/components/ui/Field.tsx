@@ -94,13 +94,15 @@ export function Field({
  * Campi
  * ----------------------------------------------------------------------- */
 
+/* Il raggio lo decide il tono: l'area riservata ha l'angolo appena smussato,
+   il sito pubblico resta a spigoli vivi. */
 const controlBase =
-  'w-full border bg-field-bg font-body font-medium text-ink-2 rounded-none ' +
+  'w-full border bg-field-bg font-body font-medium text-ink-2 ' +
   'transition-colors duration-200 ease-out placeholder:text-ink-4 ' +
   'focus:border-gold focus:outline-none focus-visible:outline-none';
 
-const controlPublic = 'px-14 py-12 text-14';
-const controlAdmin = 'px-14 py-11 text-14';
+const controlPublic = 'rounded-none px-14 py-12 text-14';
+const controlAdmin = 'rounded-soft px-14 py-11 text-14';
 
 function stateBorder(invalid?: boolean) {
   return invalid ? 'border-red' : 'border-field-border';

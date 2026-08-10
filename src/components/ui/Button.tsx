@@ -41,13 +41,23 @@ const sizes: Record<ButtonSize, string> = {
   adminSm: 'px-18 py-9 text-12-5 tracking-08',
 };
 
+/**
+ * L'area riservata ha l'angolo appena smussato, il sito pubblico no: sono le
+ * taglie `admin` a dire da che parte sta un pulsante, perché nel progetto le
+ * usa soltanto `/admin`.
+ */
+function radiusFor(size: ButtonSize) {
+  return size === 'admin' || size === 'adminSm' ? 'rounded-soft' : 'rounded-none';
+}
+
 export function buttonClasses(
   variant: ButtonVariant = 'gold',
   size: ButtonSize = 'cta',
   className?: string,
 ) {
   return cn(
-    'inline-flex items-center justify-center gap-8 rounded-none text-center',
+    'inline-flex items-center justify-center gap-8 text-center',
+    radiusFor(size),
     'transition-[color,background-color,border-color,filter] duration-200 ease-out',
     'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100',
     variants[variant],

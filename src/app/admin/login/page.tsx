@@ -16,7 +16,7 @@ export default async function LoginPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-admin-bg px-24 py-60">
-      <div className="w-full max-w-380 border border-hairline bg-panel-ime px-24 py-34 md:px-40 md:py-40">
+      <div className="w-full max-w-380 rounded-soft border border-hairline bg-panel-ime px-24 py-34 md:px-40 md:py-40">
         <LogoIme size="admin" text={t.admin.brandLabel} />
         <Display as="h1" className="mt-24 text-24 md:text-28">
           {t.admin.login.title}

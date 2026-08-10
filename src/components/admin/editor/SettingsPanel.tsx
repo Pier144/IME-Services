@@ -104,7 +104,7 @@ export function SettingsPanel({
             <button
               type="button"
               onClick={() => onChange({ coverImage: null })}
-              className="absolute top-8 right-8 border border-field-border bg-admin-bg px-10 py-6 font-body text-12 font-medium text-ink-3 transition-colors duration-200 ease-out hover:border-gold hover:text-gold"
+              className="absolute top-8 right-8 rounded-soft border border-field-border bg-admin-bg px-10 py-6 font-body text-12 font-medium text-ink-3 transition-colors duration-200 ease-out hover:border-gold hover:text-gold"
             >
               {t.admin.editor.photo.remove}
             </button>

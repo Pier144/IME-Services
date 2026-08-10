@@ -42,7 +42,7 @@ export function SelectionToolbar({
   return (
     <div
       onMouseDown={(event) => event.preventDefault()}
-      className="absolute -top-46 left-0 z-30 flex items-center gap-16 border border-hairline-strong bg-panel-ime px-14 py-9 font-body text-13 text-ink-2"
+      className="absolute -top-46 left-0 z-30 flex items-center gap-16 rounded-soft border border-hairline-strong bg-panel-ime px-14 py-9 font-body text-13 text-ink-2"
     >
       {linking ? (
         <>

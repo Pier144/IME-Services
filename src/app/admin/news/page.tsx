@@ -188,7 +188,7 @@ export default async function AdminNewsPage({ searchParams }: { searchParams: Se
                   href={hrefFor(status, value)}
                   aria-current={value === page.page ? 'page' : undefined}
                   className={cn(
-                    'flex size-32 items-center justify-center transition-colors duration-200',
+                    'flex size-32 items-center justify-center rounded-soft transition-colors duration-200',
                     value === page.page
                       ? 'bg-gold text-gold-ink'
                       : 'border border-field-border text-ink-2 hover:border-gold hover:text-gold',
