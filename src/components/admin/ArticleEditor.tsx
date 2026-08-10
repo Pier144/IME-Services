@@ -363,9 +363,20 @@ export function ArticleEditor({
             size="adminSm"
             onClick={() => void leave()}
             disabled={saving}
-            className="flex-none"
+            className="group/back flex-none"
           >
-            <span aria-hidden="true">←</span>
+            {/* La freccia è la stessa del sito pubblico (vedi ArrowLink): qui si
+                muove soltanto. Due pixel a sinistra al passaggio bastano a dire
+                «torna indietro» invece di «c'è una freccia», e il movimento è
+                quello che il design già usa per il trattino dei quattro mondi.
+                Sotto `prefers-reduced-motion` si spegne da sé: ci pensa la
+                regola generale in globals.css. */}
+            <span
+              aria-hidden="true"
+              className="inline-block transition-transform duration-200 ease-out group-hover/back:-translate-x-2"
+            >
+              ←
+            </span>
             {t.admin.editor.back}
           </Button>
           <span aria-hidden="true" className="block h-16 w-1 flex-none bg-rule-step" />
